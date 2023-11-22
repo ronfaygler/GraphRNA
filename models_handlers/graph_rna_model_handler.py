@@ -1091,8 +1091,7 @@ class HGAModelHandler(object):
 
         # 5 - split data into folds
         cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
-                                                         label_col=cls.binary_intr_label_col, shuffle=False,
-                                                         seed=None)
+                                                         label_col=cls.binary_intr_label_col)
         dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
         dummy_y_train, dummy_y_val = list(), list()
         dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
