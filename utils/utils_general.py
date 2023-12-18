@@ -1,6 +1,5 @@
 from os.path import basename
 import pandas as pd
-import pickle
 import numpy as np
 
 
@@ -15,13 +14,10 @@ def order_df(df, first_cols=None, last_cols=None, sort_by=None, ascending=True):
 def read_df(file_path, encoding='utf-8'):
     if ".csv" in basename(file_path):
         df = pd.read_csv(file_path, encoding=encoding)
-    elif ".pickle" in basename(file_path):
-        with open(file_path, 'rb') as handle:
-            df = pickle.load(handle)
     elif ".txt" in basename(file_path):
         df = pd.read_csv(file_path, delimiter=" ")
     else:
-        raise ValueError(f"{basename(file_path)} NOT SUPPORTED - only .csv OR .pickle")
+        raise ValueError(f"{basename(file_path)} NOT SUPPORTED - only .csv OR .txt")
     return df
 
 
