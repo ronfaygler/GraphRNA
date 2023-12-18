@@ -1,12 +1,8 @@
-# Authors: Shani Cohen (ShaniCohen)
-# Python version: 3.8
-# Last update: 19.11.2023
-
 import torch
 import torch.nn.functional as F
 from torch import Tensor
 from torch_geometric.data import HeteroData
-from torch_geometric.nn import SAGEConv, to_hetero, HeteroConv, GCNConv
+from torch_geometric.nn import SAGEConv, HeteroConv, GCNConv
 
 
 class GNN(torch.nn.Module):
@@ -21,15 +17,15 @@ class GNN(torch.nn.Module):
         return x
 
 
-# Our final classifier applies the dot-product between source and destination
-# node embeddings to derive edge-level predictions:
+# the final classifier applies the dot-product between source and destination
+# node embeddings to derive edge-level predictions
 class Classifier(torch.nn.Module):
     def forward(self, x_srna: Tensor, x_mrna: Tensor, edge_label_index: Tensor) -> Tensor:
-        # Convert node embeddings to edge-level representations:
+        # convert node embeddings to edge-level representations
         edge_feat_srna = x_srna[edge_label_index[0]]
         edge_feat_mrna = x_mrna[edge_label_index[1]]
 
-        # Apply dot-product to get a prediction per supervision edge:
+        # apply dot-product to get a prediction per supervision edge
         return (edge_feat_srna * edge_feat_mrna).sum(dim=-1)
 
 
@@ -51,6 +47,7 @@ class GraphRNA(torch.nn.Module):
         self.srna = srna
         self.mrna = mrna
         self.srna_to_mrna = srna_to_mrna
+        self.mrna_to_mrna = "similar"
         # learn two embedding matrices for sRNAs and mRNAs
         self.srna_emb = torch.nn.Embedding(num_embeddings=srna_num_embeddings,
                                            embedding_dim=model_args['hidden_channels'])

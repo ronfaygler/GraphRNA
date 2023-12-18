@@ -1,31 +1,23 @@
-# Authors: Shani Cohen (ShaniCohen)
-# Python version: 3.8
-# Last update: 19.11.2023
-
 import pandas as pd
 import numpy as np
 import os
 import random
 import itertools
 from sklearn.utils import shuffle
-from sklearn.preprocessing import MinMaxScaler
 from typing import Dict, List
 from models.graph_rna import GraphRNA
-import tqdm
 import torch
 import torch.nn.functional as F
 from torch_geometric.data import HeteroData
-from torch_geometric.loader import LinkNeighborLoader
-
 import torch_geometric.transforms as T
 from models_handlers.model_handlers_utils import calc_binary_classification_metrics_using_y_score, \
-    calc_binary_classification_metrics_using_prob_y_score_and_y_pred_thresholds, get_stratified_cv_folds_for_unique
-from utils import order_df, split_df_samples
+    get_stratified_cv_folds_for_unique
+from utils.utils_general import order_df, split_df_samples
 import logging
 logger = logging.getLogger(__name__)
 
 
-class HGAModelHandler(object):
+class GraphRNAModelHandler(object):
     """
     Class to ...
     # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
@@ -58,11 +50,6 @@ class HGAModelHandler(object):
     binary_intr_label_col = 'interaction_label'
 
     # ------  Params  ------
-    # --- random dataset split
-    random_split = False
-    # Generate fixed negative edges (in val_data) for evaluation with a ratio of x:1
-    val_and_test_neg_sampling_ratio = 1.0
-
     # --- train data
     # for train data, sample negative edges with a ratio of x:1
     cv_neg_sampling_ratio_data = 1.0
@@ -71,27 +58,10 @@ class HGAModelHandler(object):
     # Across the training edges, we use 70% of edges for message passing, and 30% of edges for supervision.
     train_supervision_ratio = 0.3
 
-    # --- train loader
-    train_w_loader = False
-    # in the first hop, sample at most 20 neighbors
-    # in the second hop, sample at most 10 neighbors
-    train_num_neighbors = [20, 10]
-    # during training, sample negative edges on-the-fly with a ratio of x:1
-    train_neg_sampling_ratio_loader = 2.0
-    train_batch_size = 128
-    # set to True to have the data reshuffled at every epoch
-    train_shuffle = True
-
-    # --- test data
-    eval_num_neighbors = [20, 0]
-    eval_batch_size = 128
-    eval_shuffle = False
-
-    shuffle_test = True
     debug_logs = False
 
     def __init__(self, seed: int = 100):
-        super(HGAModelHandler, self).__init__()
+        super(GraphRNAModelHandler, self).__init__()
         self.seed = seed
         # set random seeds
         np.random.seed(seed)
@@ -105,21 +75,12 @@ class HGAModelHandler(object):
         os.environ["PYTHONHASHSEED"] = str(seed)
 
     @staticmethod
-    def get_const_hyperparams(**kwargs) -> Dict[str, object]:
+    def get_model_args() -> Dict[str, object]:
         """   torch_geometric.__version__ = '2.1.0'  """
-        logger.debug(f"getting const HeteroGraph Advanced hyperparams")
-        const_model_hyperparams = {
-        }
-        return const_model_hyperparams
-
-    @staticmethod
-    def get_model_args(**kwargs) -> Dict[str, object]:
-        """   torch_geometric.__version__ = '2.1.0'  """
-        logger.debug("getting HeteroGraph Advanced model_args")
+        logger.debug("getting GraphRNA model_args")
         model_args = {
             # 1 - constructor args
             'hidden_channels': 64,
-            'num_sim_feat': 50,
             # 2 - fit (train) args
             'learning_rate': 0.001,
             'epochs': 25
@@ -139,9 +100,8 @@ class HGAModelHandler(object):
         return
 
     @staticmethod
-    def _map_rna_nodes_and_edges(out_rna_node_id_col: str, rna_eco: pd.DataFrame, e_acc_col: str, s_acc_1_col: str,
-                                 s_acc_2_col: str, s_score_col: str, rna_sim: pd.DataFrame = None) -> \
-            (pd.DataFrame, pd.DataFrame, pd.DataFrame):
+    def _map_rna_nodes_and_edges(out_rna_node_id_col: str, rna_eco: pd.DataFrame, e_acc_col: str) -> \
+            (pd.DataFrame, pd.DataFrame):
         """ map accession to node id """
         # 1 - Nodes = EcoCyc data
         rna_nodes = rna_eco
@@ -149,20 +109,8 @@ class HGAModelHandler(object):
         rna_nodes[out_rna_node_id_col] = np.arange(len(rna_nodes))
         rna_nodes = order_df(df=rna_nodes, first_cols=[out_rna_node_id_col])
         rna_map = rna_eco[[out_rna_node_id_col, e_acc_col]]
-        # 2 - Edges = similarity data
-        if type(rna_sim) is pd.DataFrame:
-            _len = len(rna_sim)
-            rna_edges = pd.merge(rna_sim, rna_map, left_on=s_acc_1_col, right_on=e_acc_col, how='left').rename(
-                columns={out_rna_node_id_col: f'{out_rna_node_id_col}_1'})
-            rna_edges = pd.merge(rna_edges, rna_map, left_on=s_acc_2_col, right_on=e_acc_col, how='left').rename(
-                columns={out_rna_node_id_col: f'{out_rna_node_id_col}_2'})
-            assert len(rna_edges) == _len, "duplications post merge"
-            _cols = [f'{out_rna_node_id_col}_1', f'{out_rna_node_id_col}_2', s_score_col, s_acc_1_col, s_acc_2_col]
-            rna_edges = rna_edges[_cols]
-        else:
-            rna_edges = None
 
-        return rna_map, rna_nodes, rna_edges
+        return rna_map, rna_nodes
 
     @staticmethod
     def _pos_neg_split(df: pd.DataFrame, binary_label_col: str) -> (pd.DataFrame, pd.DataFrame):
@@ -253,17 +201,6 @@ class HGAModelHandler(object):
         return
 
     @classmethod
-    def _remove_train_inter_from_test_all_pairs(cls, unq_train: pd.DataFrame, unq_test: pd.DataFrame, srna_acc_col: str,
-                                                mrna_acc_col: str) -> pd.DataFrame:
-        logger.debug("remove train inter_from_test_all_pairs")
-        train_tup = set(zip(unq_train[srna_acc_col], unq_train[mrna_acc_col]))
-        test_tup = set(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col]))
-        test_no_dup = pd.DataFrame(list(test_tup - train_tup), columns=[srna_acc_col, mrna_acc_col])
-        logger.debug(f"from {len(test_tup)} interactions {len(test_tup) - len(test_no_dup)} were filtered since appear "
-                     f"in train --> {len(test_no_dup)} left")
-        return test_no_dup
-
-    @classmethod
     def _map_inter(cls, intr: pd.DataFrame, mrna_acc_col: str, srna_acc_col: str, mrna_map: pd.DataFrame,
                    m_map_acc_col: str, srna_map: pd.DataFrame, s_map_acc_col: str) -> pd.DataFrame:
         _len, _cols = len(intr), list(intr.columns.values)
@@ -278,12 +215,10 @@ class HGAModelHandler(object):
         # 1 - mRNA
         # 1.1 - get map, nodes and edges
         m_eco_acc_col = kwargs['me_acc_col']
-        m_sim_score_col = kwargs['ms_score_col']
         cls.log_df_rna_eco(rna_name='mRNA', rna_eco_df=kwargs['mrna_eco'], acc_col=m_eco_acc_col)
-        _, mrna_nodes, _ = \
+        _, mrna_nodes = \
             cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col, rna_eco=kwargs['mrna_eco'],
-                                         e_acc_col=m_eco_acc_col, s_acc_1_col=kwargs['ms_acc_1_col'],
-                                         s_acc_2_col=kwargs['ms_acc_2_col'], s_score_col=m_sim_score_col)
+                                         e_acc_col=m_eco_acc_col)
         # 1.2 - set
         # nodes
         cls.mrna_nodes = mrna_nodes
@@ -292,12 +227,10 @@ class HGAModelHandler(object):
         # 2 - sRNA
         # 2.1 - get map, nodes and edges
         s_eco_acc_col = kwargs['se_acc_col']
-        s_sim_score_col = kwargs['ss_score_col']
         cls.log_df_rna_eco(rna_name='sRNA', rna_eco_df=kwargs['srna_eco'], acc_col=s_eco_acc_col)
-        _, srna_nodes, _ = \
+        _, srna_nodes = \
             cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.srna_nid_col, rna_eco=kwargs['srna_eco'],
-                                         e_acc_col=s_eco_acc_col, s_acc_1_col=kwargs['ss_acc_1_col'],
-                                         s_acc_2_col=kwargs['ss_acc_2_col'], s_score_col=s_sim_score_col)
+                                         e_acc_col=s_eco_acc_col)
         # 2.2 - set
         # nodes
         cls.srna_nodes = srna_nodes
@@ -386,7 +319,7 @@ class HGAModelHandler(object):
         df = unq_train
         unq_train_pos, unq_train_neg = cls._pos_neg_split(df=unq_train, binary_label_col=cls.binary_intr_label_col)
         # 1 - random negative sampling - train
-        if train_neg_sampling and not cls.train_w_loader:
+        if train_neg_sampling:
             # 1.1 - take only positive samples from train and add random negatives
             _shuffle_train = True
             df = cls._add_neg_samples(unq_intr_pos=unq_train_pos, ratio=cls.train_neg_sampling_ratio_data,
@@ -438,56 +371,8 @@ class HGAModelHandler(object):
         return train_data, test_data
 
     @classmethod
-    def _get_train_mini_batches_loader(cls, train_data: HeteroData) -> LinkNeighborLoader:
-        # Define seed edges:
-        edge_label_index = train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index
-        edge_label = train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
-        train_loader = LinkNeighborLoader(
-            data=train_data,
-            num_neighbors=cls.train_num_neighbors,
-            neg_sampling_ratio=cls.train_neg_sampling_ratio_loader,
-            edge_label_index=((cls.srna, cls.srna_to_mrna, cls.mrna), edge_label_index),
-            edge_label=edge_label,
-            batch_size=cls.train_batch_size,
-            shuffle=cls.train_shuffle,
-        )
-        for sampled_data in tqdm.tqdm(train_loader):
-            s_edge_label_index = sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index
-            s_edge_label = sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
-
-        return train_loader
-
-    @classmethod
-    def _train_hgnn_with_loader(cls, hg_model: GraphRNA, train_data: HeteroData, model_args: dict) -> GraphRNA:
-        logger.debug(f"training HeteroGraph Advanced model with loader")
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        if cls.debug_logs:
-            logger.debug(f"Device: '{device}'")
-
-        train_loader = cls._get_train_mini_batches_loader(train_data=train_data)
-        hg_model = hg_model.to(device)
-        optimizer = torch.optim.Adam(hg_model.parameters(), lr=model_args['learning_rate'])
-
-        for epoch in range(1, model_args['epochs']):
-            total_loss = total_examples = 0
-            for sampled_data in tqdm.tqdm(train_loader):
-                optimizer.zero_grad()
-                sampled_data.to(device)
-                pred = hg_model(sampled_data)
-                ground_truth = sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
-                loss = F.binary_cross_entropy_with_logits(pred, ground_truth)
-                loss.backward()
-                optimizer.step()
-                total_loss += float(loss) * pred.numel()
-                total_examples += pred.numel()
-            if cls.debug_logs:
-                logger.debug(f"Epoch: {epoch:03d}, Loss: {total_loss / total_examples:.4f}")
-
-        return hg_model
-
-    @classmethod
     def _train_hgnn(cls, hga_model: GraphRNA, train_data: HeteroData, model_args: dict) -> GraphRNA:
-        logger.debug(f"training HeteroGraph Advanced model (without loader) -> epochs = {model_args['epochs']}")
+        logger.debug(f"training GraphRNA model -> epochs = {model_args['epochs']}")
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         if cls.debug_logs:
             logger.debug(f"Device: '{device}'")
@@ -512,115 +397,6 @@ class HGAModelHandler(object):
         return hga_model
 
     @classmethod
-    def _get_eval_mini_batches_loader(cls, eval_data: HeteroData) -> LinkNeighborLoader:
-        # Define the validation seed edges:
-        edge_label_index = eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index
-        edge_label = eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
-
-        # Define hyper-params
-        bs_const = cls.val_and_test_neg_sampling_ratio + 1 if cls.random_split else 1
-
-        eval_loader = LinkNeighborLoader(
-            data=eval_data,
-            num_neighbors=cls.eval_num_neighbors,
-            edge_label_index=((cls.srna, cls.srna_to_mrna, cls.mrna), edge_label_index),
-            edge_label=edge_label,
-            batch_size=int(bs_const * cls.eval_batch_size),
-            shuffle=cls.eval_shuffle,
-        )
-
-        sampled_data = next(iter(eval_loader))
-        i1 = sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index[0]
-        i2 = sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index[1]
-        lbl = sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
-        test_df = pd.DataFrame({
-            'edge_label_index_0': torch.cat(i1, dim=0).cpu().numpy(),
-            'edge_label_index_1': torch.cat(i2, dim=0).cpu().numpy(),
-            'edge_label_': torch.cat(lbl, dim=0).cpu().numpy()
-        })
-
-        return eval_loader
-
-    @classmethod
-    def _eval_dataset_w_loader(cls, trained_model: GraphRNA, dataset_loader: LinkNeighborLoader,
-                               dataset_nm: str = None) -> (Dict[str, object], pd.DataFrame):
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        logger.debug(f"Device: '{device}'")
-        # 1 - predict on dataset
-        preds = []
-        ground_truths = []
-        srna_nids, mrna_nids = [], []
-        for sampled_data in tqdm.tqdm(dataset_loader):
-            with torch.no_grad():
-                sampled_data.to(device)
-                preds.append(trained_model(sampled_data))
-                ground_truths.append(sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label)
-                srna_nids.append(sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[0])
-                mrna_nids.append(sampled_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[1])
-        # 2 - process outputs
-        scores_arr = torch.cat(preds, dim=0).cpu().numpy()
-        ground_truth = torch.cat(ground_truths, dim=0).cpu().numpy()
-        y_true = list(ground_truth)
-        # 2.1 - scaling scores_arr to [0 ,1]
-        minmax_scaler = MinMaxScaler()
-        y_score = minmax_scaler.fit_transform(scores_arr.reshape(-1, 1)).reshape(-1)
-        # 2.2 - save
-        eval_data_preds = pd.DataFrame({
-            cls.srna_nid_col: torch.cat(srna_nids, dim=0).cpu().numpy(),
-            cls.mrna_nid_col: torch.cat(mrna_nids, dim=0).cpu().numpy(),
-            'y_original_score': list(scores_arr),
-            'y_score': y_score,
-            'y_true': y_true
-        })
-        eval_data_preds = eval_data_preds.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col])
-
-        # 3 - calc evaluation metrics
-        scores = calc_binary_classification_metrics_using_y_score(y_true=y_true, y_score=y_score, dataset_nm=dataset_nm)
-        if cls.debug_logs:
-            for k, v in scores.items():
-                print(f"{k}: {v}")
-
-        return scores, eval_data_preds
-
-    @classmethod
-    def _eval_hgnn_w_loader(cls, trained_model: GraphRNA, eval_data: HeteroData, dataset_nm: str = None) -> \
-            (Dict[str, object], pd.DataFrame):
-        eval_loader = cls._get_eval_mini_batches_loader(eval_data=eval_data)
-        scores, eval_data_preds = cls._eval_dataset_w_loader(trained_model=trained_model, dataset_loader=eval_loader,
-                                                             dataset_nm=dataset_nm)
-        return scores, eval_data_preds
-
-    @classmethod
-    def _predict_hgnn(cls, trained_model: GraphRNA, eval_data: HeteroData, model_args: dict = None) -> pd.DataFrame:
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        if cls.debug_logs:
-            logger.debug(f"Device: '{device}'")
-        # 1 - predict on dataset
-        preds = []
-        # ground_truths = []
-        srna_nids, mrna_nids = [], []
-        with torch.no_grad():
-            eval_data.to(device)
-            preds.append(trained_model(eval_data, model_args))
-            srna_nids.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[0])
-            mrna_nids.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[1])
-        # 2 - process outputs
-        scores_arr = torch.cat(preds, dim=0).cpu().numpy()
-        # 2.1 - scaling scores_arr to [0 ,1]
-        minmax_scaler = MinMaxScaler()
-        y_score = minmax_scaler.fit_transform(scores_arr.reshape(-1, 1)).reshape(-1)
-        # 2.2 - save
-        eval_data_preds = pd.DataFrame({
-            cls.srna_nid_col: torch.cat(srna_nids, dim=0).cpu().numpy(),
-            cls.mrna_nid_col: torch.cat(mrna_nids, dim=0).cpu().numpy(),
-            'y_original_score': list(scores_arr),
-            'y_score': y_score
-        })
-        eval_data_preds = eval_data_preds.sort_values(by='y_score', ascending=False).reset_index(drop=True)
-
-        return eval_data_preds
-
-    @classmethod
     def _eval_hgnn(cls, trained_model: GraphRNA, eval_data: HeteroData, model_args: dict = None,
                    dataset_nm: str = None, **kwargs) -> (Dict[str, object], pd.DataFrame):
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -641,40 +417,144 @@ class HGAModelHandler(object):
         scores_arr = torch.cat(preds, dim=0).cpu().numpy()
         ground_truth = torch.cat(ground_truths, dim=0).cpu().numpy()
         y_true = list(ground_truth)
-        # 2.1 - scaling scores_arr to [0 ,1]
-        minmax_scaler = MinMaxScaler()
-        y_score = minmax_scaler.fit_transform(scores_arr.reshape(-1, 1)).reshape(-1)
-        y_original_score = list(scores_arr)
+        y_graph_score = list(scores_arr)
         # 2.2 - save
         eval_data_preds = pd.DataFrame({
             cls.srna_nid_col: torch.cat(srna_nids, dim=0).cpu().numpy(),
             cls.mrna_nid_col: torch.cat(mrna_nids, dim=0).cpu().numpy(),
-            'y_original_score': y_original_score,
-            'y_score': y_score,
-            'y_true': y_true
+            'y_true': y_true,
+            'y_graph_score': y_graph_score
         })
         roc_max_fpr = kwargs.get('roc_max_fpr', None)
 
-        if kwargs.get('use_original_score'):
-            eval_data_preds = eval_data_preds.sort_values(by='y_original_score', ascending=False).reset_index(drop=True)
-            # 3 - calc evaluation metrics
-            scores = calc_binary_classification_metrics_using_y_score(y_true=y_true, y_score=y_original_score,
-                                                                      roc_max_fpr=roc_max_fpr, dataset_nm=dataset_nm)
-        else:
-            eval_data_preds = eval_data_preds.sort_values(by='y_score', ascending=False).reset_index(drop=True)
-            # 3 - calc evaluation metrics
-            _thresholds = kwargs.get('y_pred_thresholds_gnn', None)
-            if _thresholds is not None:
-                scores = calc_binary_classification_metrics_using_prob_y_score_and_y_pred_thresholds(
-                    y_true=y_true, y_score=y_score, y_pred_thresholds=_thresholds, dataset_nm=dataset_nm)
-            else:
-                scores = calc_binary_classification_metrics_using_y_score(y_true=y_true, y_score=y_score,
-                                                                          roc_max_fpr=roc_max_fpr,
-                                                                          dataset_nm=dataset_nm)
-        for k, v in scores.items():
-            print(f"{k}: {v}")
-
+        eval_data_preds = eval_data_preds.sort_values(by='y_graph_score', ascending=False).reset_index(drop=True)
+        # 3 - calc evaluation metrics
+        scores = calc_binary_classification_metrics_using_y_score(y_true=y_true, y_score=y_graph_score,
+                                                                  roc_max_fpr=roc_max_fpr, dataset_nm=dataset_nm)
         return scores, eval_data_preds
+
+    @classmethod
+    def add_rna_metadata(cls, _df: pd.DataFrame, sort_df: bool = False, sort_by_col: str = None) -> pd.DataFrame:
+        assert cls.srna_nid_col in _df.columns.values, f"{cls.srna_nid_col} column is missing in _df"
+        assert cls.mrna_nid_col in _df.columns.values, f"{cls.mrna_nid_col} column is missing in _df"
+
+        srna_meta_cols = [c for c in cls.srna_nodes.columns.values if c != cls.srna_nid_col]
+        mrna_meta_cols = [c for c in cls.mrna_nodes.columns.values if c != cls.mrna_nid_col]
+        _len = len(_df)
+        _df = pd.merge(_df, cls.srna_nodes, on=cls.srna_nid_col, how='left').rename(
+            columns={c: f"sRNA_{c}" for c in srna_meta_cols})
+        _df = pd.merge(_df, cls.mrna_nodes, on=cls.mrna_nid_col, how='left').rename(
+            columns={c: f"mRNA_{c}" for c in mrna_meta_cols})
+        assert len(_df) == _len, "duplications post merge"
+
+        if sort_df:
+            _df = _df.sort_values(by=sort_by_col, ascending=False).reset_index(drop=True)
+        return _df
+
+    @classmethod
+    def get_predictions_df(cls, unq_intr: pd.DataFrame, y_true: list, y_score: np.array, out_col_y_true: str = "y_true",
+                           out_col_y_score: str = "y_graph_score", sort_df: bool = True) -> pd.DataFrame:
+        is_length_compatible = len(unq_intr) == len(y_true) == len(y_score)
+        assert is_length_compatible, "unq_intr, y_true and y_score are not compatible in length"
+        assert pd.isnull(unq_intr).sum().sum() == sum(pd.isnull(y_true)) == sum(pd.isnull(y_score)) == 0, \
+            "nulls in data"
+
+        _df = unq_intr
+        _df[out_col_y_true] = y_true
+        _df[out_col_y_score] = y_score
+        _df = cls.add_rna_metadata(_df=_df, sort_df=sort_df, sort_by_col=out_col_y_score)
+
+        return _df
+
+    @classmethod
+    def run_cross_validation(cls, X: pd.DataFrame, y: List[int], n_splits: int, model_args: dict,
+                             metadata: pd.DataFrame = None, srna_acc_col: str = 'sRNA_accession_id_Eco',
+                             mrna_acc_col: str = 'mRNA_accession_id_Eco', is_syn_col: str = 'is_synthetic', **kwargs) \
+            -> (Dict[int, pd.DataFrame], Dict[int, dict]):
+        """
+
+        Parameters
+        ----------
+        X: pd.DataFrame (n_samples, N_features),
+        y: list (n_samples,),
+        n_splits: number of folds for cross validation
+        model_args: Dict of model's constructor and fit() arguments
+        metadata: Optional - pd.DataFrame (n_samples, T_features)
+        srna_acc_col: str  sRNA EcoCyc accession id col in metadata
+        mrna_acc_col: str  mRNA EcoCyc accession id col in metadata
+        is_syn_col: is synthetic indicator col in metadata
+        kwargs:
+            srna_eco - pd.DataFrame: all sRNA metadata from EcoCyc
+            srna_eco_accession_id_col - str: the column in srna_eco containing unique id per sRNA
+            mrna_eco - pd.DataFrame: all mRNA metadata from EcoCyc
+            mrna_eco_accession_id_col - str: the column in mrna_eco containing unique id per mRNA
+
+        Returns
+        -------
+
+        cv_prediction_dfs - Dict in the following format:  {
+            <fold>: pd.DataFrame including the following information:
+                    sRNA accession id, mRNA accession id, interaction label (y_true), graphRNA score, metadata columns.
+        }
+        cv_training_history - Dict in the following format:  {
+            <fold>: {
+                'train': OrderedDict
+                'validation': OrderedDict
+            }
+        }
+        """
+        logger.debug(f"running cross validation with {n_splits} folds")
+        # 1 - remove all synthetic samples
+        logger.warning("removing all synthetic samples")
+        X_no_syn, y_no_syn, metadata_no_syn = \
+            cls._remove_synthetic_samples(X=X, y=y, metadata=metadata, is_syn_col=is_syn_col)
+
+        # 2 - get unique interactions data (train + val)
+        unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y=y_no_syn, srna_acc_col=srna_acc_col,
+                                         mrna_acc_col=mrna_acc_col, df_nm='all')
+        unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
+
+        # 3 - define graph nodes (if needed) and map interaction
+        if not cls.nodes_are_defined:
+            cls._define_nodes_and_edges(**kwargs)
+        unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
+                                                      mrna_acc_col=mrna_acc_col)
+        # 4 - random negative sampling - all cv data
+        _shuffle = True
+        unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
+                                        _shuffle=_shuffle)
+        unq_y = np.array(unq_data[cls.binary_intr_label_col])
+        unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
+
+        # 5 - split data into folds
+        cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
+                                                         label_col=cls.binary_intr_label_col)
+        dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
+        dummy_y_train, dummy_y_val = list(), list()
+        dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
+
+        # 6 - predict on folds
+        cv_training_history = {}
+        cv_prediction_dfs = {}
+        train_neg_sampling = False  # negatives were already added to cv_data_unq
+        for fold, fold_data_unq in cv_data_unq.items():
+            logger.debug(f"starting fold {fold}")
+            # 6.1 - predict on validation set (pos + random sampled neg)
+            predictions, training_history = \
+                cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
+                                   model_args=model_args, metadata_train=dummy_meta_train, metadata_test=dummy_meta_val,
+                                   unq_train=fold_data_unq['unq_train'], unq_test=fold_data_unq['unq_val'],
+                                   train_neg_sampling=train_neg_sampling, **kwargs)
+            # 6.2 - fold's training history
+            cv_training_history[fold] = training_history
+            # 6.3 - fold's predictions df
+            y_val_graph_score = predictions['test_y_graph_score']
+            unq_val = fold_data_unq['unq_val'][[cls.srna_nid_col, cls.mrna_nid_col]]
+            y_val = fold_data_unq['unq_val'][cls.binary_intr_label_col]
+            cv_pred_df = cls.get_predictions_df(unq_intr=unq_val, y_true=y_val, y_score=y_val_graph_score)
+            cv_prediction_dfs[fold] = cv_pred_df
+
+        return cv_prediction_dfs, cv_training_history
 
     @classmethod
     def train_and_test(cls, X_train: pd.DataFrame, y_train: List[int], X_test: pd.DataFrame, y_test: List[int],
@@ -682,8 +562,7 @@ class HGAModelHandler(object):
                        unq_train: pd.DataFrame = None, unq_test: pd.DataFrame = None,
                        train_neg_sampling: bool = True, srna_acc_col: str = 'sRNA_accession_id_Eco',
                        mrna_acc_col: str = 'mRNA_accession_id_Eco',
-                       is_syn_col: str = 'is_synthetic', **kwargs) -> \
-            (Dict[str, dict], Dict[str, object], Dict[str, object], Dict[str, object]):
+                       is_syn_col: str = 'is_synthetic', **kwargs) -> (Dict[str, object], Dict[str, object]):
         """
         torch_geometric.__version__ = '2.1.0'
 
@@ -703,33 +582,26 @@ class HGAModelHandler(object):
         mrna_acc_col: str  mRNA EcoCyc accession id col in metadata_train and metadata_test
         is_syn_col: is synthetic indicator col in metadata_train
         kwargs:
-            mrna_eco: all mRNA metadata from EcoCyc
+            srna_eco - pd.DataFrame: all sRNA metadata from EcoCyc
+            srna_eco_accession_id_col - str: the column in srna_eco containing unique id per sRNA
+            mrna_eco - pd.DataFrame: all mRNA metadata from EcoCyc
+            mrna_eco_accession_id_col - str: the column in mrna_eco containing unique id per mRNA
 
         Returns
         -------
 
-        scores - Dict in the following format:  {
-            'test': {
-                <score_nm>: score
-                }
-        }
         predictions - Dict in the following format:  {
-            'test_pred': array-like (t_samples,)  - ordered as y test
+            'test_y_graph_score': array-like (t_samples,) - model's prediction scores, ordered as y test
+            'out_test_pred': pd.DataFrame including the following information:
+                sRNA accession id, mRNA accession id, interaction label (y_true),
+                model's prediction score (y_graph_score), metadata columns.
         }
         training_history - Dict in the following format:  {
             'train': OrderedDict
             'validation': OrderedDict
         }
-        train_val_data - Dict in the following format:  {
-            "X_train": pd.DataFrame (n_samples, N_features),
-            "y_train": list (n_samples,),
-            "X_val": pd.DataFrame (k_samples, K_features),
-            "y_val": list (k_samples,),
-            "metadata_train": pd.DataFrame (n_samples, T_features),    - Optional (in case metadata_train is not None)
-            "metadata_val": list (k_samples,)    - Optional (in case metadata_train is not None)
-        }
         """
-        logger.debug(f"training an HeteroGraph model  ->  train negative sampling = {train_neg_sampling}")
+        logger.debug(f"training GraphRNA model  ->  train negative sampling = {train_neg_sampling}")
         # 1 - define graph nodes
         if not cls.nodes_are_defined:
             cls._define_nodes_and_edges(**kwargs)
@@ -779,347 +651,33 @@ class HGAModelHandler(object):
         # 7.1 - set params
         srna_num_emb = len(cls.srna_nodes)
         mrna_num_emb = len(cls.mrna_nodes)
-        metadata = train_data.metadata()
+        # metadata = train_data.metadata()
         # 7.2 - init model
         hga_model = GraphRNA(srna=cls.srna, mrna=cls.mrna, srna_to_mrna=cls.srna_to_mrna,
-                             srna_num_embeddings=srna_num_emb, mrna_num_embeddings=mrna_num_emb,
-                             metadata=metadata, model_args=model_args)
+                             srna_num_embeddings=srna_num_emb, mrna_num_embeddings=mrna_num_emb, model_args=model_args)
         if cls.debug_logs:
             logger.debug(hga_model)
 
         # 8 - train HeteroGraph model
-        if cls.train_w_loader:
-            hg_model = cls._train_hgnn_with_loader(hg_model=hga_model, train_data=train_data, model_args=model_args)
-        else:
-            hg_model = cls._train_hgnn(hga_model=hga_model, train_data=train_data, model_args=model_args)
-        training_history, train_val_data = {}, {}
+        hg_model = cls._train_hgnn(hga_model=hga_model, train_data=train_data, model_args=model_args)
+        training_history = {}
 
         # 9 - evaluate - calc scores
         logger.debug("evaluating test set")
-        predictions, scores = {}, {}
+        predictions = {}
         test_scores, test_pred_df = cls._eval_hgnn(trained_model=hg_model, eval_data=test_data, model_args=model_args,
                                                    **kwargs)
         assert pd.isnull(test_pred_df).sum().sum() == 0, "some null predictions"
 
         # 10 - update outputs
+        # 10.1 - test predictions df
         _len = len(out_test_pred)
         out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col], how='left')
         assert len(out_test_pred) == _len
-        test_y_pred = out_test_pred['y_score']
-        test_original_score = out_test_pred['y_original_score']
+        out_test_pred = cls.add_rna_metadata(_df=out_test_pred)
+        # 10.2 - GraphRNA prediction scores
+        test_graph_score = out_test_pred['y_graph_score']
+        # 10.3 - update
+        predictions.update({'test_y_graph_score': test_graph_score, 'out_test_pred': out_test_pred})
 
-        scores.update({'test': test_scores})
-        predictions.update({'test_pred': test_y_pred, 'test_original_score': test_original_score,
-                            'test_pred_df': test_pred_df, 'out_test_pred': out_test_pred})
-
-        return scores, predictions, training_history, train_val_data
-
-    @classmethod
-    def train_and_test_all_pairs(cls, X_train: pd.DataFrame, y_train: List[int], X_test_all_unq_pairs: pd.DataFrame,
-                                 model_args: dict, metadata_train: pd.DataFrame, train_neg_sampling: bool = True,
-                                 srna_acc_col: str = 'sRNA_accession_id_Eco',
-                                 mrna_acc_col: str = 'mRNA_accession_id_Eco', is_syn_col: str = 'is_synthetic',
-                                 **kwargs) -> (pd.DataFrame, Dict[str, object], Dict[str, object]):
-        """
-        torch_geometric.__version__ = '2.1.0'
-
-        Parameters
-        ----------
-        X_train: pd.DataFrame (n_samples, N_features),
-        y_train: list (n_samples,),
-        X_bench: pd.DataFrame (t_samples, N_features),
-        y_bench: list (t_samples,)
-        X_test_all_unq_pairs: pd.DataFrame
-        model_args: Dict of model's constructor and fit() arguments
-        metadata_train: pd.DataFrame (n_samples, T_features)
-        metadata_bench: pd.DataFrame (t_samples, T_features)
-        unq_train: pd.DataFrame (_samples, T_features)
-        unq_test: pd.DataFrame (t_samples, T_features)
-        train_neg_sampling: whether to add random negative sampling to train HeteroData
-        srna_acc_col: str  sRNA EcoCyc accession id col in metadata_train and metadata_test
-        mrna_acc_col: str  mRNA EcoCyc accession id col in metadata_train and metadata_test
-        is_syn_col: is synthetic indicator col in metadata_train
-        kwargs:
-            mrna_eco: all mRNA metadata from EcoCyc
-
-        Returns
-        -------
-
-
-        out_test_pred: pd.DataFrame
-        training_history - Dict in the following format:  {
-            'train': OrderedDict
-            'validation': OrderedDict
-        }
-        train_val_data - Dict in the following format:  {
-            "X_train": pd.DataFrame (n_samples, N_features),
-            "y_train": list (n_samples,),
-            "X_val": pd.DataFrame (k_samples, K_features),
-            "y_val": list (k_samples,),
-            "metadata_train": pd.DataFrame (n_samples, T_features),    - Optional (in case metadata_train is not None)
-            "metadata_val": list (k_samples,)    - Optional (in case metadata_train is not None)
-        }
-        """
-        logger.debug(f"training an HeteroGraph model  ->  train negative sampling = {train_neg_sampling}")
-        # 1 - define graph nodes
-        if not cls.nodes_are_defined:
-            cls._define_nodes_and_edges(**kwargs)
-
-        # 2 - remove synthetic data from train
-        if sum(metadata_train[is_syn_col]) > 0:
-            logger.warning("removing synthetic samples from train")
-            X_train, y_train, metadata_train = \
-                cls._remove_synthetic_samples(X=X_train, y=y_train, metadata=metadata_train, is_syn_col=is_syn_col)
-
-        # 3 - get unique interactions data (train)
-        unq_train = cls._get_unique_inter(metadata=metadata_train, y=y_train, srna_acc_col=srna_acc_col,
-                                          mrna_acc_col=mrna_acc_col, df_nm='train')
-        unq_test = X_test_all_unq_pairs
-
-        # 4 - remove train interactions from all pairs
-        unq_test = cls._remove_train_inter_from_test_all_pairs(unq_train=unq_train, unq_test=unq_test,
-                                                               srna_acc_col=srna_acc_col, mrna_acc_col=mrna_acc_col)
-        unq_test[cls.binary_intr_label_col] = 1
-
-        # 5 - map interactions to edges
-        unq_train = cls._map_interactions_to_edges(unique_intr=unq_train, srna_acc_col=srna_acc_col,
-                                                   mrna_acc_col=mrna_acc_col)
-        unq_test = cls._map_interactions_to_edges(unique_intr=unq_test, srna_acc_col=srna_acc_col,
-                                                  mrna_acc_col=mrna_acc_col)
-        # 4.1 - update output df
-        out_test_pred = unq_test
-
-        # 5 - init train & test sets (HeteroData)
-        train_data, test_data = cls._init_train_test_hetero_data(unq_train=unq_train, unq_test=unq_test,
-                                                                 train_neg_sampling=train_neg_sampling)
-        model_args['add_sim'] = False
-
-        # 7 - init HeteroGraph model
-        # 7.1 - set params
-        srna_num_emb = len(cls.srna_nodes)
-        mrna_num_emb = len(cls.mrna_nodes)
-        metadata = train_data.metadata()
-        # 7.2 - init model
-        hga_model = GraphRNA(srna=cls.srna, mrna=cls.mrna, srna_to_mrna=cls.srna_to_mrna,
-                             srna_num_embeddings=srna_num_emb, mrna_num_embeddings=mrna_num_emb,
-                             metadata=metadata, model_args=model_args)
-        if cls.debug_logs:
-            logger.debug(hga_model)
-
-        # 8 - train HeteroGraph model
-        if cls.train_w_loader:
-            hg_model = cls._train_hgnn_with_loader(hg_model=hga_model, train_data=train_data, model_args=model_args)
-        else:
-            hg_model = cls._train_hgnn(hga_model=hga_model, train_data=train_data, model_args=model_args)
-        training_history, train_val_data = {}, {}
-
-        # 9 - evaluate - calc scores
-        logger.debug("predicting on all pairs")
-        test_pred_df = cls._predict_hgnn(trained_model=hg_model, eval_data=test_data, model_args=model_args, **kwargs)
-        assert pd.isnull(test_pred_df).sum().sum() == 0, "some null predictions"
-
-        # 10 - update outputs
-        _len = len(out_test_pred)
-        out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col], how='left')
-        out_test_pred = out_test_pred[[x for x in out_test_pred.columns.values if x != cls.binary_intr_label_col]]
-        assert len(out_test_pred) == _len
-
-        return out_test_pred, training_history, train_val_data
-
-    @classmethod
-    def get_predictions_df(cls, unq_intr: pd.DataFrame, y_true: list, y_score: np.array, y_original_score: np.array,
-                           out_col_y_true: str = "y_true", out_col_y_score: str = "y_score",
-                           out_col_y_original_score: str = "y_original_score",
-                           sort_df: bool = True) -> pd.DataFrame:
-        is_length_compatible = len(unq_intr) == len(y_true) == len(y_score) == len(y_original_score)
-        assert is_length_compatible, "unq_intr, y_true, y_score and metadata are not compatible in length"
-        assert pd.isnull(unq_intr).sum().sum() == sum(pd.isnull(y_true)) == sum(pd.isnull(y_score)) \
-               == sum(pd.isnull(y_original_score)) == 0, "nulls in data"
-
-        _df = unq_intr
-        _df[out_col_y_true] = y_true
-        _df[out_col_y_score] = y_score
-        _df[out_col_y_original_score] = y_original_score
-
-        # add metadata
-        srna_meta_cols = [c for c in cls.srna_nodes.columns.values if c != cls.srna_nid_col]
-        mrna_meta_cols = [c for c in cls.mrna_nodes.columns.values if c != cls.mrna_nid_col]
-        _len = len(_df)
-        _df = pd.merge(_df, cls.srna_nodes, on=cls.srna_nid_col, how='left').rename(
-            columns={c: f"sRNA_{c}" for c in srna_meta_cols})
-        _df = pd.merge(_df, cls.mrna_nodes, on=cls.mrna_nid_col, how='left').rename(
-            columns={c: f"mRNA_{c}" for c in mrna_meta_cols})
-        assert len(_df) == _len, "duplications post merge"
-
-        if sort_df:
-            _df = _df.sort_values(by=out_col_y_score, ascending=False).reset_index(drop=True)
-
-        return _df
-
-    @classmethod
-    def run_cross_validation_with_random_negatives(cls, model_args: dict, feature_cols: List[str], **kwargs) -> \
-            Dict[str, Dict[str, object]]:
-        """
-        Returns
-        -------
-        cv_outs - Dict in the following format:  {
-            'neg_syn': {
-                'cv_scores': <cv_scores>,
-                'cv_prediction_dfs': <cv_prediction_dfs>,
-                'cv_training_history': <cv_training_history>
-            },
-            'neg_rnd': {
-                'cv_scores': <cv_scores>,
-                'cv_prediction_dfs': <cv_prediction_dfs>,
-                'cv_training_history': <cv_training_history>
-            }
-        }
-
-        Where:
-        cv_scores - Dict in the following format:  {
-            <fold>: {
-                'val': {
-                    <score_nm>: score
-                    }
-        }
-        cv_prediction_dfs - Dict in the following format:  {
-            <fold>: pd.DataFrame
-        }
-        cv_training_history - Dict in the following format:  {
-            <fold>: {
-                'train': OrderedDict
-                'validation': OrderedDict
-            }
-        }
-        cv_data - Dict in the following format:  {
-            <fold>: {
-                "X_train": pd.DataFrame (n_samples, N_features),
-                "y_train": list (n_samples,),
-                "X_val": pd.DataFrame (k_samples, K_features),
-                "y_val": list (k_samples,),
-                "metadata_train": pd.DataFrame (n_samples, T_features),    - Optional (in case metadata is not None)
-                "metadata_val": list (k_samples,)    - Optional (in case metadata is not None)
-            }
-        }
-        """
-        logger.debug(f"running additional cross validation")
-        n_splits_rnd = 10
-        cv_outs = {}
-
-        # 1 - define X, y and metadata
-        train_for_cv_rnd = kwargs['train_for_cv_rnd']
-        cols_to_rem = ['y_score', 'COPRA_sRNA_is_missing', 'COPRA_sRNA', 'COPRA_mRNA', 'COPRA_mRNA_locus_tag',
-                            'COPRA_pv', 'COPRA_fdr', 'COPRA_NC_000913', 'COPRA_mRNA_not_in_output',
-                            'COPRA_validated_pv', 'COPRA_validated_score']
-        X_rnd  = train_for_cv_rnd[feature_cols]
-        y_rnd = list(train_for_cv_rnd[cls.binary_intr_label_col])
-        meta_cols = [c for c in train_for_cv_rnd.columns.values if c not in [cls.binary_intr_label_col] + feature_cols + cols_to_rem]
-        metadata_rnd = train_for_cv_rnd[meta_cols]
-
-        # 2 - run CV with random sampling of negatives
-        cv_scores, cv_predictions_dfs, cv_training_history, cv_data = \
-            cls.run_cross_validation(X=X_rnd, y=y_rnd, metadata=metadata_rnd, n_splits=n_splits_rnd,
-                                     model_args=model_args, **kwargs)
-
-        # 3 - save results
-        cv_outs['neg_rnd'] = {
-            "cv_scores": cv_scores,
-            "cv_predictions_dfs": cv_predictions_dfs,
-            "cv_training_history": cv_training_history,
-        }
-
-        return cv_outs
-
-    @classmethod
-    def run_cross_validation(cls, X: pd.DataFrame, y: List[int], n_splits: int, model_args: dict,
-                             metadata: pd.DataFrame = None, srna_acc_col: str = 'sRNA_accession_id_Eco',
-                             mrna_acc_col: str = 'mRNA_accession_id_Eco', is_syn_col: str = 'is_synthetic', **kwargs) \
-            -> (Dict[int, Dict[str, Dict[str, float]]], Dict[int, pd.DataFrame], Dict[int, dict], Dict[int, dict]):
-        """
-        Returns
-        -------
-
-        cv_scores - Dict in the following format:  {
-            <fold>: {
-                'val': {
-                    <score_nm>: score
-                    }
-        }
-        cv_prediction_dfs - Dict in the following format:  {
-            <fold>: pd.DataFrame
-        }
-        cv_training_history - Dict in the following format:  {
-            <fold>: {
-                'train': OrderedDict
-                'validation': OrderedDict
-            }
-        }
-        cv_data - Dict in the following format:  {
-            <fold>: {
-                "X_train": pd.DataFrame (n_samples, N_features),
-                "y_train": list (n_samples,),
-                "X_val": pd.DataFrame (k_samples, K_features),
-                "y_val": list (k_samples,),
-                "metadata_train": pd.DataFrame (n_samples, T_features),    - Optional (in case metadata is not None)
-                "metadata_val": list (k_samples,)    - Optional (in case metadata is not None)
-            }
-        }
-        """
-        logger.debug(f"running cross validation with {n_splits} folds")
-
-        # 1 - remove all synthetic samples
-        logger.warning("removing all synthetic samples")
-        X_no_syn, y_no_syn, metadata_no_syn = \
-            cls._remove_synthetic_samples(X=X, y=y, metadata=metadata, is_syn_col=is_syn_col)
-
-        # 2 - get unique interactions data (train + val)
-        unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y=y_no_syn, srna_acc_col=srna_acc_col,
-                                         mrna_acc_col=mrna_acc_col, df_nm='all')
-        unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
-
-        # 3 - define graph nodes (if needed) and map interaction
-        if not cls.nodes_are_defined:
-            cls._define_nodes_and_edges(**kwargs)
-        unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
-                                                      mrna_acc_col=mrna_acc_col)
-        # 4 - random negative sampling - all cv data
-        _shuffle = True
-        unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
-                                        _shuffle=_shuffle)
-        unq_y = np.array(unq_data[cls.binary_intr_label_col])
-        unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
-
-        # 5 - split data into folds
-        cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
-                                                         label_col=cls.binary_intr_label_col)
-        dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
-        dummy_y_train, dummy_y_val = list(), list()
-        dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
-
-        # 6 - predict on folds
-        cv_scores = {}
-        cv_training_history = {}
-        cv_prediction_dfs = {}
-        train_neg_sampling = False  # negatives were already added to cv_data_unq
-        for fold, fold_data_unq in cv_data_unq.items():
-            logger.debug(f"starting fold {fold}")
-            # 2.2 - predict on validation set (pos + random sampled neg)
-            scores, predictions, training_history, _ = \
-                cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
-                                   model_args=model_args, metadata_train=dummy_meta_train, metadata_test=dummy_meta_val,
-                                   unq_train=fold_data_unq['unq_train'], unq_test=fold_data_unq['unq_val'],
-                                   train_neg_sampling=train_neg_sampling, **kwargs)
-            # 2.1 - fold's val scores
-            cv_scores[fold] = {'val': scores['test']}
-            # 2.2 - fold's training history
-            cv_training_history[fold] = training_history
-            # 2.3 - fold's predictions df
-            y_val_pred = predictions['test_pred']
-            y_val_original_score = predictions['test_original_score']
-            unq_val = fold_data_unq['unq_val'][[cls.srna_nid_col, cls.mrna_nid_col]]
-            y_val = fold_data_unq['unq_val'][cls.binary_intr_label_col]
-            cv_pred_df = cls.get_predictions_df(unq_intr=unq_val, y_true=y_val, y_score=y_val_pred,
-                                                y_original_score=y_val_original_score)
-            cv_prediction_dfs[fold] = cv_pred_df
-
-        return cv_scores, cv_prediction_dfs, cv_training_history, cv_data_unq
+        return predictions, training_history
