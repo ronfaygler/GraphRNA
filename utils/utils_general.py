@@ -1,6 +1,7 @@
-from os.path import basename
+from os.path import basename, dirname
 import pandas as pd
 import numpy as np
+import os
 
 
 def order_df(df, first_cols=None, last_cols=None, sort_by=None, ascending=True):
@@ -18,6 +19,22 @@ def read_df(file_path, encoding='utf-8'):
         df = pd.read_csv(file_path, delimiter=" ")
     else:
         raise ValueError(f"{basename(file_path)} NOT SUPPORTED - only .csv OR .txt")
+    return df
+
+
+def create_dir_if_not_exists(dir_path):
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    return dir_path
+
+
+def write_df(df, file_path, encoding='utf-8', keep_index=False):
+    create_dir_if_not_exists(dirname(file_path))
+    if ".csv" in basename(file_path):
+        with open(file_path, 'w') as handle:
+            df.to_csv(handle, encoding=encoding, index=keep_index)
+    else:
+        raise ValueError(f"{basename(file_path)} NOT SUPPORTED - only .csv .pickle .pkl")
     return df
 
 

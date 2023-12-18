@@ -1,6 +1,7 @@
 from typing import Dict
 import pandas as pd
-from utils.utils_general import get_logger_config_dict
+from os.path import join
+from utils.utils_general import get_logger_config_dict, write_df
 from data_handlers.data_handler import DataHandler
 from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
 from models_handlers.xgboost_model_handler import XGBModelHandler
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 def main():
     # ----- configuration
     data_path = "/sise/home/shanisa/GraphRNA/data"
+    outputs_path = "/sise/home/shanisa/GraphRNA/outputs"
 
     # ----- load data
     train_fragments, test_complete, test_filtered, kwargs = load_data(data_path=data_path)
@@ -22,18 +24,21 @@ def main():
     test = test_complete
     cv_predictions_dfs, test_predictions = \
         train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, **kwargs)
+    write_df(df=test_predictions, file_path=join(outputs_path, f"test_predictions_GraphRNA.csv"))
 
     # ----- run XGBoost
     xgb = XGBModelHandler()
     test = test_filtered
     cv_predictions_dfs, test_predictions = \
         train_and_evaluate(model_h=xgb, train_fragments=train_fragments, test=test, **kwargs)
+    write_df(df=test_predictions, file_path=join(outputs_path, f"test_predictions_XGBoost.csv"))
 
     # ----- run RandomForest
     rf = RFModelHandler()
     test = test_filtered
     cv_predictions_dfs, test_predictions = \
         train_and_evaluate(model_h=rf, train_fragments=train_fragments, test=test, **kwargs)
+    write_df(df=test_predictions, file_path=join(outputs_path, f"test_predictions_RandomForest.csv"))
 
     return
 
