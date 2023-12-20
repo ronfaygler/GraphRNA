@@ -2,7 +2,7 @@
 This repository is the official implementation of the paper 
 *"Enhancing sRNA-target prediction using graph neural network and local interaction features"*.
 
-We introduce two machine-learning-based approaches for predicting sRNA-target interactions. The first method, ***GraphRNA***, is based on a graph neural network (GNN), and the second is based on ensemble models (XGBoost, RandomForest) and local interaction features computed over a predicted interaction duplex. Unlike other state-of-the-art prediction tools, our approaches our approaches enable the prediction of species-specific sRNAs interactions.
+We introduce two machine-learning-based approaches for predicting sRNA-target interactions. The first method, ***GraphRNA***, is based on a graph neural network (GNN), and the second is based on ensemble models (XGBoost, RandomForest) and local interaction features computed over a predicted interaction duplex. Unlike other state-of-the-art prediction tools, our approaches enable the prediction of species-specific sRNAs interactions.
 
 ## Requirements
 
