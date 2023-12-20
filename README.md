@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 Data is provided for *Escherichia coli K12 MG1655* (NC_000913).
 
-For a detailed description per dataset, see the `load_data` function docstrings (under `main.py`).
+For a detailed description per dataset, see the `load_data` function docstrings under `main.py`.
 
 ### Interactions data
 Data source: [sInterBase](https://academic.oup.com/bioinformatics/article/39/4/btad172/7115836).
