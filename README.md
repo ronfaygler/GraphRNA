@@ -14,19 +14,19 @@ pip install -r requirements.txt
 
 ## Data
 
-Data is provided for *Escherichia coli K12 MG1655* (NC_000913).
+All necessary data is provided for *Escherichia coli K12 MG1655* (NC_000913) under the `data/` directory.
 
 For a detailed description per dataset, see the `load_data` function docstrings under `main.py`.
 
 ### Interactions data
 Data source: [sInterBase](https://academic.oup.com/bioinformatics/article/39/4/btad172/7115836).
 
-Train and test datasets, including the predicted duplex and computed features, are provided under the `data/` directory.
+Train and test datasets, including the predicted duplex and computed features.
 
 ### RNA data
 Data source: [EcoCyc](https://ecocyc.org/).
 
-sRNA and mRNA data (used by ***GraphRNA***) are provided under the `data/` directory.
+sRNA and mRNA data (used by ***GraphRNA***).
 
 
 
