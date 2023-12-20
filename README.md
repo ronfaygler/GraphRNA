@@ -14,7 +14,7 @@ pip install -r requirements.txt
 
 ## Data
 
-All necessary data is provided for *Escherichia coli K12 MG1655* (NC_000913) under the `data/` directory.
+Data is provided for *Escherichia coli K12 MG1655* (NC_000913) under the `data/` directory.
 
 For a detailed description per dataset, see the `load_data` function docstrings under `main.py`.
 
