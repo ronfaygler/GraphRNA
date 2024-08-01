@@ -408,7 +408,7 @@ class GraphRNAModelHandler(object):
         srna_nids, mrna_nids = [], []
         with torch.no_grad():
             eval_data.to(device)
-            preds.append(trained_model(eval_data, model_args))
+            preds.append(trained_model(eval_data, model_args).sigmoid().view(-1).cpu())
 
             ground_truths.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label)
             srna_nids.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[0])
