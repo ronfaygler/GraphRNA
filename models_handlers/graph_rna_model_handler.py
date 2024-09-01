@@ -169,6 +169,17 @@ class GraphRNAModelHandler(object):
         return out
 
     @classmethod
+    def combine_pos_neg_samples(cls, unq_intr_pos: pd.DataFrame, neg_df: pd.DataFrame, ratio: float, _shuffle: bool = False):
+        _pos = list(zip(list(unq_intr_pos[cls.srna_nid_col]), list(unq_intr_pos[cls.mrna_nid_col])))
+        n = max(int(len(_pos) * ratio), 1)
+        _neg_samples = neg_df.sample(n=n, random_state=cls.sampling_seed)
+        out = pd.concat(objs=[unq_intr_pos, _neg_samples], axis=0, ignore_index=True).reset_index(drop=True)
+        if _shuffle:
+            out = pd.DataFrame(shuffle(out)).reset_index(drop=True)
+        
+        return out
+
+    @classmethod
     def _get_unique_inter(cls, metadata: pd.DataFrame, y: List[int], srna_acc_col: str, mrna_acc_col: str,
                           df_nm: str = None) -> pd.DataFrame:
         # 1 - data validation
@@ -469,7 +480,8 @@ class GraphRNAModelHandler(object):
     @classmethod
     def run_cross_validation(cls, X: pd.DataFrame, y: List[int], n_splits: int, model_args: dict,
                              metadata: pd.DataFrame = None, srna_acc_col: str = 'sRNA_accession_id_Eco',
-                             mrna_acc_col: str = 'mRNA_accession_id_Eco', is_syn_col: str = 'is_synthetic', **kwargs) \
+                             mrna_acc_col: str = 'mRNA_accession_id_Eco', is_syn_col: str = 'is_synthetic', 
+                             neg_df: pd.DataFrame = None, **kwargs) \
             -> (Dict[int, pd.DataFrame], Dict[int, dict]):
         """
 
@@ -520,9 +532,15 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_col=mrna_acc_col)
         # 4 - random negative sampling - all cv data
-        _shuffle = True
-        unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
-                                        _shuffle=_shuffle)
+        if not neg_df:
+        ############################################################################################################
+            _shuffle = True
+            unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
+                                            _shuffle=_shuffle)
+        ############################################################################################################
+        if neg_df:
+            _shuffle = True
+            unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=neg_df, ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
         unq_y = np.array(unq_data[cls.binary_intr_label_col])
         unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
 
@@ -544,7 +562,7 @@ class GraphRNAModelHandler(object):
                 cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
                                    model_args=model_args, metadata_train=dummy_meta_train, metadata_test=dummy_meta_val,
                                    unq_train=fold_data_unq['unq_train'], unq_test=fold_data_unq['unq_val'],
-                                   train_neg_sampling=train_neg_sampling, **kwargs)
+                                   train_neg_sampling=train_neg_sampling, srna_acc_col=srna_acc_col, mrna_acc_col=mrna_acc_col, **kwargs)
             # 6.2 - fold's training history
             cv_training_history[fold] = training_history
             # 6.3 - fold's predictions df

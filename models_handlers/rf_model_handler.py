@@ -48,6 +48,7 @@ class RFModelHandler(object):
         if is_binary:
             y_score = y_pred[:, 1]
             roc_max_fpr = kwargs.get('roc_max_fpr', None)
+
             scores = calc_binary_classification_metrics_using_y_score(y_true=y, y_score=y_score,
                                                                       roc_max_fpr=roc_max_fpr,
                                                                       dataset_nm=dataset_nm)
@@ -151,6 +152,13 @@ class RFModelHandler(object):
                                        verbose=model_args['verbose'])
 
         # 2 - train
+        # miRNA_columns = [col for col in X_train.columns if col.startswith('miRNAMatchPosition')]
+        # # Initialize the LabelEncoder
+        # label_encoder = LabelEncoder()
+
+        # # Apply LabelEncoder to each relevant column
+        # for column in miRNA_columns:
+        #     X_train[column] = label_encoder.fit_transform(X_train[column])
         trained_model = model.fit(X=np.array(X_train), y=y_train)
         training_history = {
             # "train": trained_model.evals_result()['validation_0'],

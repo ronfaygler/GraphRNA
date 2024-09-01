@@ -66,6 +66,11 @@ def calc_binary_classification_metrics_using_y_score(y_true: list, y_score: np.a
 def get_predictions_df(X: pd.DataFrame, y_true: list, y_score: np.array, out_col_y_true: str = "y_true",
                        out_col_y_score: str = "y_score", metadata: pd.DataFrame = None, sort_df: bool = True) \
         -> pd.DataFrame:
+
+    # if metadata is None:
+    #     is_length_compatible = len(X) == len(y_true) == len(y_score)
+    # else:
+    #     len(X) == len(y_true) == len(y_score) == len(metadata)
     is_length_compatible = len(X) == len(y_true) == len(y_score) if metadata is None \
         else len(X) == len(y_true) == len(y_score) == len(metadata)
     assert is_length_compatible, "X, y_true, y_score and metadata are not compatible in length"

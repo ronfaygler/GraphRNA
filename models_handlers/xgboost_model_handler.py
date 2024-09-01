@@ -3,6 +3,9 @@ import numpy as np
 import xgboost
 from xgboost import XGBClassifier
 from typing import Dict, List
+import shap
+import matplotlib.pyplot as plt
+
 from models_handlers.model_handlers_utils import calc_binary_classification_metrics_using_y_score, \
     get_stratified_cv_folds, get_predictions_df
 import logging
@@ -83,6 +86,7 @@ class XGBModelHandler(object):
         # 2 - predict on folds
         cv_training_history = {}
         cv_predictions_dfs = {}
+        shap_values_dict = {}
         for fold, fold_data in cv_data.items():
             logger.debug(f"starting fold {fold}")
             # 2.1 - predict in fold's val
@@ -99,7 +103,24 @@ class XGBModelHandler(object):
             metadata_val = fold_data.get('metadata_val')
             cv_predictions_dfs[fold] = get_predictions_df(X=X_val, y_true=y_val, y_score=y_val_pred,
                                                           metadata=metadata_val)
-            
+            # 2.4 - calculate SHAP values
+            model = predictions['model']  # Assuming the model is returned in the predictions dictionary
+            explainer = shap.TreeExplainer(model)
+            shap_values = explainer.shap_values(X_val.to_numpy())#(X_val)
+
+            # Handling binary classification
+            shap_values_class_1 = shap_values[1]
+            shap_values_class_0 = shap_values[0]
+
+            # Plot summary for all classes
+            plt.figure()
+            shap.summary_plot(shap_values, X_val, show=False)
+            plt.title(f'SHAP Summary Plot (Fold {fold})')
+            plt.savefig(f'shap_summary_fold_{fold}.png')
+            plt.close()
+            # Store SHAP values in dictionary
+            shap_values_dict[fold] = shap_values
+
         return cv_predictions_dfs, cv_training_history
 
     @classmethod
@@ -178,7 +199,9 @@ class XGBModelHandler(object):
         # 5 - update outputs
         # 5.1 - test predictions df
         out_test_pred = get_predictions_df(X=X_test, y_true=list(y_test), y_score=test_y_pred, metadata=metadata_test)
+        
         # 5.2 - XGBoost prediction scores (test_y_pred)
-        predictions.update({'test_pred': test_y_pred, 'out_test_pred': out_test_pred})
+        # predictions.update({'test_pred': test_y_pred, 'out_test_pred': out_test_pred})
+        predictions.update({'test_pred': test_y_pred, 'out_test_pred': out_test_pred, 'model': model})
 
         return predictions, training_history

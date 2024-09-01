@@ -1,0 +1,142 @@
+Category ,Feature name,Definition,New in this study ,h3
+Seed match,Seed match type (13),,,
+,Seed_match_compact_interactions_all,number of interactions in nt1-8,,Seed_match_interactions_all
+,Seed_match_compact_GU_all,number of GU in nt1-8,,Seed_match_GU_all
+,Seed_match_compact_interactions_2_7,number of interactions in nt2-7,,Seed_match_interactions_2_7
+,Seed_match_compact_GU_2_7,number of GU in nt2-7,,Seed_match_GU_2_7
+,Seed_match_compact_interactions_3_8,number of interactions in nt3-8,,Seed_match_interactions_3_8
+,Seed_match_compact_GU_3_8,number of GU in nt3-8,,Seed_match_GU_3_8
+,Seed_match_compact_A,is the seed start with A,,Seed_match_A
+,Seed_match_compact_start,index of the first match,,Seed_match_start
+,Seed_match_compact_mismatch_left,number of mismatch before the first match,,Seed_match_mismatch_left
+,Seed_match_compact_mismatch_right,number of mismatch after the last match,,Seed_match_mismatch_right
+,Seed_match_compact_mismatch_inner,number of mismatch inside the seed,,Seed_match_mismatch_inner
+,Seed_match_compact_bulge_target,number of bulges in mRNA side,,Seed_match_bulge_target
+,Seed_match_compact_bulge_mirna,number of bulges in miRNA side,,Seed_match_bulge_mirna
+Sequence compostion ,miRNA pairing  (20),,,
+,miRNA_match_position1,miRNA::mRNA match type at postion 1,,miRNAMatchPosition_1
+,miRNA_match_position2,miRNA::mRNA match type at postion 2,,miRNAMatchPosition_2
+,miRNA_match_position3,miRNA::mRNA match type at postion 3,,miRNAMatchPosition_3
+,miRNA_match_position4,miRNA::mRNA match type at postion 4,,miRNAMatchPosition_4
+,miRNA_match_position5,miRNA::mRNA match type at postion 5,,miRNAMatchPosition_5
+,miRNA_match_position6,miRNA::mRNA match type at postion 6,,miRNAMatchPosition_6
+,miRNA_match_position7,miRNA::mRNA match type at postion 7,,miRNAMatchPosition_7
+,miRNA_match_position8,miRNA::mRNA match type at postion 8,,miRNAMatchPosition_8
+,miRNA_match_position9,miRNA::mRNA match type at postion 9,,miRNAMatchPosition_9
+,miRNA_match_position10,miRNA::mRNA match type at postion 10,,miRNAMatchPosition_10
+,miRNA_match_position11,miRNA::mRNA match type at postion 11,,miRNAMatchPosition_11
+,miRNA_match_position12,miRNA::mRNA match type at postion 12,,miRNAMatchPosition_12
+,miRNA_match_position13,miRNA::mRNA match type at postion 13,,miRNAMatchPosition_13
+,miRNA_match_position14,miRNA::mRNA match type at postion 14,,miRNAMatchPosition_14
+,miRNA_match_position15,miRNA::mRNA match type at postion 15,,miRNAMatchPosition_15
+,miRNA_match_position16,miRNA::mRNA match type at postion 16,,miRNAMatchPosition_16
+,miRNA_match_position17,miRNA::mRNA match type at postion 17,,miRNAMatchPosition_17
+,miRNA_match_position18,miRNA::mRNA match type at postion 18,,miRNAMatchPosition_18
+,miRNA_match_position19,miRNA::mRNA match type at postion 19,,miRNAMatchPosition_19
+,miRNA_match_position20,miRNA::mRNA match type at postion 20,,miRNAMatchPosition_20
+,miRNA pairing count (18),,,
+, Seed_GC,number of GC in seed region ,,miRNAPairingCount_Seed_GC
+, Seed_AU,number of AU in seed region ,,miRNAPairingCount_**
+, Seed_GU,number of GU in seed region ,,miRNAPairingCount_**
+, Seed_mismatch,number of mismatch in seed region ,,miRNAPairingCount_**
+, Seed_bulge,number of bulge in seed region ,Removed,
+, Seed_bulge_nt,number of bulge_nt in seed region ,,miRNAPairingCount_**
+, Total_GC,number of GC in  miRNA::mRNA duplex region ,,miRNAPairingCount_**
+, Total_AU,number of AU in  miRNA::mRNA duplex region ,,miRNAPairingCount_**
+, Total_GU,number of GU in  miRNA::mRNA duplex region ,,miRNAPairingCount_**
+, Total_mismatch,number of mismatch in total miRNA::mRNA duplex region ,,miRNAPairingCount_**
+, Total_bulge,number of bulge in total miRNA::mRNA duplex region ,Removed,
+, Total_bulge_nt,number of bulge_nt in total miRNA::mRNA duplex region ,,miRNAPairingCount_**
+, X3p_GC,number of GC in 3' seed region ,,miRNAPairingCount_**
+, X3p_AU,number of AU in 3' seed region ,,miRNAPairingCount_**
+, X3p_GU,number of GU in 3' seed region ,,miRNAPairingCount_**
+, X3p_mismatch,number of mismatch in 3' seed region ,,miRNAPairingCount_**
+, X3p_bulge,number of bulge in 3' seed region ,Removed,
+, X3p_bulge_nt,number of bulge_nt in 3' seed region ,,miRNAPairingCount_**
+,miRNAPairingCount_Seed_mir_bulge,number of bulge in seed region on miRNA side,ü,same
+,miRNAPairingCount_Seed_target_bulge,number of bulge in seed region on target side,ü,same
+,miRNAPairingCount_Seed_bulge_mir_nt,Total nts in bulges in seed region on miRNA side,ü,same
+,miRNAPairingCount_Seed_bulge_target_nt,Total nts in bulges in seed region on target side,ü,same
+,miRNAPairingCount_Total_basepair,number of basepairs in  the duplex ,ü,same
+,miRNAPairingCount_Total_mir_bulge,number of bulge on miRNA side,ü,same
+,miRNAPairingCount_Total_target_bulge,number of bulge on target side,ü,same
+,miRNAPairingCount_Total_bulge_mir_nt,total nts in bulges on miRNA side,ü,same
+,miRNAPairingCount_Total_bulge_target_nt,total nts in bulges on target side,ü,same
+,miRNAPairingCount_X3p_mir_bulge,number of bulges in 3' region on miRNA side,ü,same
+,miRNAPairingCount_X3p_target_bulge,number of bulges in 3' region on target side,ü,same
+,miRNAPairingCount_X3p_bulge_mir_nt,Total nts in bulges in 3' region on miRNA side,ü,same
+,miRNAPairingCount_X3p_bulge_target_nt,Total nts in bulges in 3' region on target side,ü,same
+,Composition (60),,,
+,Target_A_comp,the ratio of A in the target sequence,,MRNA_**
+,Target_U_comp,the ratio of U in the target sequence,,MRNA_**
+,Target_G_comp,the ratio of G in the target sequence,,MRNA_**
+,Target_C_comp,the ratio of C in the target sequence,,MRNA_**
+,Target_AA_comp,the ratio of 2 mer AA of all the 2 mer in the target sequence,,MRNA_**
+,Target_AU_comp,the ratio of 2 mer AU of all the 2 mer in the target sequence,,MRNA_**
+,Target_AG_comp,the ratio of 2 mer AG of all the 2 mer in the target sequence,,MRNA_**
+,Target_AC_comp,the ratio of 2 mer AC of all the 2 mer in the target sequence,,MRNA_**
+,Target_UA_comp,the ratio of 2 mer UA of all the 2 mer in the target sequence,,MRNA_**
+,Target_UU_comp,the ratio of 2 mer UU of all the 2 mer in the target sequence,,MRNA_**
+,Target_UG_comp,the ratio of 2 mer UG of all the 2 mer in the target sequence,,MRNA_**
+,Target_UC_comp,the ratio of 2 mer UC of all the 2 mer in the target sequence,,MRNA_**
+,Target_GA_comp,the ratio of 2 mer GA of all the 2 mer in the target sequence,,MRNA_**
+,Target_GU_comp,the ratio of 2 mer GU of all the 2 mer in the target sequence,,MRNA_**
+,Target_GG_comp,the ratio of 2 mer GG of all the 2 mer in the target sequence,,MRNA_**
+,Target_GC_comp,the ratio of 2 mer GC of all the 2 mer in the target sequence,,MRNA_**
+,Target_CA_comp,the ratio of 2 mer CA of all the 2 mer in the target sequence,,MRNA_**
+,Target_CU_comp,the ratio of 2 mer CU of all the 2 mer in the target sequence,,MRNA_**
+,Target_CG_comp,the ratio of 2 mer CG of all the 2 mer in the target sequence,,MRNA_**
+,Target_CC_comp,the ratio of 2 mer CC of all the 2 mer in the target sequence,,MRNA_**
+,Up_A_comp,the ratio of A in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_U_comp,the ratio of U in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_G_comp,the ratio of G in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_C_comp,the ratio of C in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_AA_comp,the ratio of 2 mer AA of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_AU_comp,the ratio of 2 mer AU of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_AG_comp,the ratio of 2 mer AG of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_AC_comp,the ratio of 2 mer AC of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_UA_comp,the ratio of 2 mer UA of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_UU_comp,the ratio of 2 mer UU of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_UG_comp,the ratio of 2 mer UG of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_UC_comp,the ratio of 2 mer UC of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_GA_comp,the ratio of 2 mer GA of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_GU_comp,the ratio of 2 mer GU of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_GG_comp,the ratio of 2 mer GG of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_GC_comp,the ratio of 2 mer GC of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_CA_comp,the ratio of 2 mer CA of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_CU_comp,the ratio of 2 mer CU of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_CG_comp,the ratio of 2 mer CG of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Up_CC_comp,the ratio of 2 mer CC of all the 2 mer in the target's up flanking (70nt) sequence,,MRNA_**
+,Down_A_comp,the ratio of A in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_U_comp,the ratio of U in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_G_comp,the ratio of G in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_C_comp,the ratio of C in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_AA_comp,the ratio of 2 mer AA of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_AU_comp,the ratio of 2 mer AU of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_AG_comp,the ratio of 2 mer AG of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_AC_comp,the ratio of 2 mer AC of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_UA_comp,the ratio of 2 mer UA of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_UU_comp,the ratio of 2 mer UU of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_UG_comp,the ratio of 2 mer UG of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_UC_comp,the ratio of 2 mer UC of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_GA_comp,the ratio of 2 mer GA of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_GU_comp,the ratio of 2 mer GU of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_GG_comp,the ratio of 2 mer GG of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_GC_comp,the ratio of 2 mer GC of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_CA_comp,the ratio of 2 mer CA of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_CU_comp,the ratio of 2 mer CU of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_CG_comp,the ratio of 2 mer CG of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+,Down_CC_comp,the ratio of 2 mer CC of all the 2 mer in the target's down flanking (70nt) sequence,,MRNA_**
+Energy,Energy (7),,,
+,MEF_Duplex,the minimum free energy of miRNA::mRNA duplex at the seed (p2-p8) region,,Energy_**
+,MEF_Seed,the minimum free energy of mRNA at the sequence region corresponding to miRNA p2-p8,,Energy_**
+,MEF_3p,the minimum free energy of mRNA at the sequence region corresponding to miRNA p9-end,,Energy_**
+,MEF_local_target,the minimum free energy of 100 nts window surrounding the mRNA target site,,Energy_**
+,MEF_local_target_normalized,the minimum free energy of 100 nts window surrounding the mRNA target site normalized by the length of the sequence,,Energy_**
+,MEF_cons_local_target,the minimum free energy of 100 nts window surrounding the mRNA target site with the target site base constrained to be unpaired,,Energy_**
+,MEF_cons_local_target_normalized,the minimum free energy of 100 nts window surrounding the mRNA target site with the target site base constrained to be unpaired normalized by the length of the sequence,,Energy_**
+Accessibility,Accessibility (370),,,
+,Acc_P%s_#sth,%s=1~37; #s=1:10,,
+Distance,Distance (2),,,
+,Dist_to_end,,,MRNA_**
+,Dist_to_start,,,MRNA_**
