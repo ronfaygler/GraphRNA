@@ -425,8 +425,7 @@ class GraphRNAModelHandler(object):
                 'label': list(unq_test[cls.binary_intr_label_col]),
                 'label_index_0': list(unq_test[cls.srna_nid_col]),
                 'label_index_1': list(unq_test[cls.mrna_nid_col]),
-                'label_index_2': list(unq_test[cls.rbp_nid_col])
-
+                'label_index_2': list(unq_test[cls.rbp_nid_col]) ######### remove ???????????
             }
         }
 
@@ -457,24 +456,34 @@ class GraphRNAModelHandler(object):
             total_loss = total_examples = 0
             optimizer.zero_grad()
             train_data.to(device)
-            pred_srna_mrna, pred_rbp_mrna = hga_model(train_data, model_args)
-            # Separate ground truth for each type of edge
-            srna_to_mrna_ground_truth = train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
-            rbp_to_mrna_ground_truth = train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label
-
-            # Compute loss for both edge types
-            srna_to_mrna_loss = F.binary_cross_entropy_with_logits(pred_srna_mrna[cls.srna, cls.srna_to_mrna, cls.mrna], srna_to_mrna_ground_truth)
-            rbp_to_mrna_loss = F.binary_cross_entropy_with_logits(pred_rbp_mrna[cls.rbp, cls.rbp_to_mrna, cls.mrna], rbp_to_mrna_ground_truth)
-
-            # Combine the losses (you can use weights if needed)
-            total_loss = srna_to_mrna_loss + rbp_to_mrna_loss
-
-            total_loss.backward()
+            pred = hga_model(train_data, model_args)
+            ground_truth = train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
+            loss = F.binary_cross_entropy_with_logits(pred, ground_truth)
+            loss.backward()
             optimizer.step()
+            total_loss += float(loss) * pred.numel()
+            total_examples += pred.numel()
 
-            # Track total loss for logging
-            total_loss_value = float(total_loss)
-            total_examples += pred_srna_mrna.numel() + pred_rbp_mrna.numel()
+            # --- predict both interactions:
+            # pred_srna_mrna, pred_rbp_mrna = hga_model(train_data, model_args)
+            # # Separate ground truth for each type of edge
+            # srna_to_mrna_ground_truth = train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
+            # rbp_to_mrna_ground_truth = train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label
+
+            # # Compute loss for both edge types
+            # srna_to_mrna_loss = F.binary_cross_entropy_with_logits(pred_srna_mrna[cls.srna, cls.srna_to_mrna, cls.mrna], srna_to_mrna_ground_truth)
+            # rbp_to_mrna_loss = F.binary_cross_entropy_with_logits(pred_rbp_mrna[cls.rbp, cls.rbp_to_mrna, cls.mrna], rbp_to_mrna_ground_truth)
+
+            # # Combine the losses (you can use weights if needed)
+            # total_loss = srna_to_mrna_loss + rbp_to_mrna_loss
+
+            # total_loss.backward()
+            # optimizer.step()
+
+            # # Track total loss for logging
+            # total_loss_value = float(total_loss)
+            # total_examples += pred_srna_mrna.numel() + pred_rbp_mrna.numel()
+
             if cls.debug_logs:
                 logger.debug(f"Epoch: {epoch:03d}, Loss: {total_loss / total_examples:.4f}")
 
@@ -493,7 +502,6 @@ class GraphRNAModelHandler(object):
         with torch.no_grad():
             eval_data.to(device)
             preds.append(trained_model(eval_data, model_args).sigmoid().view(-1).cpu())
-
             ground_truths.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label)
             srna_nids.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[0])
             mrna_nids.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[1])
@@ -521,14 +529,19 @@ class GraphRNAModelHandler(object):
     def add_rna_metadata(cls, _df: pd.DataFrame, sort_df: bool = False, sort_by_col: str = None) -> pd.DataFrame:
         assert cls.srna_nid_col in _df.columns.values, f"{cls.srna_nid_col} column is missing in _df"
         assert cls.mrna_nid_col in _df.columns.values, f"{cls.mrna_nid_col} column is missing in _df"
+        assert cls.rbp_nid_col in _df.columns.values, f"{cls.rbp_nid_col} column is missing in _df"
 
         srna_meta_cols = [c for c in cls.srna_nodes.columns.values if c != cls.srna_nid_col]
         mrna_meta_cols = [c for c in cls.mrna_nodes.columns.values if c != cls.mrna_nid_col]
+        rbp_meta_cols = [c for c in cls.rbp_nodes.columns.values if c != cls.rbp_nid_col]
+
         _len = len(_df)
         _df = pd.merge(_df, cls.srna_nodes, on=cls.srna_nid_col, how='left').rename(
             columns={c: f"sRNA_{c}" for c in srna_meta_cols})
         _df = pd.merge(_df, cls.mrna_nodes, on=cls.mrna_nid_col, how='left').rename(
             columns={c: f"mRNA_{c}" for c in mrna_meta_cols})
+        _df = pd.merge(_df, cls.mrna_nodes, on=cls.mrna_nid_col, how='left').rename(
+            columns={c: f"RBP{c}" for c in rbp_meta_cols})
         assert len(_df) == _len, "duplications post merge"
 
         if sort_df:
@@ -709,6 +722,8 @@ class GraphRNAModelHandler(object):
 
         # if not cv
         if unq_train is None or unq_test is None:
+            logger.debug(f"unq_train is None or unq_test is None")
+
             out_test_pred = pd.DataFrame({
                 srna_acc_col: metadata_test[srna_acc_col],
                 mrna_acc_col: metadata_test[mrna_acc_col]

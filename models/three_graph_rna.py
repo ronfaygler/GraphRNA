@@ -20,19 +20,31 @@ class GNN(torch.nn.Module):
 # the final classifier applies the dot-product between source and destination
 # node embeddings to derive edge-level predictions
 class Classifier(torch.nn.Module):
-    def forward(self, x_srna: Tensor, x_mrna: Tensor, x_rbp: Tensor, edge_label_index: Tensor, edge_label_index_rbp: Tensor) -> Tensor:
+    # def forward(self, x_srna: Tensor, x_mrna: Tensor, x_rbp: Tensor, edge_label_index: Tensor, edge_label_index_rbp: Tensor) -> Tensor:
+    def forward(self, x_srna: Tensor, x_mrna: Tensor, edge_label_index: Tensor) -> Tensor:
+
         # convert node embeddings to edge-level representations
         edge_feat_srna = x_srna[edge_label_index[0]]
         edge_feat_mrna = x_mrna[edge_label_index[1]]
-        edge_feat_rbp = x_rbp[edge_label_index_rbp[0]]
 
-        # 1. Predict based only on srna and mrna
-        prediction_srna_mrna = (edge_feat_srna * edge_feat_mrna).sum(dim=-1)
-        # 2. Predict based only on rbp and mrna
-        prediction_rbp_mrna = (edge_feat_rbp * edge_feat_mrna).sum(dim=-1)
+        # apply dot-product to get a prediction per supervision edge
+        return (edge_feat_srna * edge_feat_mrna).sum(dim=-1)
 
-        # Concatenate predictions
-        return prediction_srna_mrna, prediction_rbp_mrna
+
+        # --- predict both interactions:
+
+        # # convert node embeddings to edge-level representations
+        # edge_feat_srna = x_srna[edge_label_index[0]]
+        # edge_feat_mrna = x_mrna[edge_label_index[1]]
+        # edge_feat_rbp = x_rbp[edge_label_index_rbp[0]]
+
+        # # 1. Predict based only on srna and mrna
+        # prediction_srna_mrna = (edge_feat_srna * edge_feat_mrna).sum(dim=-1)
+        # # 2. Predict based only on rbp and mrna
+        # prediction_rbp_mrna = (edge_feat_rbp * edge_feat_mrna).sum(dim=-1)
+
+        # # Concatenate predictions
+        # return prediction_srna_mrna, prediction_rbp_mrna
 
 
 class GraphRNA(torch.nn.Module):
@@ -112,9 +124,9 @@ class GraphRNA(torch.nn.Module):
         pred = self.classifier(
             x_dict[self.srna],
             x_dict[self.mrna],
-            x_dict[self.rbp],
-            data[self.srna, self.srna_to_mrna, self.mrna].edge_label_index,
-            data[self.rbp, self.rbp_to_mrna, self.mrna].edge_label_index,
+            # x_dict[self.rbp],
+            data[self.srna, self.srna_to_mrna, self.mrna].edge_label_index#,
+            # data[self.rbp, self.rbp_to_mrna, self.mrna].edge_label_index,
         )
 
         return pred
