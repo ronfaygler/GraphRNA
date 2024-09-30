@@ -279,6 +279,8 @@ class GraphRNAModelHandler(object):
                                        torch.from_numpy(np.array(edges['train']['message_passing']['label_index_1']))],
                                        dim=0)
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index = train_edge_index
+        train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_index = train_edge_index
+
         train_data = T.ToUndirected()(train_data)
         # edges for supervision
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label = \
