@@ -532,15 +532,25 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_col=mrna_acc_col)
         # 4 - random negative sampling - all cv data
-        if not neg_df:
-        ############################################################################################################
-            _shuffle = True
-            unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
-                                            _shuffle=_shuffle)
-        ############################################################################################################
+
+        # for efrat data - RF, XGB
+        # if not neg_df:
+        # ############################################################################################################
+        #     _shuffle = True
+        #     unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
+        #                                     _shuffle=_shuffle)
+        # ############################################################################################################
+
         if neg_df:
             _shuffle = True
             unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=neg_df, ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
+        
+        #####################################
+        # for RBP:
+        else:
+            unq_data = unq_intr_pos
+        #####################################
+
         unq_y = np.array(unq_data[cls.binary_intr_label_col])
         unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
 

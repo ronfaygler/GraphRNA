@@ -30,7 +30,7 @@ def main():
     print("paths")
 
     # data for XGBoost / RandomForest:
-    combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_di_fragment.csv", ratio=1, _shuffle=True)
+    combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
     # ----- load data for GraphRNA:
     # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
@@ -39,15 +39,15 @@ def main():
     train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
 
     # ----- run GraphRNA
-    model_name = "GNN"
-    graph_rna = GraphRNAModelHandler()
-    test = None
-    cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
-    write cv results to folds dfs
-    for fold, fold_df in cv_predictions_dfs.items():
-        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+    # model_name = "GNN"
+    # graph_rna = GraphRNAModelHandler()
+    # test = None
+    # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+    # write cv results to folds dfs
+    # for fold, fold_df in cv_predictions_dfs.items():
+    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
-    # # ----- run XGBoost
+    # # # ----- run XGBoost
     model_name = "XGB"
     xgb = XGBModelHandler()
     test = None
@@ -55,15 +55,15 @@ def main():
     for fold, fold_df in cv_predictions_dfs.items():
         write_df(df=fold_df, file_path=join(join(outputs_path, 'XGB'), f"cv_fold{fold}_predictions_XGBoost.csv"))
 
-    # # ----- run RandomForest
-    model_name = "RF"
-    rf = RFModelHandler()
-    test = None
-    cv_predictions_dfs = train_and_evaluate(model_h=rf, train_fragments=train_fragments, test=test, model_name=model_name, data=data, **kwargs)
-    for fold, fold_df in cv_predictions_dfs.items():
-        write_df(df=fold_df, file_path=join(join(outputs_path, 'RF'), f"cv_fold{fold}_predictions_RandomForest.csv"))
+    # # # ----- run RandomForest
+    # model_name = "RF"
+    # rf = RFModelHandler()
+    # test = None
+    # cv_predictions_dfs = train_and_evaluate(model_h=rf, train_fragments=train_fragments, test=test, model_name=model_name, data=data, **kwargs)
+    # for fold, fold_df in cv_predictions_dfs.items():
+    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'RF'), f"cv_fold{fold}_predictions_RandomForest.csv"))
 
-    return
+    # return
     
 
 # ------ srna mrna:
@@ -224,9 +224,18 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
     # ------------mrna mirna:
     if model_name == "XGB" or model_name == "RF":
         # Identify columns to be removed - strings
-        miRNA_columns = [col for col in train_fragments['X'].columns if col.startswith('miRNAMatchPosition')]
+        for i in range(1, 21):
+            name_col = "miRNAMatchPosition_" + str(i)
+            train_fragments['X'][name_col] = train_fragments['X'][name_col].astype('category').cat.codes
+        
+        def save_dataset(dataset, file_prefix):
+            dataset['X'].to_csv(f"{file_prefix}_features.csv", index=False)
+            pd.DataFrame(dataset['y'], columns=['y']).to_csv(f"{file_prefix}_labels.csv", index=False)
+            dataset['metadata'].to_csv(f"{file_prefix}_metadata.csv", index=False)
+
+        save_dataset(train_fragments, join(data_path,"efrat_h3_and_Mock_miRNA"))
         # Remove identified columns from the DataFrame
-        train_fragments['X'] = train_fragments['X'].drop(columns=miRNA_columns)
+        # train_fragments['X'] = train_fragments['X'].drop(columns=miRNA_columns)
 
     # 2 - train
     
