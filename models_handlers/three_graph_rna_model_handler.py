@@ -540,7 +540,7 @@ class GraphRNAModelHandler(object):
             columns={c: f"sRNA_{c}" for c in srna_meta_cols})
         _df = pd.merge(_df, cls.mrna_nodes, on=cls.mrna_nid_col, how='left').rename(
             columns={c: f"mRNA_{c}" for c in mrna_meta_cols})
-        _df = pd.merge(_df, cls.mrna_nodes, on=cls.mrna_nid_col, how='left').rename(
+        _df = pd.merge(_df, cls.rbp_nodes, on=cls.rbp_nid_col, how='left').rename(
             columns={c: f"RBP{c}" for c in rbp_meta_cols})
         assert len(_df) == _len, "duplications post merge"
 

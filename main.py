@@ -30,7 +30,7 @@ def main():
     print("paths")
 
     # data for XGBoost / RandomForest:
-    combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
+    # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
     # ----- load data for GraphRNA:
     # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
