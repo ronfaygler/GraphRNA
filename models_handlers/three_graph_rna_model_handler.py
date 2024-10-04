@@ -5,7 +5,7 @@ import random
 import itertools
 from sklearn.utils import shuffle
 from typing import Dict, List
-from models.graph_rna import GraphRNA
+from models.three_graph_rna import GraphRNA
 import torch
 import torch.nn.functional as F
 from torch_geometric.data import HeteroData
@@ -42,12 +42,21 @@ class GraphRNAModelHandler(object):
     srna_nid_col = 'srna_node_id'
     srna_eco_acc_col = None
     srna = 'srna'
+    
+    ##  RBP
+    rbp_nodes = None  # init in _prepare_data
+    rbp_nid_col = 'rbp_node_id'
+    rbp_eco_acc_col = None
+    rbp = 'rbp'
 
     # ------  Edges  ------
     # ---  interactions (sRNA - mRNA)
     srna_mrna_val_col = None  # in case additional edge features are requested
     srna_to_mrna = 'targets'  # ("rates")
     binary_intr_label_col = 'interaction_label'
+    # ---  (RBP - mRNA)
+    rbp_mrna_val_col = None  # in case additional edge features are requested
+    rbp_to_mrna = 'rbp_targets'  # ("rates") ??????????????????????????????????????
 
     # ------  Params  ------
     # --- train data
@@ -180,8 +189,10 @@ class GraphRNAModelHandler(object):
         return out
 
     @classmethod
+    # TODO
     def _get_unique_inter(cls, metadata: pd.DataFrame, y: List[int], srna_acc_col: str, mrna_acc_col: str,
                           df_nm: str = None) -> pd.DataFrame:
+        ''' srna_acc_col: str - sRNA EcoCyc accession id col in metadata '''
         # 1 - data validation
         _len = len(metadata)
         srna_acc = metadata[srna_acc_col]
@@ -202,6 +213,7 @@ class GraphRNAModelHandler(object):
         return unq_intr
 
     @classmethod
+    # TODO
     def _assert_no_data_leakage(cls, unq_train: pd.DataFrame, unq_test: pd.DataFrame, srna_acc_col: str,
                                 mrna_acc_col: str):
         logger.debug("assert no data leakage")
@@ -212,6 +224,7 @@ class GraphRNAModelHandler(object):
         return
 
     @classmethod
+    # TODO
     def _map_inter(cls, intr: pd.DataFrame, mrna_acc_col: str, srna_acc_col: str, mrna_map: pd.DataFrame,
                    m_map_acc_col: str, srna_map: pd.DataFrame, s_map_acc_col: str) -> pd.DataFrame:
         _len, _cols = len(intr), list(intr.columns.values)
@@ -246,17 +259,32 @@ class GraphRNAModelHandler(object):
         # nodes
         cls.srna_nodes = srna_nodes
         cls.srna_eco_acc_col = s_eco_acc_col
+
+        # 3 - RBP
+        # 3.1 - get map, nodes and edges
+        r_eco_acc_col = kwargs['re_acc_col']
+        cls.log_df_rna_eco(rna_name='RBP', rna_eco_df=kwargs['rbp_eco'], acc_col=r_eco_acc_col)
+        _, rbp_nodes = \
+            cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.rbp_nid_col, rna_eco=kwargs['rbp_eco'],
+                                         e_acc_col=r_eco_acc_col)
+        # 3.2 - set
+        # nodes
+        cls.rbp_nodes = rbp_nodes
+        cls.rbp_eco_acc_col = r_eco_acc_col
+
         # indicator
         cls.nodes_are_defined = True
 
         return
 
     @classmethod
+    #TODO:  _map_inter, sort_values
     def _map_interactions_to_edges(cls, unique_intr: pd.DataFrame, srna_acc_col: str, mrna_acc_col: str) -> \
             (pd.DataFrame, pd.DataFrame, pd.DataFrame):
         logger.debug("mapping interactions to edges")
         mrna_map = cls.mrna_nodes[[cls.mrna_nid_col, cls.mrna_eco_acc_col]]
         srna_map = cls.srna_nodes[[cls.srna_nid_col, cls.srna_eco_acc_col]]
+        rbp_map = cls.rbp_nodes[[cls.rbp_nid_col, cls.rbp_eco_acc_col]]
 
         unique_intr = cls._map_inter(intr=unique_intr, mrna_acc_col=mrna_acc_col, srna_acc_col=srna_acc_col,
                                      mrna_map=mrna_map, m_map_acc_col=cls.mrna_eco_acc_col, srna_map=srna_map,
@@ -272,38 +300,65 @@ class GraphRNAModelHandler(object):
         # ------  Nodes
         train_data[cls.srna].node_id = torch.arange(len(cls.srna_nodes))
         train_data[cls.mrna].node_id = torch.arange(len(cls.mrna_nodes))
+        train_data[cls.rbp].node_id = torch.arange(len(cls.rbp_nodes))
         train_data[cls.mrna].x = None
         # ------  Edges
         # edges for message passing
+        # sRNA
         train_edge_index = torch.stack([torch.from_numpy(np.array(edges['train']['message_passing']['label_index_0'])),
                                        torch.from_numpy(np.array(edges['train']['message_passing']['label_index_1']))],
                                        dim=0)
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index = train_edge_index
+        # RBP
+        train_edge_index_rbp = torch.stack([torch.from_numpy(np.array(edges['train']['message_passing']['label_index_2'])),
+                                        torch.from_numpy(np.array(edges['train']['message_passing']['label_index_1']))],
+                                       dim=0)
+        train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_index = train_edge_index_rbp
+
         train_data = T.ToUndirected()(train_data)
         # edges for supervision
+        # srna
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label = \
             torch.from_numpy(np.array(edges['train']['supervision']['label'])).float()
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['train']['supervision']['label_index_0'])),
             torch.from_numpy(np.array(edges['train']['supervision']['label_index_1']))], dim=0)
-
+        # RBP
+        train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label = \
+            torch.from_numpy(np.array(edges['train']['supervision']['label'])).float()
+        train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label_index = \
+            torch.stack([torch.from_numpy(np.array(edges['train']['supervision']['label_index_2'])),
+            torch.from_numpy(np.array(edges['train']['supervision']['label_index_1']))], dim=0)
         # ------  Test Data  ------
         test_data = HeteroData()
         # ------  Nodes
         test_data[cls.srna].node_id = torch.arange(len(cls.srna_nodes))
         test_data[cls.mrna].node_id = torch.arange(len(cls.mrna_nodes))
+        test_data[cls.rbp].node_id = torch.arange(len(cls.rbp_nodes))
         test_data[cls.mrna].x = None
         # ------  Edges
         # all train edges for message passing
+        # sRNA
         test_edge_index = torch.stack([torch.from_numpy(np.array(edges['train']['all']['label_index_0'])),
                                        torch.from_numpy(np.array(edges['train']['all']['label_index_1']))], dim=0)
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index = test_edge_index
+        # RBP
+        test_edge_index_rbp = torch.stack([torch.from_numpy(np.array(edges['train']['all']['label_index_2'])),
+                        torch.from_numpy(np.array(edges['train']['all']['label_index_1']))], dim=0)
+        test_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_index = test_edge_index_rbp
         test_data = T.ToUndirected()(test_data)
         # test edges for supervision
+        # sRNA
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label = \
             torch.from_numpy(np.array(edges['test']['label'])).float()
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['test']['label_index_0'])),
+            torch.from_numpy(np.array(edges['test']['label_index_1']))], dim=0)
+        # RBP
+        test_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label = \
+            torch.from_numpy(np.array(edges['test']['label'])).float()
+        test_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label_index = \
+            torch.stack([torch.from_numpy(np.array(edges['test']['label_index_2'])),
             torch.from_numpy(np.array(edges['test']['label_index_1']))], dim=0)
         if cls.debug_logs:
             logger.debug(f"\n Train data:\n ============== \n{train_data}\n"
@@ -348,27 +403,33 @@ class GraphRNAModelHandler(object):
                 'all': {
                     'label': list(df[cls.binary_intr_label_col]),
                     'label_index_0': list(df[cls.srna_nid_col]),
-                    'label_index_1': list(df[cls.mrna_nid_col])
+                    'label_index_1': list(df[cls.mrna_nid_col]),
+                    'label_index_2': list(df[cls.rbp_nid_col])
                 },
                 'message_passing': {
                     'label': list(unq_train_mp[cls.binary_intr_label_col]),
                     'label_index_0': list(unq_train_mp[cls.srna_nid_col]),
-                    'label_index_1': list(unq_train_mp[cls.mrna_nid_col])
+                    'label_index_1': list(unq_train_mp[cls.mrna_nid_col]),
+                    'label_index_2': list(unq_train_mp[cls.rbp_nid_col])
+
                 },
                 'supervision': {
                     'label': list(unq_train_spr[cls.binary_intr_label_col]),
                     'label_index_0': list(unq_train_spr[cls.srna_nid_col]),
-                    'label_index_1': list(unq_train_spr[cls.mrna_nid_col])
+                    'label_index_1': list(unq_train_spr[cls.mrna_nid_col]),
+                    'label_index_2': list(unq_train_spr[cls.rbp_nid_col])
+
                 }
             },
             'test': {
                 'label': list(unq_test[cls.binary_intr_label_col]),
                 'label_index_0': list(unq_test[cls.srna_nid_col]),
-                'label_index_1': list(unq_test[cls.mrna_nid_col])
+                'label_index_1': list(unq_test[cls.mrna_nid_col]),
+                'label_index_2': list(unq_test[cls.rbp_nid_col]) ######### remove ???????????
             }
         }
 
-        logger.debug(f"\n{len(cls.srna_nodes)} sRNA nodes, {len(cls.mrna_nodes)} mRNA nodes \n"
+        logger.debug(f"\n{len(cls.srna_nodes)} sRNA nodes, {len(cls.mrna_nodes)} mRNA nodes \n{len(cls.rbp_nodes)} RBP nodes \n"
                      f"Train: {len(edges['train']['all']['label'])} interactions, "
                      f"P: {sum(edges['train']['all']['label'])}, "
                      f"N: {len(edges['train']['all']['label']) - sum(edges['train']['all']['label'])} \n"
@@ -402,6 +463,27 @@ class GraphRNAModelHandler(object):
             optimizer.step()
             total_loss += float(loss) * pred.numel()
             total_examples += pred.numel()
+
+            # --- predict both interactions:
+            # pred_srna_mrna, pred_rbp_mrna = hga_model(train_data, model_args)
+            # # Separate ground truth for each type of edge
+            # srna_to_mrna_ground_truth = train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label
+            # rbp_to_mrna_ground_truth = train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label
+
+            # # Compute loss for both edge types
+            # srna_to_mrna_loss = F.binary_cross_entropy_with_logits(pred_srna_mrna[cls.srna, cls.srna_to_mrna, cls.mrna], srna_to_mrna_ground_truth)
+            # rbp_to_mrna_loss = F.binary_cross_entropy_with_logits(pred_rbp_mrna[cls.rbp, cls.rbp_to_mrna, cls.mrna], rbp_to_mrna_ground_truth)
+
+            # # Combine the losses (you can use weights if needed)
+            # total_loss = srna_to_mrna_loss + rbp_to_mrna_loss
+
+            # total_loss.backward()
+            # optimizer.step()
+
+            # # Track total loss for logging
+            # total_loss_value = float(total_loss)
+            # total_examples += pred_srna_mrna.numel() + pred_rbp_mrna.numel()
+
             if cls.debug_logs:
                 logger.debug(f"Epoch: {epoch:03d}, Loss: {total_loss / total_examples:.4f}")
 
@@ -420,7 +502,6 @@ class GraphRNAModelHandler(object):
         with torch.no_grad():
             eval_data.to(device)
             preds.append(trained_model(eval_data, model_args).sigmoid().view(-1).cpu())
-
             ground_truths.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label)
             srna_nids.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[0])
             mrna_nids.append(eval_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index[1])
@@ -448,14 +529,19 @@ class GraphRNAModelHandler(object):
     def add_rna_metadata(cls, _df: pd.DataFrame, sort_df: bool = False, sort_by_col: str = None) -> pd.DataFrame:
         assert cls.srna_nid_col in _df.columns.values, f"{cls.srna_nid_col} column is missing in _df"
         assert cls.mrna_nid_col in _df.columns.values, f"{cls.mrna_nid_col} column is missing in _df"
+        assert cls.rbp_nid_col in _df.columns.values, f"{cls.rbp_nid_col} column is missing in _df"
 
         srna_meta_cols = [c for c in cls.srna_nodes.columns.values if c != cls.srna_nid_col]
         mrna_meta_cols = [c for c in cls.mrna_nodes.columns.values if c != cls.mrna_nid_col]
+        rbp_meta_cols = [c for c in cls.rbp_nodes.columns.values if c != cls.rbp_nid_col]
+
         _len = len(_df)
         _df = pd.merge(_df, cls.srna_nodes, on=cls.srna_nid_col, how='left').rename(
             columns={c: f"sRNA_{c}" for c in srna_meta_cols})
         _df = pd.merge(_df, cls.mrna_nodes, on=cls.mrna_nid_col, how='left').rename(
             columns={c: f"mRNA_{c}" for c in mrna_meta_cols})
+        _df = pd.merge(_df, cls.rbp_nodes, on=cls.rbp_nid_col, how='left').rename(
+            columns={c: f"RBP{c}" for c in rbp_meta_cols})
         assert len(_df) == _len, "duplications post merge"
 
         if sort_df:
@@ -636,6 +722,8 @@ class GraphRNAModelHandler(object):
 
         # if not cv
         if unq_train is None or unq_test is None:
+            logger.debug(f"unq_train is None or unq_test is None")
+
             out_test_pred = pd.DataFrame({
                 srna_acc_col: metadata_test[srna_acc_col],
                 mrna_acc_col: metadata_test[mrna_acc_col]
@@ -679,10 +767,12 @@ class GraphRNAModelHandler(object):
         # 7.1 - set params
         srna_num_emb = len(cls.srna_nodes)
         mrna_num_emb = len(cls.mrna_nodes)
+        rbp_num_emb = len(cls.rbp_nodes)
+
         # metadata = train_data.metadata()
         # 7.2 - init model
-        hga_model = GraphRNA(srna=cls.srna, mrna=cls.mrna, srna_to_mrna=cls.srna_to_mrna,
-                             srna_num_embeddings=srna_num_emb, mrna_num_embeddings=mrna_num_emb, model_args=model_args)
+        hga_model = GraphRNA(srna=cls.srna, mrna=cls.mrna, rbp=cls.rbp, srna_to_mrna=cls.srna_to_mrna, rbp_to_mrna=cls.rbp_to_mrna,
+                             srna_num_embeddings=srna_num_emb, mrna_num_embeddings=mrna_num_emb, rbp_num_embeddings=rbp_num_emb, model_args=model_args)
         if cls.debug_logs:
             logger.debug(hga_model)
 

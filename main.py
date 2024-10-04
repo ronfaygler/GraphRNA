@@ -30,7 +30,7 @@ def main():
     print("paths")
 
     # data for XGBoost / RandomForest:
-    combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
+    # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
     # ----- load data for GraphRNA:
     # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
@@ -39,21 +39,21 @@ def main():
     train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
 
     # ----- run GraphRNA
-    # model_name = "GNN"
-    # graph_rna = GraphRNAModelHandler()
-    # test = None
-    # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
-    # write cv results to folds dfs
-    # for fold, fold_df in cv_predictions_dfs.items():
-    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+    model_name = "GNN"
+    graph_rna = GraphRNAModelHandler()
+    test = None
+    cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+    write cv results to folds dfs
+    for fold, fold_df in cv_predictions_dfs.items():
+        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
     # # # ----- run XGBoost
-    model_name = "XGB"
-    xgb = XGBModelHandler()
-    test = None
-    cv_predictions_dfs = train_and_evaluate(model_h=xgb, train_fragments=train_fragments, test=test, model_name=model_name, data=data, **kwargs)
-    for fold, fold_df in cv_predictions_dfs.items():
-        write_df(df=fold_df, file_path=join(join(outputs_path, 'XGB'), f"cv_fold{fold}_predictions_XGBoost.csv"))
+    # model_name = "XGB"
+    # xgb = XGBModelHandler()
+    # test = None
+    # cv_predictions_dfs = train_and_evaluate(model_h=xgb, train_fragments=train_fragments, test=test, model_name=model_name, data=data, **kwargs)
+    # for fold, fold_df in cv_predictions_dfs.items():
+    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'XGB'), f"cv_fold{fold}_predictions_XGBoost.csv"))
 
     # # # ----- run RandomForest
     # model_name = "RF"
