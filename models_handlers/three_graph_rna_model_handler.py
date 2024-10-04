@@ -11,7 +11,7 @@ import torch.nn.functional as F
 from torch_geometric.data import HeteroData
 import torch_geometric.transforms as T
 from models_handlers.model_handlers_utils import calc_binary_classification_metrics_using_y_score, \
-    get_stratified_cv_folds_for_unique
+    get_stratified_cv_folds_for_unique, stratified_cv_for_interaction
 from utils.utils_general import order_df, split_df_samples
 import logging
 logger = logging.getLogger(__name__)
@@ -31,11 +31,17 @@ class GraphRNAModelHandler(object):
     """
     # ------  Nodes  ------
     nodes_are_defined = False
-    ##  mRNA
-    mrna_nodes = None  # init in _prepare_data
-    mrna_nid_col = 'mrna_node_id'
-    mrna_eco_acc_col = None
-    mrna = 'mrna'
+    ##  mRNA that interact with sRNA
+    mrna_nodes_with_srna = None  # init in _prepare_data
+    mrna_nid_col_with_srna = 'mrna_node_id_with_srna'
+    mrna_eco_acc_col_with_srna = None
+    mrna_with_srna = 'mrna_with_srna'
+
+    ##  mRNA that interact with RBP
+    mrna_nodes_with_rbp = None  # init in _prepare_data
+    mrna_nid_col_with_rbp = 'mrna_node_id_with_rbp'
+    mrna_eco_acc_col_with_rbp = None
+    mrna_with_rbp = 'mrna_with_rbpa'
 
     ##  sRNA
     srna_nodes = None  # init in _prepare_data
@@ -236,17 +242,29 @@ class GraphRNAModelHandler(object):
 
     @classmethod
     def _define_nodes_and_edges(cls, **kwargs):
-        # 1 - mRNA
+        # 1 - mRNA-srna
         # 1.1 - get map, nodes and edges
-        m_eco_acc_col = kwargs['me_acc_col']
-        cls.log_df_rna_eco(rna_name='mRNA', rna_eco_df=kwargs['mrna_eco'], acc_col=m_eco_acc_col)
-        _, mrna_nodes = \
-            cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col, rna_eco=kwargs['mrna_eco'],
-                                         e_acc_col=m_eco_acc_col)
+        m_eco_acc_col_with_srna = kwargs['me_acc_col_with_srna']
+        cls.log_df_rna_eco(rna_name='mRNA_with_srna', rna_eco_df=kwargs['mrna_eco_with_srna'], acc_col=m_eco_acc_col_with_srna)
+        _, mrna_nodes_with_srna = \
+            cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col_with_srna, rna_eco=kwargs['mrna_eco_with_srna'],
+                                         e_acc_col=m_eco_acc_col_with_srna)
         # 1.2 - set
         # nodes
-        cls.mrna_nodes = mrna_nodes
-        cls.mrna_eco_acc_col = m_eco_acc_col
+        cls.mrna_nodes_with_srna = mrna_nodes_with_srna
+        cls.mrna_eco_acc_col_with_srna = m_eco_acc_col_with_srna
+
+        # 1 - mRNA-rbp
+        # 1.1 - get map, nodes and edges
+        m_eco_acc_col_with_rbp = kwargs['me_acc_col_with_rbp']
+        cls.log_df_rna_eco(rna_name='mRNA_with_rbp', rna_eco_df=kwargs['mrna_eco_with_rbp'], acc_col=m_eco_acc_col_with_rbp)
+        _, mrna_nodes_with_rbp = \
+            cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col_with_rbp, rna_eco=kwargs['mrna_eco_with_rbp'],
+                                         e_acc_col=m_eco_acc_col_with_rbp)
+        # 1.2 - set
+        # nodes
+        cls.mrna_nodes_with_rbp = mrna_nodes_with_rbp
+        cls.mrna_eco_acc_col_with_rbp = m_eco_acc_col_with_rbp
 
         # 2 - sRNA
         # 2.1 - get map, nodes and edges
@@ -282,7 +300,8 @@ class GraphRNAModelHandler(object):
     def _map_interactions_to_edges(cls, unique_intr: pd.DataFrame, srna_acc_col: str, mrna_acc_col: str) -> \
             (pd.DataFrame, pd.DataFrame, pd.DataFrame):
         logger.debug("mapping interactions to edges")
-        mrna_map = cls.mrna_nodes[[cls.mrna_nid_col, cls.mrna_eco_acc_col]]
+        mrna_map_with_srna = cls.mrna_nodes_with_srna[[cls.mrna_nid_col_with_srna, cls.mrna_eco_acc_col_with_srna]]
+        mrna_map_with_rbp = cls.mrna_nodes_with_rbp[[cls.mrna_nid_col_with_rbp, cls.mrna_eco_acc_col_with_rbp]]
         srna_map = cls.srna_nodes[[cls.srna_nid_col, cls.srna_eco_acc_col]]
         rbp_map = cls.rbp_nodes[[cls.rbp_nid_col, cls.rbp_eco_acc_col]]
 
@@ -640,9 +659,39 @@ class GraphRNAModelHandler(object):
         unq_y = np.array(unq_data[cls.binary_intr_label_col])
         unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
 
+        # Separate mRNA-sRNA and mRNA-RBP interactions, assuming columns are named accordingly
+        mRNA_sRNA_interactions = unq_intr_data[['mrna_interact_with_srna', 'srna']].dropna()
+        mRNA_RBP_interactions = unq_intr_data[['mrna_interact_with_rbp', 'rbp']].dropna()
+
+        # Assuming both interaction types have a label column in unq_intr_data
+        # Example label column: 'interaction_label'
+        mRNA_sRNA_labels = unq_intr_data['interaction_label'].loc[mRNA_sRNA_interactions.index]
+        mRNA_RBP_labels = unq_intr_data['interaction_label'].loc[mRNA_RBP_interactions.index]
+
+
         # 5 - split data into folds
-        cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
-                                                         label_col=cls.binary_intr_label_col)
+        # cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
+                                                        #  label_col=cls.binary_intr_label_col)
+        # For mRNA-sRNA interactions
+        sRNA_cv_folds = stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, n_splits=5)
+
+        # For mRNA-RBP interactions
+        RBP_cv_folds = stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, n_splits=5)
+
+        combined_cv_folds = {}
+
+        for i in sRNA_cv_folds.keys():
+            combined_cv_folds[i] = {
+                'sRNA_train': sRNA_cv_folds[i]['train_data'],
+                'sRNA_train_labels': sRNA_cv_folds[i]['train_labels'],
+                'RBP_train': RBP_cv_folds[i]['train_data'],
+                'RBP_train_labels': RBP_cv_folds[i]['train_labels'],
+                'sRNA_val': sRNA_cv_folds[i]['val_data'],
+                'sRNA_val_labels': sRNA_cv_folds[i]['val_labels'],
+                'RBP_val': RBP_cv_folds[i]['val_data'],
+                'RBP_val_labels': RBP_cv_folds[i]['val_labels']
+            }
+
         dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
         dummy_y_train, dummy_y_val = list(), list()
         dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
@@ -651,7 +700,7 @@ class GraphRNAModelHandler(object):
         cv_training_history = {}
         cv_prediction_dfs = {}
         train_neg_sampling = False  # negatives were already added to cv_data_unq
-        for fold, fold_data_unq in cv_data_unq.items():
+        for fold, fold_data_unq in combined_cv_folds.items():
             logger.debug(f"starting fold {fold}")
             # 6.1 - predict on validation set (pos + random sampled neg)
             predictions, training_history = \

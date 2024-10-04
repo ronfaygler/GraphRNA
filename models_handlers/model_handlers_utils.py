@@ -152,6 +152,31 @@ def get_stratified_cv_folds(X: pd.DataFrame, y: np.array, n_splits: int, metadat
     return cv_folds
 
 
+def stratified_cv_for_interaction(data: pd.DataFrame, labels: np.array, n_splits: int = 5, seed: int = None):
+    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
+    cv_folds = {}
+
+    for i, (train_index, val_index) in enumerate(skf.split(X=np.array(data), y=labels)):
+        # Train fold
+        train_data = pd.DataFrame(data.iloc[list(train_index), :]).reset_index(drop=True)
+        train_labels = labels[train_index]
+
+        # Validation fold
+        val_data = pd.DataFrame(data.iloc[list(val_index), :]).reset_index(drop=True)
+        val_labels = labels[val_index]
+
+        # Store train and val splits
+        fold_data = {
+            "train_data": train_data,
+            "train_labels": train_labels,
+            "val_data": val_data,
+            "val_labels": val_labels
+        }
+        cv_folds[i] = fold_data
+
+    return cv_folds
+
+    
 def get_stratified_cv_folds_for_unique(unq_intr_data: pd.DataFrame, unq_y: np.array, n_splits: int, label_col: str,
                                        shuffle: bool = False, seed: int = None) -> Dict[int, Dict[str, object]]:
     """
