@@ -48,7 +48,6 @@ class Classifier(torch.nn.Module):
 
 
 class GraphRNA(torch.nn.Module):
-    # TODO 
     def __init__(self, srna: str, mrna: str, rbp: str, srna_to_mrna: str, rbp_to_mrna: str, srna_num_embeddings: int, mrna_num_embeddings: int, 
                 rbp_num_embeddings: int, model_args: dict):
         """

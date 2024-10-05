@@ -1,0 +1,5 @@
+miRNA ID,mRNA_ID_with_sRNA,mRNA_ID_with_RBP,RBP,Seed_match_A
+miR-1,mRNA_sRNA_1,mRNA_RBP_1,RBP_1,value1
+miR-2,mRNA_sRNA_2,mRNA_RBP_2,RBP_2,value2
+miR-3,mRNA_sRNA_3,mRNA_RBP_3,RBP_3,value3
+miR-4,mRNA_sRNA_4,mRNA_RBP_4,RBP_4,value4

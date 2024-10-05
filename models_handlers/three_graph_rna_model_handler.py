@@ -41,7 +41,10 @@ class GraphRNAModelHandler(object):
     mrna_nodes_with_rbp = None  # init in _prepare_data
     mrna_nid_col_with_rbp = 'mrna_node_id_with_rbp'
     mrna_eco_acc_col_with_rbp = None
-    mrna_with_rbp = 'mrna_with_rbpa'
+    mrna_with_rbp = 'mrna_with_rbp'
+
+    ## mRNA after combining both interaction types:
+    mrna_nodes = None
 
     ##  sRNA
     srna_nodes = None  # init in _prepare_data
@@ -115,7 +118,7 @@ class GraphRNAModelHandler(object):
         return
 
     @staticmethod
-    def _map_rna_nodes_and_edges(out_rna_node_id_col: str, rna_eco: pd.DataFrame, e_acc_col: str) -> \
+    def _map_rna_nodes_and_edges(out_rna_node_id_col: str, rna_eco: pd.DataFrame, e_acc_col: str, interaction_type: str='') -> \
             (pd.DataFrame, pd.DataFrame):
         """ map accession to node id """
         # 1 - Nodes = EcoCyc data
@@ -123,6 +126,9 @@ class GraphRNAModelHandler(object):
         # 1.1 - map from original id (acc) to node id (consecutive values)
         rna_nodes[out_rna_node_id_col] = np.arange(len(rna_nodes))
         rna_nodes = order_df(df=rna_nodes, first_cols=[out_rna_node_id_col])
+        if interaction_type!='':
+            rna_nodes[interaction_type] = True  # Mark this node as having this type of interaction (sRNA or RBP)
+
         rna_map = rna_eco[[out_rna_node_id_col, e_acc_col]]
 
         return rna_map, rna_nodes
@@ -201,6 +207,7 @@ class GraphRNAModelHandler(object):
                             df_nm: str = None) -> pd.DataFrame:
         ''' srna_acc_col: str - sRNA EcoCyc accession id col in metadata '''
         # 1 - data validation
+        # print("metadata: ", metadata)
         _len = len(metadata)
         srna_acc = metadata[srna_acc_col]
         mrna_acc_with_srna = metadata[mrna_acc_with_srna_col]
@@ -210,11 +217,12 @@ class GraphRNAModelHandler(object):
         assert sorted(set(y)) in [[0, 1], [1]], "y is not binary"
         assert sum(pd.isnull(srna_acc)) + sum(pd.isnull(mrna_acc_with_srna)) + sum(pd.isnull(mrna_acc_with_rbp)) + sum(pd.isnull(rbp_acc)) == 0, "some acc id are null"
         # 2 - get unique sRNA-mRNA interactions
+        print("mrna_acc_with_srna: ", mrna_acc_with_srna)
         unq_intr = pd.DataFrame({
             srna_acc_col: metadata[srna_acc_col],
-            mrna_acc_with_srna: metadata[mrna_acc_with_srna],
-            rbp_acc: metadata[rbp_acc],
-            mrna_acc_with_rbp: metadata[mrna_acc_with_rbp],
+            mrna_acc_with_srna: metadata[mrna_acc_with_srna_col],
+            rbp_acc: metadata[rbp_acc_col],
+            mrna_acc_with_rbp: metadata[mrna_acc_with_rbp_col],
 
             cls.binary_intr_label_col: y
         })
@@ -260,7 +268,7 @@ class GraphRNAModelHandler(object):
         cls.log_df_rna_eco(rna_name='mRNA_with_srna', rna_eco_df=kwargs['mrna_eco_with_srna'], acc_col=m_eco_acc_col_with_srna)
         _, mrna_nodes_with_srna = \
             cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col_with_srna, rna_eco=kwargs['mrna_eco_with_srna'],
-                                         e_acc_col=m_eco_acc_col_with_srna)
+                                         e_acc_col=m_eco_acc_col_with_srna, interaction_type='has_srna_interaction')
         # 1.2 - set
         # nodes
         cls.mrna_nodes_with_srna = mrna_nodes_with_srna
@@ -272,11 +280,19 @@ class GraphRNAModelHandler(object):
         cls.log_df_rna_eco(rna_name='mRNA_with_rbp', rna_eco_df=kwargs['mrna_eco_with_rbp'], acc_col=m_eco_acc_col_with_rbp)
         _, mrna_nodes_with_rbp = \
             cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col_with_rbp, rna_eco=kwargs['mrna_eco_with_rbp'],
-                                         e_acc_col=m_eco_acc_col_with_rbp)
+                                         e_acc_col=m_eco_acc_col_with_rbp, interaction_type='has_rbp_interaction')
         # 1.2 - set
         # nodes
         cls.mrna_nodes_with_rbp = mrna_nodes_with_rbp
         cls.mrna_eco_acc_col_with_rbp = m_eco_acc_col_with_rbp
+
+        # Merge both mRNA interaction types on the common node
+        cls.mrna_nodes = pd.merge(mrna_nodes_with_srna, mrna_nodes_with_rbp, 
+                            on=cls.mrna_nid_col, how='outer', suffixes=('_srna', '_rbp'))
+
+        # Fill missing values (if some nodes only have one interaction type)
+        cls.mrna_nodes['has_srna_interaction'] = cls.mrna_nodes['has_srna_interaction'].fillna(False)
+        cls.mrna_nodes['has_rbp_interaction'] = cls.mrna_nodes['has_rbp_interaction'].fillna(False)
 
         # 2 - sRNA
         # 2.1 - get map, nodes and edges
@@ -308,7 +324,6 @@ class GraphRNAModelHandler(object):
         return
 
     @classmethod
-    #TODO:  _map_inter, sort_values
     def _map_interactions_to_edges(cls, unique_intr: pd.DataFrame, srna_acc_col: str, mrna_acc_with_srna_col: str,
                                     mrna_acc_with_rbp_col: str, rbp_acc_col: str) -> \
                             (pd.DataFrame, pd.DataFrame, pd.DataFrame):
@@ -323,8 +338,9 @@ class GraphRNAModelHandler(object):
                                      srna_acc_col=srna_acc_col, srna_map=srna_map, s_map_acc_col=cls.srna_eco_acc_col, 
                                      mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, mrna_map_with_rbp=mrna_map_with_rbp, 
                                      m_map_acc_with_r_col=cls.mrna_eco_acc_col_with_rbp,
-                                     rbp_acc_col=rbp_acc_col
+                                     rbp_acc_col=rbp_acc_col,
                                      rbp_map=rbp_map, r_map_acc_col=cls.rbp_eco_acc_col)
+        # --- ???
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.rbp_nid_col, cls.mrna_nid_col_with_rbp]).reset_index(drop=True)
 
         return unique_intr
@@ -405,6 +421,7 @@ class GraphRNAModelHandler(object):
     @classmethod
     def _init_train_test_hetero_data(cls, unq_train: pd.DataFrame, unq_test: pd.DataFrame, train_neg_sampling: bool) \
             -> (HeteroData, HeteroData):
+            # TODO 
         """
 
         Parameters
@@ -549,7 +566,7 @@ class GraphRNAModelHandler(object):
         # 2.2 - save
         eval_data_preds = pd.DataFrame({
             cls.srna_nid_col: torch.cat(srna_nids, dim=0).cpu().numpy(),
-            cls.mrna_nid_col: torch.cat(mrna_nids, dim=0).cpu().numpy(),
+            cls.mrna_nid_col_with_srna: torch.cat(mrna_nids, dim=0).cpu().numpy(),
             'y_true': y_true,
             'y_graph_score': y_graph_score
         })
@@ -563,8 +580,10 @@ class GraphRNAModelHandler(object):
 
     @classmethod
     def add_rna_metadata(cls, _df: pd.DataFrame, sort_df: bool = False, sort_by_col: str = None) -> pd.DataFrame:
+        # TODO 
         assert cls.srna_nid_col in _df.columns.values, f"{cls.srna_nid_col} column is missing in _df"
-        assert cls.mrna_nid_col in _df.columns.values, f"{cls.mrna_nid_col} column is missing in _df"
+        assert cls.mrna_nid_col_with_srna in _df.columns.values, f"{cls.mrna_nid_col_with_srna} column is missing in _df"
+        assert cls.mrna_nid_col_with_rbp in _df.columns.values, f"{cls.mrna_nid_col_with_rbp} column is missing in _df"
         assert cls.rbp_nid_col in _df.columns.values, f"{cls.rbp_nid_col} column is missing in _df"
 
         srna_meta_cols = [c for c in cls.srna_nodes.columns.values if c != cls.srna_nid_col]
@@ -595,7 +614,8 @@ class GraphRNAModelHandler(object):
         _df = unq_intr
         _df[out_col_y_true] = y_true
         _df[out_col_y_score] = y_score
-        _df = cls.add_rna_metadata(_df=_df, sort_df=sort_df, sort_by_col=out_col_y_score)
+        # TODO ?
+        # _df = cls.add_rna_metadata(_df=_df, sort_df=sort_df, sort_by_col=out_col_y_score)
 
         return _df
 
@@ -604,7 +624,7 @@ class GraphRNAModelHandler(object):
                              metadata: pd.DataFrame = None, srna_acc_col: str = 'sRNA_accession_id_Eco',
                              rbp_acc_col: str = 'RBP_accession_id_Eco', 
                              mrna_acc_with_srna_col: str = 'mRNA_with_sRNA_accession_id_Eco',
-                             mrna_acc_with_rbp_col=: str = 'mRNA_with_RBP_accession_id_Eco', 
+                             mrna_acc_with_rbp_col: str = 'mRNA_with_RBP_accession_id_Eco', 
                              is_syn_col: str = 'is_synthetic', 
                              neg_df: pd.DataFrame = None, **kwargs) \
             -> (Dict[int, pd.DataFrame], Dict[int, dict]):
@@ -873,7 +893,8 @@ class GraphRNAModelHandler(object):
         _len = len(out_test_pred)
         out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col], how='left')
         assert len(out_test_pred) == _len
-        out_test_pred = cls.add_rna_metadata(_df=out_test_pred)
+        # TODO ?
+        # out_test_pred = cls.add_rna_metadata(_df=out_test_pred)
         # 10.2 - GraphRNA prediction scores
         test_graph_score = out_test_pred['y_graph_score']
         # 10.3 - update

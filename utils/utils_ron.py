@@ -458,4 +458,12 @@ def combine_and_XGB():
 
 
 
-combine_and_XGB()
+# combine_and_XGB()
+
+def add_col(df):
+    df['Seed_match_A'] = ['value1', 'value2', 'value3', 'value4']
+    df.to_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/rbp1.csv", index=False)
+    
+df = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/rbp1.csv")
+add_col(df)
+
