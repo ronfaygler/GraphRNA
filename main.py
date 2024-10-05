@@ -9,7 +9,7 @@ from utils.utils_general import get_logger_config_dict, write_df
 from data_handlers.data_handler import DataHandler
 from data_handlers.mir_handler import DataHandler_Mirna_Mrna
 
-from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
+# from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
 import shap
 import matplotlib.pyplot as plt
 
@@ -18,6 +18,9 @@ from models_handlers.rf_model_handler import RFModelHandler
 import logging.config
 logging.config.dictConfig(get_logger_config_dict(filename="main", file_level='DEBUG'))
 logger = logging.getLogger(__name__)
+
+from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
+
 
 
 def main():
