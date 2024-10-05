@@ -58,6 +58,7 @@ def main():
 
 # # ------ mirna mrna:
 #     # ----- configuration
+<<<<<<< HEAD
     # data="mirna"
     # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
     # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
@@ -82,6 +83,30 @@ def main():
     # write cv results to folds dfs
     # for fold, fold_df in cv_predictions_dfs.items():
         # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+=======
+#     data="mirna"
+#     data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
+#     outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+#     print("paths")
+
+#     # data for XGBoost / RandomForest:
+#     # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
+    
+#     # ----- load data for GraphRNA:
+#     # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
+
+#     # ----- load data for XGBoost / RandomForest
+#     train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
+
+#     # ----- run GraphRNA
+#     model_name = "GNN"
+#     graph_rna = GraphRNAModelHandler()
+#     test = None
+#     cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+#     write cv results to folds dfs
+#     for fold, fold_df in cv_predictions_dfs.items():
+#         write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+>>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
 
     # # # ----- run XGBoost
     # model_name = "XGB"
@@ -316,6 +341,7 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
 # ------------triple:
     if data == "triple":
         cv_predictions_dfs, cv_training_history = \
+<<<<<<< HEAD
             model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
                 y_rbp=train_fragments['y_rbp'],
                 metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
