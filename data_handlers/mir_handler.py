@@ -58,6 +58,9 @@ class DataHandler_Mirna_Mrna(DataHandler):
         train_fragments['is_synthetic'] = False
         # train_fragments = DataHandler.split_dataset(self, dataset=train_fragments)
         train_fragments = self.split_dataset(dataset=train_fragments)
+=======
+        train_fragments = DataHandler.split_dataset(self, dataset=train_fragments)
+>>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
         
         return train_fragments
     
