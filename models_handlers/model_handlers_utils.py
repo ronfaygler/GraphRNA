@@ -228,7 +228,6 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
             "unq_train": unq_train,
             "unq_val": unq_val
         }
-        cv_folds[i] = fold_data
 
 
     return cv_folds
