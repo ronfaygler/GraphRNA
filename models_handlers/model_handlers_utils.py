@@ -116,6 +116,7 @@ def get_stratified_cv_folds(X: pd.DataFrame, y: np.array, n_splits: int, metadat
         }, ...
     }
     """
+
     # logger.debug(f"getting stratified {n_splits} cv folds")
     is_length_compatible = len(X) == len(y) if metadata is None else len(X) == len(y) == len(metadata)
     assert is_length_compatible, "X, y, and metadata are compatible in length"
@@ -152,27 +153,30 @@ def get_stratified_cv_folds(X: pd.DataFrame, y: np.array, n_splits: int, metadat
     return cv_folds
 
 
-def stratified_cv_for_interaction(data: pd.DataFrame, labels: np.array, n_splits: int = 5, seed: int = None):
+def stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.array, n_splits: int = 5, seed: int = None):
+    
+    print("unq_intr_data: ", unq_intr_data)
+    print("y: ", labels)
+
+    unq_intr_data = unq_intr_data.reset_index(drop=True)
+    label_col = 'interaction_label'
+    
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
     cv_folds = {}
-
-    for i, (train_index, val_index) in enumerate(skf.split(X=np.array(data), y=labels)):
+    for i, (train_index, val_index) in enumerate(skf.split(X=np.array(unq_intr_data), y=labels)):
         # Train fold
-        train_data = pd.DataFrame(data.iloc[list(train_index), :]).reset_index(drop=True)
-        train_labels = labels[train_index]
+        unq_train = pd.DataFrame(unq_intr_data.iloc[list(train_index), :]).reset_index(drop=True)
+        unq_train[label_col] = list(labels[train_index])
 
-        # Validation fold
-        val_data = pd.DataFrame(data.iloc[list(val_index), :]).reset_index(drop=True)
-        val_labels = labels[val_index]
+        # Validation
+        unq_val = pd.DataFrame(unq_intr_data.iloc[list(val_index), :]).reset_index(drop=True)
+        unq_val[label_col] = list(labels[val_index])
 
-        # Store train and val splits
-        fold_data = {
-            "train_data": train_data,
-            "train_labels": train_labels,
-            "val_data": val_data,
-            "val_labels": val_labels
+        # Store unique train and val splits
+        fold_data = { 
+            "unq_train": unq_train,
+            "unq_val": unq_val
         }
-        cv_folds[i] = fold_data
 
     return cv_folds
 
@@ -199,6 +203,8 @@ def get_stratified_cv_folds_for_unique(unq_intr_data: pd.DataFrame, unq_y: np.ar
         }, ...
     }
     """
+    print("X: ", unq_intr_data)
+    print("y: ", unq_y)
     # logger.debug(f"getting stratified {n_splits} cv folds")
     is_length_compatible = len(unq_y) == len(unq_intr_data)
     assert is_length_compatible, "unq_y and unq_intr_data are compatible in length"

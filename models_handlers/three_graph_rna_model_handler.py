@@ -31,11 +31,12 @@ class GraphRNAModelHandler(object):
     """
     # ------  Nodes  ------
     nodes_are_defined = False
+    mrna_nid_col = 'mrna_node_id'
     ##  mRNA that interact with sRNA
     mrna_nodes_with_srna = None  # init in _prepare_data
-    mrna_nid_col_with_srna = 'mrna_node_id_with_srna'
+    mrna_nid_col_with_srna = 'mrna_node_id_with_mirna'
     mrna_eco_acc_col_with_srna = None
-    mrna_with_srna = 'mrna_with_srna'
+    mrna_with_srna = 'mrna_with_mirna'
 
     ##  mRNA that interact with RBP
     mrna_nodes_with_rbp = None  # init in _prepare_data
@@ -48,7 +49,7 @@ class GraphRNAModelHandler(object):
 
     ##  sRNA
     srna_nodes = None  # init in _prepare_data
-    srna_nid_col = 'srna_node_id'
+    srna_nid_col = 'mirna_node_id'
     srna_eco_acc_col = None
     srna = 'srna'
     
@@ -207,7 +208,6 @@ class GraphRNAModelHandler(object):
                             df_nm: str = None) -> pd.DataFrame:
         ''' srna_acc_col: str - sRNA EcoCyc accession id col in metadata '''
         # 1 - data validation
-        # print("metadata: ", metadata)
         _len = len(metadata)
         srna_acc = metadata[srna_acc_col]
         mrna_acc_with_srna = metadata[mrna_acc_with_srna_col]
@@ -217,12 +217,11 @@ class GraphRNAModelHandler(object):
         assert sorted(set(y)) in [[0, 1], [1]], "y is not binary"
         assert sum(pd.isnull(srna_acc)) + sum(pd.isnull(mrna_acc_with_srna)) + sum(pd.isnull(mrna_acc_with_rbp)) + sum(pd.isnull(rbp_acc)) == 0, "some acc id are null"
         # 2 - get unique sRNA-mRNA interactions
-        print("mrna_acc_with_srna: ", mrna_acc_with_srna)
         unq_intr = pd.DataFrame({
             srna_acc_col: metadata[srna_acc_col],
-            mrna_acc_with_srna: metadata[mrna_acc_with_srna_col],
-            rbp_acc: metadata[rbp_acc_col],
-            mrna_acc_with_rbp: metadata[mrna_acc_with_rbp_col],
+            mrna_acc_with_srna_col: metadata[mrna_acc_with_srna_col],
+            rbp_acc_col: metadata[rbp_acc_col],
+            mrna_acc_with_rbp_col: metadata[mrna_acc_with_rbp_col],
 
             cls.binary_intr_label_col: y
         })
@@ -251,13 +250,20 @@ class GraphRNAModelHandler(object):
                    mrna_acc_with_rbp_col: str, mrna_map_with_rbp: pd.DataFrame, m_map_acc_with_r_col: str, rbp_acc_col: str,
                    rbp_map: pd.DataFrame, r_map_acc_col: str) -> pd.DataFrame:
         _len, _cols = len(intr), list(intr.columns.values)
-        intr = pd.merge(intr, mrna_map_with_srna, left_on=mrna_acc_with_srna_col, right_on=m_map_acc_with_s_col, how='left', suffixes=('', '_mrna_srna'))
+        intr = pd.merge(intr, mrna_map_with_srna, left_on=mrna_acc_with_srna_col, right_on=m_map_acc_with_s_col, how='left')
         intr = pd.merge(intr, srna_map, left_on=srna_acc_col, right_on=s_map_acc_col, how='left')
-        intr = pd.merge(intr, mrna_map_with_rbp, left_on=mrna_acc_with_rbp_col, right_on=m_map_acc_with_r_col, how='left', suffixes=('', '_mrna_rbp'))
+        print("intr after 2 merges:\n", intr)
+        intr = pd.merge(intr, mrna_map_with_rbp, left_on=mrna_acc_with_rbp_col, right_on=m_map_acc_with_r_col, how='left')
+        print("intr after 3 merges:\n", intr)
+        print("rbp_map:\n", rbp_map)
         intr = pd.merge(intr, rbp_map, left_on=rbp_acc_col, right_on=r_map_acc_col, how='left')
+        print("intr after 4 merges:\n", intr)
+        
 
         assert len(intr) == _len, "duplications post merge"
         intr = intr[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col] + _cols]
+        print("intr after 4 merges:\n", intr)
+
         return intr
 
     @classmethod
@@ -265,10 +271,10 @@ class GraphRNAModelHandler(object):
         # 1 - mRNA-srna
         # 1.1 - get map, nodes and edges
         m_eco_acc_col_with_srna = kwargs['me_acc_col_with_srna']
-        cls.log_df_rna_eco(rna_name='mRNA_with_srna', rna_eco_df=kwargs['mrna_eco_with_srna'], acc_col=m_eco_acc_col_with_srna)
+        cls.log_df_rna_eco(rna_name='mRNA_with_mirna', rna_eco_df=kwargs['mrna_eco_with_srna'], acc_col=m_eco_acc_col_with_srna)
         _, mrna_nodes_with_srna = \
             cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col_with_srna, rna_eco=kwargs['mrna_eco_with_srna'],
-                                         e_acc_col=m_eco_acc_col_with_srna, interaction_type='has_srna_interaction')
+                                         e_acc_col=m_eco_acc_col_with_srna, interaction_type='has_mirna_interaction')
         # 1.2 - set
         # nodes
         cls.mrna_nodes_with_srna = mrna_nodes_with_srna
@@ -287,11 +293,17 @@ class GraphRNAModelHandler(object):
         cls.mrna_eco_acc_col_with_rbp = m_eco_acc_col_with_rbp
 
         # Merge both mRNA interaction types on the common node
-        cls.mrna_nodes = pd.merge(mrna_nodes_with_srna, mrna_nodes_with_rbp, 
-                            on=cls.mrna_nid_col, how='outer', suffixes=('_srna', '_rbp'))
-
+        # cls.mrna_nodes = pd.merge(mrna_nodes_with_srna, mrna_nodes_with_rbp, 
+        #                     on=cls.mrna_nid_col, how='outer', suffixes=('_srna', '_rbp'))
+        cls.mrna_nodes = pd.merge(
+            mrna_nodes_with_srna.rename(columns={cls.mrna_nid_col_with_srna: cls.mrna_nid_col}), 
+            mrna_nodes_with_rbp.rename(columns={cls.mrna_nid_col_with_rbp: cls.mrna_nid_col}),
+            on=cls.mrna_nid_col, 
+            how='outer', 
+            suffixes=('_mirna', '_rbp')
+        )
         # Fill missing values (if some nodes only have one interaction type)
-        cls.mrna_nodes['has_srna_interaction'] = cls.mrna_nodes['has_srna_interaction'].fillna(False)
+        cls.mrna_nodes['has_mirna_interaction'] = cls.mrna_nodes['has_mirna_interaction'].fillna(False)
         cls.mrna_nodes['has_rbp_interaction'] = cls.mrna_nodes['has_rbp_interaction'].fillna(False)
 
         # 2 - sRNA
@@ -332,7 +344,7 @@ class GraphRNAModelHandler(object):
         mrna_map_with_rbp = cls.mrna_nodes_with_rbp[[cls.mrna_nid_col_with_rbp, cls.mrna_eco_acc_col_with_rbp]]
         srna_map = cls.srna_nodes[[cls.srna_nid_col, cls.srna_eco_acc_col]]
         rbp_map = cls.rbp_nodes[[cls.rbp_nid_col, cls.rbp_eco_acc_col]]
-
+        print("rbp_map: \n", rbp_map)
         unique_intr = cls._map_inter(intr=unique_intr, mrna_acc_with_srna_col=mrna_acc_with_srna_col,
                                      mrna_map_with_srna=mrna_map_with_srna, m_map_acc_with_s_col=cls.mrna_eco_acc_col_with_srna, 
                                      srna_acc_col=srna_acc_col, srna_map=srna_map, s_map_acc_col=cls.srna_eco_acc_col, 
@@ -340,8 +352,11 @@ class GraphRNAModelHandler(object):
                                      m_map_acc_with_r_col=cls.mrna_eco_acc_col_with_rbp,
                                      rbp_acc_col=rbp_acc_col,
                                      rbp_map=rbp_map, r_map_acc_col=cls.rbp_eco_acc_col)
+        print("unique_intr: after _map_inter\n", unique_intr)
+
         # --- ???
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.rbp_nid_col, cls.mrna_nid_col_with_rbp]).reset_index(drop=True)
+        print("unique_intr: after sort_values\n", unique_intr)
 
         return unique_intr
 
@@ -662,15 +677,21 @@ class GraphRNAModelHandler(object):
         """
         logger.debug(f"running cross validation with {n_splits} folds")
         # 1 - remove all synthetic samples
+        # print("metadata : ", metadata)
+
         logger.warning("removing all synthetic samples")
         X_no_syn, y_no_syn, metadata_no_syn = \
             cls._remove_synthetic_samples(X=X, y=y, metadata=metadata, is_syn_col=is_syn_col)
+        
+        # print("metadata_no_syn after _remove_synthetic_samples: \n", metadata_no_syn)
 
         # 2 - get unique interactions data (train + val)
         unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y=y_no_syn, srna_acc_col=srna_acc_col,
                                         rbp_acc_col=rbp_acc_col, mrna_acc_with_srna_col=mrna_acc_with_srna_col,
                                         mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, df_nm='all')
+        print("unq_intr after _get_unique_inter: \n", unq_intr)
         unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
+        print("unq_intr_pos after _pos_neg_split: \n", unq_intr_pos)
 
         # 3 - define graph nodes (if needed) and map interaction
         if not cls.nodes_are_defined:
@@ -678,6 +699,7 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_with_srna_col=mrna_acc_with_srna_col,
                                                       mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, rbp_acc_col=rbp_acc_col)
+
         # 4 - random negative sampling - all cv data
 
         # for efrat data - RF, XGB
@@ -699,21 +721,14 @@ class GraphRNAModelHandler(object):
         #####################################
 
         unq_y = np.array(unq_data[cls.binary_intr_label_col])
-        unq_intr_data = unq_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col]]
+        print("unq_data: ", unq_data)
+        print("unq_data cols: ", unq_data.columns)
 
+        unq_intr_data = unq_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col, cls.binary_intr_label_col]]
+        print("unq_intr_data: ", unq_intr_data)
         # Separate mRNA-sRNA and mRNA-RBP interactions, assuming columns are named accordingly
-        mRNA_sRNA_interactions = unq_intr_data[['mrna_interact_with_srna', 'srna']].dropna()
-        mRNA_RBP_interactions = unq_intr_data[['mrna_interact_with_rbp', 'rbp']].dropna()
-
-        # Assuming both interaction types have a label column in unq_intr_data
-        # Example label column: 'interaction_label'
-        mRNA_sRNA_labels = unq_intr_data['interaction_label'].loc[mRNA_sRNA_interactions.index]
-        mRNA_RBP_labels = unq_intr_data['interaction_label'].loc[mRNA_RBP_interactions.index]
-
-
-        # Separate mRNA-sRNA and mRNA-RBP interactions, assuming columns are named accordingly
-        mRNA_sRNA_interactions = unq_intr_data[['mrna_interact_with_srna', 'srna']].dropna()
-        mRNA_RBP_interactions = unq_intr_data[['mrna_interact_with_rbp', 'rbp']].dropna()
+        mRNA_sRNA_interactions = unq_intr_data[['mrna_node_id_with_mirna', 'mirna_node_id']].dropna()
+        mRNA_RBP_interactions = unq_intr_data[['mrna_node_id_with_rbp', 'rbp_node_id']].dropna()
 
         # Assuming both interaction types have a label column in unq_intr_data
         # Example label column: 'interaction_label'
@@ -725,10 +740,10 @@ class GraphRNAModelHandler(object):
         # cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
                                                         #  label_col=cls.binary_intr_label_col)
         # For mRNA-sRNA interactions
-        sRNA_cv_folds = stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, n_splits=5)
+        sRNA_cv_folds = stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, n_splits=2)
 
         # For mRNA-RBP interactions
-        RBP_cv_folds = stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, n_splits=5)
+        RBP_cv_folds = stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, n_splits=2)
 
         combined_cv_folds = {}
 
@@ -751,7 +766,7 @@ class GraphRNAModelHandler(object):
         # 6 - predict on folds
         cv_training_history = {}
         cv_prediction_dfs = {}
-        train_neg_sampling = False  # negatives were already added to cv_data_unq
+        train_neg_sampling = True  # ## ??????????????????????????????????????????
         for fold, fold_data_unq in combined_cv_folds.items():
             logger.debug(f"starting fold {fold}")
             # 6.1 - predict on validation set (pos + random sampled neg)

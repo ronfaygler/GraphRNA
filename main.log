@@ -574,3 +574,759 @@
 2024-10-05 18:39:02.429; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
 2024-10-05 18:39:02.430; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
 2024-10-05 18:39:02.430; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 11:34:42.536; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 11:34:42.537; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:36:32.979; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 11:36:32.980; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 11:36:32.980; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 11:36:32.980; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 11:36:32.981; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 11:36:32.981; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:36:32.983; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:36:32.985; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:36:33.015; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_srna data from EcoCyc: 2367 unique mRNA_with_srnas of E.coli
+2024-10-06 11:36:33.021; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 11:47:47.968; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 11:47:47.969; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 11:47:47.969; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 11:47:47.969; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 11:47:47.971; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 11:47:47.971; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:47:47.975; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:47:47.987; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:47:47.993; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_srna data from EcoCyc: 2367 unique mRNA_with_srnas of E.coli
+2024-10-06 11:47:47.999; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 11:53:10.204; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 11:53:10.204; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 11:53:10.205; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 11:53:10.205; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 11:53:10.207; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 11:53:10.207; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:53:10.210; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:53:10.213; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:53:10.216; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_srna data from EcoCyc: 2367 unique mRNA_with_srnas of E.coli
+2024-10-06 11:53:10.220; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 11:53:10.291; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 11:53:10.295; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 11:53:10.299; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 11:54:20.616; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 11:54:20.616; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 11:54:20.616; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 11:54:20.616; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 11:54:20.618; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 11:54:20.618; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:54:20.620; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:54:20.622; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:54:20.625; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_srna data from EcoCyc: 2367 unique mRNA_with_srnas of E.coli
+2024-10-06 11:54:20.628; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 11:54:20.636; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 11:54:20.638; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 11:54:20.639; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 11:55:34.291; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 11:55:34.291; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 11:55:34.291; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 11:55:34.292; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 11:55:34.293; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 11:55:34.294; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:55:34.296; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:55:34.298; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:55:34.302; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_srna data from EcoCyc: 2367 unique mRNA_with_srnas of E.coli
+2024-10-06 11:55:34.306; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 11:55:34.317; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 11:55:34.319; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 11:55:34.321; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 11:58:54.992; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 11:58:54.992; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 11:58:54.992; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 11:58:54.992; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 11:58:54.994; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 11:58:54.994; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 11:58:54.996; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:58:54.998; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 11:58:55.001; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_srna data from EcoCyc: 2367 unique mRNA_with_srnas of E.coli
+2024-10-06 11:58:55.005; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 11:58:55.015; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 11:58:55.017; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 11:58:55.019; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:02:14.225; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:02:14.225; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:02:14.225; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:02:14.225; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:02:28.495; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:02:28.495; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:02:28.495; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:02:28.496; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:02:28.517; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 7034, after: 7034)
+2024-10-06 12:02:28.518; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 7034, after: 7034)
+2024-10-06 12:02:28.522; models_handlers.graph_rna_model_handler; DEBUG  all: 7034 interactions (P: 3517, N: 3517)
+2024-10-06 12:02:28.525; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 6844 interactions (P: 3422, N: 3422)
+2024-10-06 12:02:28.528; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:02:28.530; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:02:28.531; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:02:28.578; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 12:02:28.578; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 12:02:28.578; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 12:02:28.585; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3079 interactions, P: 3079, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 12:04:07.069; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:04:07.069; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:04:07.069; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:04:07.069; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:04:07.097; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 7034, after: 7034)
+2024-10-06 12:04:07.097; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 7034, after: 7034)
+2024-10-06 12:04:07.102; models_handlers.graph_rna_model_handler; DEBUG  all: 7034 interactions (P: 3517, N: 3517)
+2024-10-06 12:04:07.105; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 6844 interactions (P: 3422, N: 3422)
+2024-10-06 12:04:07.109; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:04:07.110; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:04:07.112; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:04:57.230; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:04:57.230; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:04:57.230; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:04:57.231; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:04:57.308; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 12:04:57.308; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 12:04:57.311; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 12:04:57.314; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 12:04:57.318; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:04:57.321; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:04:57.323; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:05:19.669; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:05:19.670; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:05:19.671; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:05:19.671; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:05:19.757; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 12:05:19.757; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 12:05:19.760; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 12:05:19.762; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 12:05:19.765; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:05:19.767; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:05:19.769; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:05:19.826; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 12:05:19.826; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 12:05:19.826; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 12:05:19.833; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 12:05:19.967; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 12:09:29.950; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:09:29.950; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:09:29.950; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:09:29.950; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:09:30.009; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 12:09:30.009; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 12:09:30.011; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 12:09:30.013; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 12:09:30.017; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:09:30.019; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:09:30.020; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:09:58.705; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:09:58.705; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:09:58.705; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:09:58.705; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:09:58.737; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 12:09:58.737; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 12:09:58.740; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 12:09:58.742; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 12:09:58.744; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:09:58.746; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:09:58.747; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:10:13.460; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:10:13.460; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:10:13.460; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:10:13.460; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:10:13.494; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 12:10:13.494; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 12:10:13.497; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 12:10:13.499; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 12:10:13.502; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:10:13.504; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:10:13.505; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:10:13.540; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 12:10:13.540; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 12:10:13.541; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 12:10:13.546; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 12:10:13.567; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 12:14:27.506; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:14:27.506; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:14:27.507; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:14:27.507; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:14:27.509; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:14:27.509; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:16:20.603; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:16:20.603; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:16:20.603; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:16:20.603; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:16:20.605; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:16:20.605; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:16:20.606; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:16:20.608; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:17:51.078; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:17:51.078; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:17:51.078; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:17:51.079; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:17:51.081; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:17:51.081; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:17:51.082; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:17:51.084; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:17:51.088; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 12:17:51.092; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 12:18:57.012; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:18:57.013; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:18:57.014; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:18:57.014; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:18:57.017; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:18:57.020; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:18:57.023; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:18:57.026; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:18:57.033; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 12:18:57.038; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 12:18:57.056; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:18:57.060; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 12:18:57.063; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:21:12.523; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:21:12.523; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:21:12.523; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:21:12.524; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:21:12.578; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 12:21:12.579; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 12:21:12.582; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 12:21:12.584; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 12:21:12.586; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 12:21:12.588; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:21:12.589; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:21:12.631; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 12:21:12.631; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 12:21:12.632; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 12:21:12.636; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 12:21:12.657; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 12:25:07.487; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:25:07.488; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:25:07.488; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:25:07.489; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:25:07.491; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:25:07.491; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:25:07.492; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:25:07.494; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:25:07.498; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 12:25:07.501; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 12:25:07.512; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:25:07.514; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 12:25:07.515; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:27:19.845; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:27:19.845; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:27:19.846; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:27:19.846; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:27:19.849; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:27:19.850; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:27:19.852; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:27:19.854; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:27:19.859; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 12:27:19.863; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 12:27:19.876; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:27:19.878; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 12:27:19.880; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:43:16.944; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:43:16.944; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:43:16.945; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:43:16.945; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:43:16.947; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:43:16.947; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:43:16.949; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:43:16.951; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:43:16.955; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 12:43:16.957; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 12:43:16.965; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:43:16.967; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 12:43:16.968; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:45:31.642; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:45:31.642; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:45:31.642; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:45:31.643; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:45:31.644; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:45:31.644; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:45:31.646; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:45:31.648; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:45:31.654; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 12:45:31.658; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 12:45:31.668; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:45:31.670; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 12:45:31.672; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 12:46:00.374; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 12:46:00.374; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 12:46:00.374; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 12:46:00.374; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 12:46:00.376; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 12:46:00.376; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 12:46:00.377; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:46:00.378; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 12:46:00.380; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 12:46:00.383; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 12:46:00.390; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 12:46:00.392; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 12:46:00.393; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:00:59.649; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:00:59.650; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:00:59.650; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:00:59.650; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:00:59.652; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:00:59.652; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:00:59.654; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:00:59.656; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:00:59.660; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:00:59.664; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:00:59.677; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:00:59.679; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:00:59.681; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:01:25.463; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:01:25.463; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:01:25.463; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:01:25.463; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:01:25.465; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:01:25.465; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:01:25.466; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:01:25.467; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:01:25.471; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:01:25.474; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:01:25.481; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:01:25.483; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:01:25.484; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:01:36.237; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:01:36.237; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:01:36.237; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:01:36.237; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:01:36.239; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:01:36.239; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:01:36.240; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:01:36.241; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:01:36.244; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:01:36.246; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:01:36.253; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:01:36.255; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:01:36.256; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:05:06.157; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:05:06.157; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:05:06.157; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:05:06.158; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:05:06.220; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 13:05:06.220; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 13:05:06.222; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 13:05:06.224; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 13:05:06.227; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 13:05:06.229; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:05:06.230; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:05:06.272; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 13:05:06.272; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 13:05:06.272; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 13:05:06.277; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 13:05:06.298; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 13:07:23.537; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:07:23.538; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:07:23.538; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:07:23.539; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:07:23.570; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 13:07:23.570; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 13:07:23.573; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 13:07:23.575; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 13:07:23.579; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 13:07:23.580; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:07:23.582; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:07:23.623; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 13:07:23.623; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 13:07:23.624; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 13:07:23.628; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 13:07:23.649; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 13:07:41.358; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:07:41.358; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:07:41.367; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:07:41.367; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:07:41.368; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:07:41.368; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:07:41.374; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:07:41.375; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:07:41.382; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:07:41.384; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:07:41.391; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:07:41.392; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:07:41.394; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:10:37.360; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:10:37.360; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:10:37.360; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:10:37.360; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:10:37.362; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:10:37.362; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:10:37.363; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:10:37.365; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:10:37.382; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:10:37.385; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:10:37.395; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:10:37.397; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:10:37.399; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:13:58.929; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:13:58.929; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:13:58.929; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:13:58.929; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:13:58.931; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:13:58.931; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:13:58.932; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:13:58.934; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:13:58.953; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:13:58.957; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:13:58.970; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:13:58.973; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:13:58.975; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:18:28.403; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:18:28.403; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:18:28.403; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:18:28.403; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:18:28.405; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:18:28.405; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:18:28.406; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:18:28.408; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:18:28.428; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:18:28.431; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:18:28.440; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:18:28.442; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:18:28.444; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:20:08.210; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:20:08.211; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:20:08.212; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:20:08.212; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:20:08.214; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:20:08.214; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:20:08.215; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:20:08.217; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:20:08.234; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:20:08.237; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:20:08.246; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:20:08.248; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:20:08.250; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:22:13.105; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:22:13.105; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:22:13.105; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:22:13.105; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:22:13.135; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 13:22:13.135; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 13:22:13.138; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 13:22:13.140; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 13:22:13.143; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 13:22:13.144; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:22:13.146; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:22:13.205; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 13:22:13.205; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 13:22:13.206; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 13:22:13.210; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 13:22:13.231; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 13:23:22.561; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:23:22.561; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:23:22.561; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:23:22.561; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:23:22.594; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 13:23:22.594; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 13:23:22.597; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 13:23:22.599; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 13:23:22.602; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 13:23:22.604; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:23:22.606; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:23:22.673; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 13:23:22.674; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 13:23:22.674; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 13:23:22.679; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 13:23:22.700; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 13:36:20.112; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:36:20.112; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:36:20.112; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:36:20.113; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:36:20.147; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 13:36:20.147; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 13:36:20.150; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 13:36:20.152; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 13:36:20.155; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 13:36:20.157; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:36:20.158; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:36:20.222; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 13:36:20.222; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 13:36:20.222; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 13:36:20.227; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 13:36:20.248; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 13:36:33.430; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:36:33.430; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:36:33.430; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:36:33.430; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:36:33.432; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:36:33.432; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:36:33.433; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:36:33.434; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:36:33.447; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:36:33.450; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:36:33.457; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:36:33.458; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:36:33.459; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:42:00.912; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:42:00.912; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:42:00.913; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:42:00.913; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:42:00.914; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:42:00.914; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:42:00.915; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:42:00.917; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:42:00.933; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:42:00.935; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:42:00.944; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:42:00.946; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:42:00.947; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:45:19.991; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:45:19.991; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:45:19.991; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:45:19.991; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:45:19.993; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:45:19.993; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:45:19.994; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:45:19.996; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:45:20.011; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:45:20.014; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:45:20.022; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:45:20.024; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:45:20.026; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:54:50.564; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:54:50.564; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:54:50.564; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:54:50.564; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:54:50.595; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-06 13:54:50.595; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-06 13:54:50.599; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-06 13:54:50.602; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-06 13:54:50.605; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-06 13:54:50.607; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:54:50.608; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 13:54:50.673; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 13:54:50.673; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-06 13:54:50.674; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-06 13:54:50.678; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 3080 interactions, P: 3080, N: 0 
+Test: 343 interactions, P: 343, N: 0
+2024-10-06 13:54:50.699; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-06 13:57:57.065; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 13:57:57.065; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 13:57:57.065; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 13:57:57.065; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 13:57:57.067; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 13:57:57.067; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 13:57:57.068; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:57:57.069; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 13:57:57.084; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 13:57:57.086; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 13:57:57.094; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 13:57:57.095; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 13:57:57.096; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:02:28.252; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:02:28.252; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:02:28.254; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:02:28.255; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:02:28.258; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:02:28.259; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:02:28.264; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:02:28.268; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:02:28.298; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:02:28.303; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:02:28.318; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:02:28.321; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:02:28.323; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:03:08.135; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:03:08.135; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:03:08.136; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:03:08.136; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:03:08.137; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:03:08.137; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:03:08.138; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:03:08.140; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:03:08.152; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:03:08.155; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:03:08.162; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:03:08.163; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:03:08.165; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:05:35.630; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:05:35.630; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:05:35.630; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:05:35.630; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:05:35.631; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:05:35.631; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:05:35.633; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:05:35.634; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:05:35.650; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:05:35.653; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:05:35.662; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:05:35.663; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:05:35.665; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:07:25.972; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:07:25.972; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:07:25.972; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:07:25.973; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:07:25.975; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:07:25.975; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:07:25.976; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:07:25.978; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:07:25.994; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:07:25.996; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:07:26.005; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:07:26.007; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:07:26.008; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:08:14.113; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:08:14.113; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:08:14.113; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:08:14.114; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:08:14.116; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:08:14.116; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:08:14.117; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:08:14.119; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:08:14.133; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:08:14.136; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:08:14.144; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:08:14.145; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:08:14.147; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:09:27.245; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:09:27.245; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:09:27.245; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:09:27.245; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:09:27.247; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:09:27.247; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:09:27.248; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:09:27.250; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:09:27.268; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:09:27.271; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:09:27.281; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:09:27.283; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:09:27.284; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:10:16.657; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:10:16.657; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:10:16.657; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:10:16.657; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:10:16.659; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:10:16.659; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:10:16.661; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:10:16.662; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:10:16.676; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:10:16.678; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:10:16.686; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:10:16.687; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:10:16.689; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:12:45.910; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:12:45.910; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:12:45.911; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:12:45.912; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:12:45.913; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:12:45.913; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:12:45.914; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:12:45.916; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:12:45.933; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:12:45.936; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:12:45.945; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:12:45.947; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:12:45.949; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:12:54.877; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:12:54.877; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:12:54.877; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:12:54.877; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:12:54.879; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:12:54.879; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:12:54.880; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:12:54.881; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:12:54.895; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:12:54.897; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:12:54.905; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:12:54.907; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:12:54.908; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:16:28.207; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:16:28.207; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:16:28.210; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:16:28.211; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:16:28.214; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:16:28.214; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:16:28.216; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:16:28.218; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:16:28.243; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:16:28.247; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:16:28.260; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:16:28.263; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:16:28.265; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:20:47.693; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:20:47.693; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:20:47.694; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:20:47.694; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:20:47.696; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:20:47.696; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:20:47.697; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:20:47.700; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:20:47.723; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:20:47.727; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:20:47.739; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:20:47.741; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:20:47.744; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:20:47.884; models_handlers.three_graph_rna_model_handler; DEBUG starting fold 0
+2024-10-06 14:30:32.357; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:30:32.357; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:30:32.357; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:30:32.357; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:30:32.359; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:30:32.359; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:30:32.361; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:30:32.362; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:30:32.380; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:30:32.383; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:30:32.392; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:30:32.394; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:30:32.396; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:31:06.903; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:31:06.903; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:31:06.903; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:31:06.904; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:31:06.905; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:31:06.905; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:31:06.906; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:31:06.907; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:31:06.921; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:31:06.924; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:31:06.931; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:31:06.932; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:31:06.933; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-06 14:31:28.956; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-06 14:31:28.957; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-06 14:31:28.957; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-06 14:31:28.957; models_handlers.three_graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-06 14:31:28.959; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
+2024-10-06 14:31:28.959; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
+2024-10-06 14:31:28.960; models_handlers.three_graph_rna_model_handler; DEBUG  all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:31:28.961; models_handlers.three_graph_rna_model_handler; DEBUG  unique_all: 4 interactions (P: 4, N: 0)
+2024-10-06 14:31:28.975; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_mirna data from EcoCyc: 2367 unique mRNA_with_mirnas of E.coli
+2024-10-06 14:31:28.977; models_handlers.three_graph_rna_model_handler; DEBUG  mRNA_with_rbp data from EcoCyc: 2367 unique mRNA_with_rbps of E.coli
+2024-10-06 14:31:28.985; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-06 14:31:28.986; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
+2024-10-06 14:31:28.988; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges

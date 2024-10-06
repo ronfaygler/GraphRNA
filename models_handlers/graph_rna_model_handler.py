@@ -217,6 +217,7 @@ class GraphRNAModelHandler(object):
         _len, _cols = len(intr), list(intr.columns.values)
         intr = pd.merge(intr, mrna_map, left_on=mrna_acc_col, right_on=m_map_acc_col, how='left')
         intr = pd.merge(intr, srna_map, left_on=srna_acc_col, right_on=s_map_acc_col, how='left')
+        print("intr after merges: \n", intr)
         assert len(intr) == _len, "duplications post merge"
         intr = intr[[cls.srna_nid_col, cls.mrna_nid_col] + _cols]
         return intr
@@ -257,11 +258,15 @@ class GraphRNAModelHandler(object):
         logger.debug("mapping interactions to edges")
         mrna_map = cls.mrna_nodes[[cls.mrna_nid_col, cls.mrna_eco_acc_col]]
         srna_map = cls.srna_nodes[[cls.srna_nid_col, cls.srna_eco_acc_col]]
-
+        # print("mrna_map: \n", mrna_map)
+        # print("unique_intr: \n", unique_intr)
         unique_intr = cls._map_inter(intr=unique_intr, mrna_acc_col=mrna_acc_col, srna_acc_col=srna_acc_col,
                                      mrna_map=mrna_map, m_map_acc_col=cls.mrna_eco_acc_col, srna_map=srna_map,
                                      s_map_acc_col=cls.srna_eco_acc_col)
+        print("unique_intr: after _map_inter\n", unique_intr)
+
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col]).reset_index(drop=True)
+        print("unique_intr: after sort_values\n", unique_intr)
 
         return unique_intr
 
@@ -279,7 +284,6 @@ class GraphRNAModelHandler(object):
                                        torch.from_numpy(np.array(edges['train']['message_passing']['label_index_1']))],
                                        dim=0)
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index = train_edge_index
-        train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_index = train_edge_index
 
         train_data = T.ToUndirected()(train_data)
         # edges for supervision
@@ -544,17 +548,23 @@ class GraphRNAModelHandler(object):
         # ############################################################################################################
 
         if neg_df:
+            print("in if neg_df")
             _shuffle = True
             unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=neg_df, ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
         
         #####################################
-        # for RBP:
+        # # for RBP:
         else:
+            print("nott in if neg_df")
             unq_data = unq_intr_pos
         #####################################
 
         unq_y = np.array(unq_data[cls.binary_intr_label_col])
+        print("unq_data: ", unq_data['miRNA ID'], unq_data['Gene_ID'] )
+        print("unq_data cols: ", unq_data.columns)
         unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
+        print("unq_intr_data: ", unq_intr_data)
+        print("unq_intr_data cols: ", unq_intr_data.columns)
 
         # 5 - split data into folds
         cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
