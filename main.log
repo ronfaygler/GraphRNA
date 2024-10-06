@@ -577,10 +577,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 23f61bc (running fake data succeed in run cv)
 =======
 >>>>>>> 917594e (start debugging by running main, create fake dfs and update data handlers)
+=======
+=======
+>>>>>>> 23f61bc (running fake data succeed in run cv)
+>>>>>>> f55a26c (running fake data succeed in run cv)
 2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -1339,8 +1344,11 @@ Test: 343 interactions, P: 343, N: 0
 2024-10-06 14:31:28.988; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
+=======
+>>>>>>> f55a26c (running fake data succeed in run cv)
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -3047,6 +3055,7 @@ Test: 2 interactions, P: 2, N: 0
 >>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
 =======
 >>>>>>> 23f61bc (running fake data succeed in run cv)
+<<<<<<< HEAD
 =======
 >>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
 =======
@@ -3878,3 +3887,5 @@ Test: 684 interactions, P: 342, N: 342
 =======
 >>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
 >>>>>>> 917594e (start debugging by running main, create fake dfs and update data handlers)
+=======
+>>>>>>> f55a26c (running fake data succeed in run cv)
