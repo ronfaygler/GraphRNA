@@ -46,18 +46,22 @@ def main():
     graph_rna = GraphRNAModelHandler()
     test = None
     cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
-    # write cv results to folds dfs
-    for fold, fold_df in cv_predictions_dfs.items():
-        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+    # # write cv results to folds dfs
+    # for fold, fold_df in cv_predictions_dfs.items():
+    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
 
 # # ------ mirna mrna:
 #     # ----- configuration
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23f61bc (running fake data succeed in run cv)
     # data="mirna"
     # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
     # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
     # print("paths")
+<<<<<<< HEAD
 
     # # data for XGBoost / RandomForest:
     # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
@@ -82,16 +86,19 @@ def main():
 #     data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
 #     outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
 #     print("paths")
+=======
+>>>>>>> 23f61bc (running fake data succeed in run cv)
 
-#     # data for XGBoost / RandomForest:
-#     # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
+    # # data for XGBoost / RandomForest:
+    # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
-#     # ----- load data for GraphRNA:
-#     # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
+    # # ----- load data for GraphRNA:
+    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
 
-#     # ----- load data for XGBoost / RandomForest
-#     train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
+    # # ----- load data for XGBoost / RandomForest
+    # # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
 
+<<<<<<< HEAD
 #     # ----- run GraphRNA
 #     model_name = "GNN"
 #     graph_rna = GraphRNAModelHandler()
@@ -101,6 +108,17 @@ def main():
 #     for fold, fold_df in cv_predictions_dfs.items():
 #         write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 >>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
+=======
+    # # ----- run GraphRNA
+    # model_name = "GNN"
+    # graph_rna = GraphRNAModelHandler()
+    # test = None
+    # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+
+    # write cv results to folds dfs
+    # for fold, fold_df in cv_predictions_dfs.items():
+        # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+>>>>>>> 23f61bc (running fake data succeed in run cv)
 
     # # # ----- run XGBoost
     # model_name = "XGB"
