@@ -575,6 +575,9 @@
 2024-10-05 18:39:02.430; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 4, after: 4)
 2024-10-05 18:39:02.430; models_handlers.three_graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 4, after: 4)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23f61bc (running fake data succeed in run cv)
 2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-06 11:34:42.534; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -1331,6 +1334,7 @@ Test: 343 interactions, P: 343, N: 0
 2024-10-06 14:31:28.985; models_handlers.three_graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
 2024-10-06 14:31:28.986; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
 2024-10-06 14:31:28.988; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
+<<<<<<< HEAD
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -3029,3 +3033,5 @@ Test: 2 interactions, P: 2, N: 0
 2024-10-07 23:41:28.410; models_handlers.model_handlers_utils; ERROR y_true values are [1.0] (expected [0, 1])  ->  metrics are set to None
 =======
 >>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
+=======
+>>>>>>> 23f61bc (running fake data succeed in run cv)
