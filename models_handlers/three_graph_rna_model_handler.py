@@ -50,7 +50,7 @@ class GraphRNAModelHandler(object):
 
     ##  sRNA
     srna_nodes = None  # init in _prepare_data
-    srna_nid_col = 'srna_node_id'
+    srna_nid_col = 'mirna_node_id'
     srna_eco_acc_col = None
     srna = 'srna'
     
@@ -255,7 +255,6 @@ class GraphRNAModelHandler(object):
                             df_nm: str = None) -> pd.DataFrame:
         ''' srna_acc_col: str - sRNA EcoCyc accession id col in metadata '''
         # 1 - data validation
-        # print("metadata: ", metadata)
         _len = len(metadata)
         srna_acc = metadata[srna_acc_col]
         mrna_acc_with_srna = metadata[mrna_acc_with_srna_col]
@@ -267,7 +266,6 @@ class GraphRNAModelHandler(object):
 
         assert sum(pd.isnull(srna_acc)) + sum(pd.isnull(mrna_acc_with_srna)) + sum(pd.isnull(mrna_acc_with_rbp)) + sum(pd.isnull(rbp_acc)) == 0, "some acc id are null"
         # 2 - get unique sRNA-mRNA interactions
-        print("mrna_acc_with_srna: ", mrna_acc_with_srna)
         unq_intr = pd.DataFrame({
             srna_acc_col: metadata[srna_acc_col],
             mrna_acc_with_srna_col: metadata[mrna_acc_with_srna_col],
@@ -399,6 +397,7 @@ class GraphRNAModelHandler(object):
                                      rbp_map=rbp_map, r_map_acc_col=cls.rbp_eco_acc_col)
 
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.rbp_nid_col, cls.mrna_nid_col_with_rbp]).reset_index(drop=True)
+        print("unique_intr: after sort_values\n", unique_intr)
 
         return unique_intr
 
