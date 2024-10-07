@@ -1335,6 +1335,9 @@ Test: 343 interactions, P: 343, N: 0
 2024-10-06 14:31:28.986; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
 2024-10-06 14:31:28.988; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-07 12:01:25.306; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -1617,6 +1620,7 @@ Test: 343 interactions, P: 343, N: 0
 2024-10-07 15:01:46.147; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 4 unique RBPs of E.coli
 2024-10-07 15:01:46.149; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
 2024-10-07 15:01:46.320; models_handlers.three_graph_rna_model_handler; DEBUG starting fold 0
+<<<<<<< HEAD
 2024-10-07 15:09:20.702; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-07 15:09:20.703; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-07 15:09:20.703; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -3035,3 +3039,5 @@ Test: 2 interactions, P: 2, N: 0
 >>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
 =======
 >>>>>>> 23f61bc (running fake data succeed in run cv)
+=======
+>>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
