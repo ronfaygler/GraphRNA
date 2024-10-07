@@ -31,7 +31,6 @@ def main():
     # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp"
     # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
     # print("paths")
-<<<<<<< HEAD
 
     # # data for XGBoost / RandomForest:
     # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
@@ -315,7 +314,6 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
 # ------------triple:
     if data == "triple":
         cv_predictions_dfs, cv_training_history = \
-<<<<<<< HEAD
             model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
                 y_rbp=train_fragments['y_rbp'],
                 metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
