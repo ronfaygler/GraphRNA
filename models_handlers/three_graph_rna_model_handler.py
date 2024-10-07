@@ -270,6 +270,7 @@ class GraphRNAModelHandler(object):
     @classmethod
     # TODO
     def _get_unique_inter(cls, metadata: pd.DataFrame, y_srna: List[int],  y_rbp: List[int], srna_acc_col: str, rbp_acc_col: str, 
+
                             mrna_acc_with_srna_col: str, mrna_acc_with_rbp_col: str,
                             df_nm: str = None) -> pd.DataFrame:
         ''' srna_acc_col: str - sRNA EcoCyc accession id col in metadata '''
@@ -318,6 +319,7 @@ class GraphRNAModelHandler(object):
                    mrna_acc_with_rbp_col: str, mrna_map_with_rbp: pd.DataFrame, m_map_acc_with_r_col: str, rbp_acc_col: str,
                    rbp_map: pd.DataFrame, r_map_acc_col: str) -> pd.DataFrame:
         _len, _cols = len(intr), list(intr.columns.values)
+
         intr = pd.merge(intr, mrna_map_with_srna, left_on=mrna_acc_with_srna_col, right_on=m_map_acc_with_s_col, how='left')
         intr = pd.merge(intr, srna_map, left_on=srna_acc_col, right_on=s_map_acc_col, how='left')
         intr = pd.merge(intr, mrna_map_with_rbp, left_on=mrna_acc_with_rbp_col, right_on=m_map_acc_with_r_col, how='left')
@@ -414,7 +416,6 @@ class GraphRNAModelHandler(object):
                                      rbp_acc_col=rbp_acc_col,
                                      rbp_map=rbp_map, r_map_acc_col=cls.rbp_eco_acc_col)
 
-        # --- ???
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.rbp_nid_col, cls.mrna_nid_col_with_rbp]).reset_index(drop=True)
 
         return unique_intr
@@ -778,7 +779,7 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_with_srna_col=mrna_acc_with_srna_col,
                                                       mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, rbp_acc_col=rbp_acc_col)
-
+        
         # 4 - random negative sampling - all cv data
 
         # for efrat data - RF, XGB
@@ -821,6 +822,7 @@ class GraphRNAModelHandler(object):
         # For mRNA-RBP interactions
         RBP_cv_folds = stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, label_col=cls.binary_rbp_intr_label_col, n_splits=2)
 
+
         combined_cv_folds = {}
 
         for i in sRNA_cv_folds.keys():
@@ -833,6 +835,16 @@ class GraphRNAModelHandler(object):
                 # 'RBP_val': RBP_cv_folds[i]['val_data'],
                 # 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
             }
+#                 'sRNA_train': sRNA_cv_folds[i]['train_data'],
+#                 'sRNA_train_labels': sRNA_cv_folds[i]['train_labels'],
+#                 'RBP_train': RBP_cv_folds[i]['train_data'],
+#                 'RBP_train_labels': RBP_cv_folds[i]['train_labels'],
+#                 'sRNA_val': sRNA_cv_folds[i]['val_data'],
+#                 'sRNA_val_labels': sRNA_cv_folds[i]['val_labels'],
+#                 'RBP_val': RBP_cv_folds[i]['val_data'],
+#                 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
+#             }
+
         dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
         dummy_y_train, dummy_y_val = list(), list()
         dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
@@ -840,15 +852,7 @@ class GraphRNAModelHandler(object):
         # 6 - predict on folds
         cv_training_history = {}
         cv_prediction_dfs = {}
-        train_neg_sampling = True  # ## ??????????????????????????????????????????
-        # for fold, fold_data_unq in combined_cv_folds.items():
-        #     logger.debug(f"starting fold {fold}")
-        #     # 6.1 - predict on validation set (pos + random sampled neg)
-        #     predictions, training_history = \
-        #         cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
-        #                            model_args=model_args, metadata_train=dummy_meta_train, metadata_test=dummy_meta_val,
-        #                            unq_train=fold_data_unq['sRNA_train'], unq_test=fold_data_unq['unq_val'],
-        #                            train_neg_sampling=train_neg_sampling, srna_acc_col=srna_acc_col, mrna_acc_col=mrna_acc_col, **kwargs)
+        train_neg_sampling = True 
         for fold, fold_data_unq in combined_cv_folds.items(): 
             logger.debug(f"starting fold {fold}")
             

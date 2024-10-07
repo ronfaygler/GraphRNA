@@ -180,7 +180,6 @@ def stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.array,
         }
         cv_folds[i] = fold_data
 
-
     return cv_folds
 
     
