@@ -22,7 +22,7 @@ class GNN(torch.nn.Module):
 class Classifier(torch.nn.Module):
     # def forward(self, x_srna: Tensor, x_mrna: Tensor, x_rbp: Tensor, edge_label_index: Tensor, edge_label_index_rbp: Tensor) -> Tensor:
     def forward(self, x_srna: Tensor, x_mrna: Tensor, edge_label_index: Tensor) -> Tensor:
-
+        print("edge_label_index: ", edge_label_index)
         # convert node embeddings to edge-level representations
         edge_feat_srna = x_srna[edge_label_index[0]]
         edge_feat_mrna = x_mrna[edge_label_index[1]]
@@ -48,7 +48,6 @@ class Classifier(torch.nn.Module):
 
 
 class GraphRNA(torch.nn.Module):
-    # TODO 
     def __init__(self, srna: str, mrna: str, rbp: str, srna_to_mrna: str, rbp_to_mrna: str, srna_num_embeddings: int, mrna_num_embeddings: int, 
                 rbp_num_embeddings: int, model_args: dict):
         """

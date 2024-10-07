@@ -1,0 +1,3 @@
+srna_node_id,mrna_node_id_with_mirna,y_true,y_graph_score
+0,0,1,0.6261232495307922
+1,2,1,0.6095337271690369

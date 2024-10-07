@@ -31,17 +31,22 @@ class GraphRNAModelHandler(object):
     """
     # ------  Nodes  ------
     nodes_are_defined = False
+    mrna_nid_col = 'mrna_node_id'
+    mrna = 'mrna'
     ##  mRNA that interact with sRNA
     mrna_nodes_with_srna = None  # init in _prepare_data
-    mrna_nid_col_with_srna = 'mrna_node_id_with_srna'
+    mrna_nid_col_with_srna = 'mrna_node_id_with_mirna'
     mrna_eco_acc_col_with_srna = None
-    mrna_with_srna = 'mrna_with_srna'
+    mrna_with_srna = 'mrna_with_mirna'
 
     ##  mRNA that interact with RBP
     mrna_nodes_with_rbp = None  # init in _prepare_data
     mrna_nid_col_with_rbp = 'mrna_node_id_with_rbp'
     mrna_eco_acc_col_with_rbp = None
-    mrna_with_rbp = 'mrna_with_rbpa'
+    mrna_with_rbp = 'mrna_with_rbp'
+
+    ## mRNA after combining both interaction types:
+    mrna_nodes = None
 
     ##  sRNA
     srna_nodes = None  # init in _prepare_data
@@ -56,13 +61,16 @@ class GraphRNAModelHandler(object):
     rbp = 'rbp'
 
     # ------  Edges  ------
-    # ---  interactions (sRNA - mRNA)
+    # ---  interactions 
+    # --- (sRNA - mRNA)
     srna_mrna_val_col = None  # in case additional edge features are requested
     srna_to_mrna = 'targets'  # ("rates")
-    binary_intr_label_col = 'interaction_label'
+    # binary_intr_label_col= 'interaction_label'
+    binary_srna_intr_label_col = 'interaction_label_mirna'
     # ---  (RBP - mRNA)
     rbp_mrna_val_col = None  # in case additional edge features are requested
     rbp_to_mrna = 'rbp_targets'  # ("rates") ??????????????????????????????????????
+    binary_rbp_intr_label_col = 'interaction_label_rbp'
 
     # ------  Params  ------
     # --- train data
@@ -103,10 +111,14 @@ class GraphRNAModelHandler(object):
         return model_args
 
     @staticmethod
-    def log_df_stats(df: pd.DataFrame, label_col: str, df_nm: str = None):
+    def log_df_stats(df: pd.DataFrame, label_srna_col: str, label_rbp_col: str, df_nm: str = None):
         df_nm = 'df' if pd.isnull(df_nm) else df_nm
-        _pos_df = sum(df[label_col])
-        logger.debug(f' {df_nm}: {len(df)} interactions (P: {_pos_df}, N: {len(df) - _pos_df})')
+        _pos_df_srna = sum(df[label_srna_col])
+        _pos_df_rbp = sum(df[label_rbp_col])
+
+        logger.debug(f' {df_nm}: {len(df)} interactions mrna-srna (P: {_pos_df_srna}, N: {len(df) - _pos_df_srna})')
+        logger.debug(f' {df_nm}: {len(df)} interactions mrna-rbp (P: {_pos_df_rbp}, N: {len(df) - _pos_df_rbp})')
+
         return
 
     @staticmethod
@@ -115,7 +127,7 @@ class GraphRNAModelHandler(object):
         return
 
     @staticmethod
-    def _map_rna_nodes_and_edges(out_rna_node_id_col: str, rna_eco: pd.DataFrame, e_acc_col: str) -> \
+    def _map_rna_nodes_and_edges(out_rna_node_id_col: str, rna_eco: pd.DataFrame, e_acc_col: str, interaction_type: str='') -> \
             (pd.DataFrame, pd.DataFrame):
         """ map accession to node id """
         # 1 - Nodes = EcoCyc data
@@ -123,6 +135,9 @@ class GraphRNAModelHandler(object):
         # 1.1 - map from original id (acc) to node id (consecutive values)
         rna_nodes[out_rna_node_id_col] = np.arange(len(rna_nodes))
         rna_nodes = order_df(df=rna_nodes, first_cols=[out_rna_node_id_col])
+        if interaction_type!='':
+            rna_nodes[interaction_type] = True  # Mark this node as having this type of interaction (sRNA or RBP)
+
         rna_map = rna_eco[[out_rna_node_id_col, e_acc_col]]
 
         return rna_map, rna_nodes
@@ -134,7 +149,7 @@ class GraphRNAModelHandler(object):
         return df_pos, df_neg
 
     @staticmethod
-    def _remove_synthetic_samples(X: pd.DataFrame, y: List[int], metadata: pd.DataFrame, is_syn_col: str) -> \
+    def _remove_synthetic_samples(X: pd.DataFrame, y_srna: List[int], y_rbp: List[int], metadata: pd.DataFrame, is_syn_col: str) -> \
             (pd.DataFrame, List[int], pd.DataFrame):
         '''
 
@@ -150,38 +165,96 @@ class GraphRNAModelHandler(object):
 
         '''
         logger.debug("removing synthetic samples from train")
-        assert len(X) == len(y) == len(metadata), "X, y, metadata mismatch"
-        assert sorted(set(y)) in [[0, 1], [1]], "y is not binary"
+        assert len(X) == len(y_srna) == len(y_rbp) == len(metadata), "X, y, metadata mismatch"
+        assert sorted(set(y_srna)) in [[0, 1], [1]], "y_srna is not binary"
+        assert sorted(set(y_rbp)) in [[0, 1], [1]], "y is not binary"
 
         mask_not_synthetic = ~metadata[is_syn_col].reset_index(drop=True)
         metadata = metadata.reset_index(drop=True)[mask_not_synthetic]
         X = X.reset_index(drop=True)[mask_not_synthetic]
-        y = list(pd.Series(y)[mask_not_synthetic])
+        # y = list(pd.Series(y)[mask_not_synthetic])
+        y_srna = list(pd.Series(y_srna)[mask_not_synthetic])
+        y_rbp = list(pd.Series(y_rbp)[mask_not_synthetic])
         logger.debug(f"removed {len(mask_not_synthetic) - len(X)} synthetic samples from X "
                      f"(before: {len(mask_not_synthetic)}, after: {len(X)})")
         logger.debug(f"removed {len(mask_not_synthetic) - len(metadata)} synthetic samples from metadata "
                      f"(before: {len(mask_not_synthetic)}, after: {len(metadata)})")
-        return X, y, metadata
+        return X, y_srna, y_rbp, metadata
+
+    # @classmethod
+    # def _add_neg_samples(cls, unq_intr_pos: pd.DataFrame, ratio: float, _shuffle: bool = False) -> HeteroData:
+    #     assert sum(unq_intr_pos[cls.binary_intr_label_col]) == len(unq_intr_pos), "unq_intr_pos has negatives"
+    #     _pos = list(zip(list(unq_intr_pos[cls.srna_nid_col]), list(unq_intr_pos[cls.mrna_nid_col])))
+    #     _all = list(itertools.product(list(cls.srna_nodes[cls.srna_nid_col]), list(cls.mrna_nodes[cls.mrna_nid_col])))
+    #     _unknown = pd.Series(list(set(_all) - set(_pos)))
+    #     _unknown_df = pd.DataFrame({
+    #         cls.binary_intr_label_col: 0,
+    #         cls.srna_nid_col: _unknown.apply(lambda x: x[0]),
+    #         cls.mrna_nid_col: _unknown.apply(lambda x: x[1])
+    #     })
+
+    #     n = max(int(len(_pos) * ratio), 1)
+    #     _neg_samples = _unknown_df.sample(n=n, random_state=cls.sampling_seed)
+    #     out = pd.concat(objs=[unq_intr_pos, _neg_samples], axis=0, ignore_index=True).reset_index(drop=True)
+    #     if _shuffle:
+    #         out = pd.DataFrame(shuffle(out)).reset_index(drop=True)
+
+    #     return out
 
     @classmethod
-    def _add_neg_samples(cls, unq_intr_pos: pd.DataFrame, ratio: float, _shuffle: bool = False) -> HeteroData:
-        assert sum(unq_intr_pos[cls.binary_intr_label_col]) == len(unq_intr_pos), "unq_intr_pos has negatives"
-        _pos = list(zip(list(unq_intr_pos[cls.srna_nid_col]), list(unq_intr_pos[cls.mrna_nid_col])))
-        _all = list(itertools.product(list(cls.srna_nodes[cls.srna_nid_col]), list(cls.mrna_nodes[cls.mrna_nid_col])))
-        _unknown = pd.Series(list(set(_all) - set(_pos)))
-        _unknown_df = pd.DataFrame({
-            cls.binary_intr_label_col: 0,
-            cls.srna_nid_col: _unknown.apply(lambda x: x[0]),
-            cls.mrna_nid_col: _unknown.apply(lambda x: x[1])
+    def _add_neg_samples(cls, unq_intr_pos: dict, ratio: float, _shuffle: bool = False) -> pd.DataFrame:
+        # Ensure the positive interactions are correctly identified
+
+        # Check for negative interactions in the RBP and sRNA DataFrames
+        assert not any(unq_intr_pos['RBP'][cls.binary_rbp_intr_label_col] == 0), "unq_intr_pos has negatives for RBP"
+        assert not any(unq_intr_pos['sRNA'][cls.binary_srna_intr_label_col] == 0), "unq_intr_pos has negatives for miRNA"
+        
+        # Extract positive interaction pairs (for miRNA-sRNA and mRNA-RBP)
+        _pos_mirna_mrna = list(zip(list(unq_intr_pos['sRNA'][cls.srna_nid_col]), list(unq_intr_pos['sRNA'][cls.mrna_nid_col_with_srna])))
+        # _pos_rbp_mrna = list(zip(list(unq_intr_pos['RBP']['RBP']), list(unq_intr_pos['RBP']['mRNA_ID_with_RBP'])))
+        _pos_rbp_mrna = list(zip(list(unq_intr_pos['RBP'][cls.rbp_nid_col]), list(unq_intr_pos['RBP'][cls.mrna_nid_col_with_rbp])))
+        # Generate all possible combinations of miRNA-sRNA and mRNA-RBP
+        _all_mirna_mrna = list(itertools.product(list(cls.srna_nodes[cls.srna_nid_col]), list(cls.mrna_nodes['mrna_node_id'])))
+        _all_rbp_mrna = list(itertools.product(list(cls.rbp_nodes[cls.rbp_nid_col]), list(cls.mrna_nodes['mrna_node_id'])))
+        
+        # Get unknown/negative samples by subtracting positives from all possible combinations
+        _unknown_mirna_mrna = pd.Series(list(set(_all_mirna_mrna) - set(_pos_mirna_mrna)))
+        _unknown_rbp_mrna = pd.Series(list(set(_all_rbp_mrna) - set(_pos_rbp_mrna)))
+
+        # Create DataFrames for the unknown negative interactions
+        _unknown_mirna_mrna_df = pd.DataFrame({
+            cls.binary_srna_intr_label_col: 0,
+            cls.srna_nid_col: _unknown_mirna_mrna.apply(lambda x: x[0]),
+            cls.mrna_nid_col_with_srna: _unknown_mirna_mrna.apply(lambda x: x[1])
+        })
+        
+        _unknown_rbp_mrna_df = pd.DataFrame({
+            cls.binary_rbp_intr_label_col: 0,
+            cls.rbp_nid_col: _unknown_rbp_mrna.apply(lambda x: x[0]),
+            cls.mrna_nid_col_with_rbp: _unknown_rbp_mrna.apply(lambda x: x[1])
         })
 
-        n = max(int(len(_pos) * ratio), 1)
-        _neg_samples = _unknown_df.sample(n=n, random_state=cls.sampling_seed)
-        out = pd.concat(objs=[unq_intr_pos, _neg_samples], axis=0, ignore_index=True).reset_index(drop=True)
-        if _shuffle:
-            out = pd.DataFrame(shuffle(out)).reset_index(drop=True)
+        # Determine the number of negative samples to match the positive sample ratio
+        n_mirna_mrna = max(int(len(_pos_mirna_mrna) * ratio), 1)
+        n_rbp_mrna = max(int(len(_pos_rbp_mrna) * ratio), 1)
+        
+        # Sample the negative interactions
+        _neg_samples_mirna_mrna = _unknown_mirna_mrna_df.sample(n=n_mirna_mrna, random_state=cls.sampling_seed)
+        _neg_samples_rbp_mrna = _unknown_rbp_mrna_df.sample(n=n_rbp_mrna, random_state=cls.sampling_seed)
 
-        return out
+        # Concatenate the positive interactions with the negative samples
+        out_mirna_mrna = pd.concat(objs=[unq_intr_pos['sRNA'][[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.binary_srna_intr_label_col]], _neg_samples_mirna_mrna], axis=0, ignore_index=True).reset_index(drop=True)
+        out_rbp_mrna = pd.concat(objs=[unq_intr_pos['RBP'][[cls.rbp_nid_col, cls.mrna_nid_col_with_rbp, cls.binary_rbp_intr_label_col]], _neg_samples_rbp_mrna], axis=0, ignore_index=True).reset_index(drop=True)
+
+        # Optionally shuffle the output
+        if _shuffle:
+            out_mirna_mrna = pd.DataFrame(shuffle(out_mirna_mrna)).reset_index(drop=True)
+            out_rbp_mrna = pd.DataFrame(shuffle(out_rbp_mrna)).reset_index(drop=True)
+
+        # Return the combined DataFrame
+        return pd.concat([out_mirna_mrna, out_rbp_mrna], axis=1)
+
+
 
     @classmethod
     def combine_pos_neg_samples(cls, unq_intr_pos: pd.DataFrame, neg_df: pd.DataFrame, ratio: float, _shuffle: bool = False):
@@ -196,7 +269,8 @@ class GraphRNAModelHandler(object):
 
     @classmethod
     # TODO
-    def _get_unique_inter(cls, metadata: pd.DataFrame, y: List[int], srna_acc_col: str, rbp_acc_col: str, 
+    def _get_unique_inter(cls, metadata: pd.DataFrame, y_srna: List[int],  y_rbp: List[int], srna_acc_col: str, rbp_acc_col: str, 
+
                             mrna_acc_with_srna_col: str, mrna_acc_with_rbp_col: str,
                             df_nm: str = None) -> pd.DataFrame:
         ''' srna_acc_col: str - sRNA EcoCyc accession id col in metadata '''
@@ -207,21 +281,23 @@ class GraphRNAModelHandler(object):
         rbp_acc = metadata[rbp_acc_col]
         mrna_acc_with_rbp = metadata[mrna_acc_with_rbp_col]
 
-        assert sorted(set(y)) in [[0, 1], [1]], "y is not binary"
+        assert sorted(set(y_srna)) in [[0, 1], [1]], "y_srna is not binary"
+        assert sorted(set(y_rbp)) in [[0, 1], [1]], "y_rbp is not binary"
+
         assert sum(pd.isnull(srna_acc)) + sum(pd.isnull(mrna_acc_with_srna)) + sum(pd.isnull(mrna_acc_with_rbp)) + sum(pd.isnull(rbp_acc)) == 0, "some acc id are null"
         # 2 - get unique sRNA-mRNA interactions
         unq_intr = pd.DataFrame({
             srna_acc_col: metadata[srna_acc_col],
-            mrna_acc_with_srna: metadata[mrna_acc_with_srna],
-            rbp_acc: metadata[rbp_acc],
-            mrna_acc_with_rbp: metadata[mrna_acc_with_rbp],
-
-            cls.binary_intr_label_col: y
+            mrna_acc_with_srna_col: metadata[mrna_acc_with_srna_col],
+            rbp_acc_col: metadata[rbp_acc_col],
+            mrna_acc_with_rbp_col: metadata[mrna_acc_with_rbp_col],
+            cls.binary_srna_intr_label_col: y_srna,
+            cls.binary_rbp_intr_label_col: y_rbp
         })
-        cls.log_df_stats(df=unq_intr, label_col=cls.binary_intr_label_col, df_nm=df_nm)
+        cls.log_df_stats(df=unq_intr, label_srna_col=cls.binary_srna_intr_label_col, label_rbp_col=cls.binary_rbp_intr_label_col, df_nm=df_nm)
         unq_intr = unq_intr.drop_duplicates().reset_index(drop=True)
         # 2 - log unique
-        cls.log_df_stats(df=unq_intr, label_col=cls.binary_intr_label_col, df_nm=f"unique_{df_nm}")
+        cls.log_df_stats(df=unq_intr, label_srna_col=cls.binary_srna_intr_label_col, label_rbp_col=cls.binary_rbp_intr_label_col, df_nm=f"unique_{df_nm}")
 
         return unq_intr
 
@@ -243,13 +319,15 @@ class GraphRNAModelHandler(object):
                    mrna_acc_with_rbp_col: str, mrna_map_with_rbp: pd.DataFrame, m_map_acc_with_r_col: str, rbp_acc_col: str,
                    rbp_map: pd.DataFrame, r_map_acc_col: str) -> pd.DataFrame:
         _len, _cols = len(intr), list(intr.columns.values)
-        intr = pd.merge(intr, mrna_map_with_srna, left_on=mrna_acc_with_srna_col, right_on=m_map_acc_with_s_col, how='left', suffixes=('', '_mrna_srna'))
-        intr = pd.merge(intr, srna_map, left_on=srna_acc_col, right_on=s_map_acc_col, how='left')
-        intr = pd.merge(intr, mrna_map_with_rbp, left_on=mrna_acc_with_rbp_col, right_on=m_map_acc_with_r_col, how='left', suffixes=('', '_mrna_rbp'))
-        intr = pd.merge(intr, rbp_map, left_on=rbp_acc_col, right_on=r_map_acc_col, how='left')
 
+        intr = pd.merge(intr, mrna_map_with_srna, left_on=mrna_acc_with_srna_col, right_on=m_map_acc_with_s_col, how='left')
+        intr = pd.merge(intr, srna_map, left_on=srna_acc_col, right_on=s_map_acc_col, how='left')
+        intr = pd.merge(intr, mrna_map_with_rbp, left_on=mrna_acc_with_rbp_col, right_on=m_map_acc_with_r_col, how='left')
+        intr = pd.merge(intr, rbp_map, left_on=rbp_acc_col, right_on=r_map_acc_col, how='left')
+        
         assert len(intr) == _len, "duplications post merge"
         intr = intr[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col] + _cols]
+
         return intr
 
     @classmethod
@@ -257,10 +335,10 @@ class GraphRNAModelHandler(object):
         # 1 - mRNA-srna
         # 1.1 - get map, nodes and edges
         m_eco_acc_col_with_srna = kwargs['me_acc_col_with_srna']
-        cls.log_df_rna_eco(rna_name='mRNA_with_srna', rna_eco_df=kwargs['mrna_eco_with_srna'], acc_col=m_eco_acc_col_with_srna)
+        cls.log_df_rna_eco(rna_name='mRNA_with_mirna', rna_eco_df=kwargs['mrna_eco_with_srna'], acc_col=m_eco_acc_col_with_srna)
         _, mrna_nodes_with_srna = \
             cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col_with_srna, rna_eco=kwargs['mrna_eco_with_srna'],
-                                         e_acc_col=m_eco_acc_col_with_srna)
+                                         e_acc_col=m_eco_acc_col_with_srna, interaction_type='has_mirna_interaction')
         # 1.2 - set
         # nodes
         cls.mrna_nodes_with_srna = mrna_nodes_with_srna
@@ -272,11 +350,25 @@ class GraphRNAModelHandler(object):
         cls.log_df_rna_eco(rna_name='mRNA_with_rbp', rna_eco_df=kwargs['mrna_eco_with_rbp'], acc_col=m_eco_acc_col_with_rbp)
         _, mrna_nodes_with_rbp = \
             cls._map_rna_nodes_and_edges(out_rna_node_id_col=cls.mrna_nid_col_with_rbp, rna_eco=kwargs['mrna_eco_with_rbp'],
-                                         e_acc_col=m_eco_acc_col_with_rbp)
+                                         e_acc_col=m_eco_acc_col_with_rbp, interaction_type='has_rbp_interaction')
         # 1.2 - set
         # nodes
         cls.mrna_nodes_with_rbp = mrna_nodes_with_rbp
         cls.mrna_eco_acc_col_with_rbp = m_eco_acc_col_with_rbp
+
+        # Merge both mRNA interaction types on the common node
+        # cls.mrna_nodes = pd.merge(mrna_nodes_with_srna, mrna_nodes_with_rbp, 
+        #                     on=cls.mrna_nid_col, how='outer', suffixes=('_srna', '_rbp'))
+        cls.mrna_nodes = pd.merge(
+            mrna_nodes_with_srna.rename(columns={cls.mrna_nid_col_with_srna: cls.mrna_nid_col}), 
+            mrna_nodes_with_rbp.rename(columns={cls.mrna_nid_col_with_rbp: cls.mrna_nid_col}),
+            on=cls.mrna_nid_col, 
+            how='outer', 
+            suffixes=('_mirna', '_rbp')
+        )
+        # Fill missing values (if some nodes only have one interaction type)
+        cls.mrna_nodes['has_mirna_interaction'] = cls.mrna_nodes['has_mirna_interaction'].fillna(False)
+        cls.mrna_nodes['has_rbp_interaction'] = cls.mrna_nodes['has_rbp_interaction'].fillna(False)
 
         # 2 - sRNA
         # 2.1 - get map, nodes and edges
@@ -308,7 +400,6 @@ class GraphRNAModelHandler(object):
         return
 
     @classmethod
-    #TODO:  _map_inter, sort_values
     def _map_interactions_to_edges(cls, unique_intr: pd.DataFrame, srna_acc_col: str, mrna_acc_with_srna_col: str,
                                     mrna_acc_with_rbp_col: str, rbp_acc_col: str) -> \
                             (pd.DataFrame, pd.DataFrame, pd.DataFrame):
@@ -317,14 +408,14 @@ class GraphRNAModelHandler(object):
         mrna_map_with_rbp = cls.mrna_nodes_with_rbp[[cls.mrna_nid_col_with_rbp, cls.mrna_eco_acc_col_with_rbp]]
         srna_map = cls.srna_nodes[[cls.srna_nid_col, cls.srna_eco_acc_col]]
         rbp_map = cls.rbp_nodes[[cls.rbp_nid_col, cls.rbp_eco_acc_col]]
-
         unique_intr = cls._map_inter(intr=unique_intr, mrna_acc_with_srna_col=mrna_acc_with_srna_col,
                                      mrna_map_with_srna=mrna_map_with_srna, m_map_acc_with_s_col=cls.mrna_eco_acc_col_with_srna, 
                                      srna_acc_col=srna_acc_col, srna_map=srna_map, s_map_acc_col=cls.srna_eco_acc_col, 
                                      mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, mrna_map_with_rbp=mrna_map_with_rbp, 
                                      m_map_acc_with_r_col=cls.mrna_eco_acc_col_with_rbp,
-                                     rbp_acc_col=rbp_acc_col
+                                     rbp_acc_col=rbp_acc_col,
                                      rbp_map=rbp_map, r_map_acc_col=cls.rbp_eco_acc_col)
+
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.rbp_nid_col, cls.mrna_nid_col_with_rbp]).reset_index(drop=True)
 
         return unique_intr
@@ -347,7 +438,7 @@ class GraphRNAModelHandler(object):
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index = train_edge_index
         # RBP
         train_edge_index_rbp = torch.stack([torch.from_numpy(np.array(edges['train']['message_passing']['label_index_2'])),
-                                        torch.from_numpy(np.array(edges['train']['message_passing']['label_index_1']))],
+                                        torch.from_numpy(np.array(edges['train']['message_passing']['label_index_3']))],
                                        dim=0)
         train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_index = train_edge_index_rbp
 
@@ -355,16 +446,19 @@ class GraphRNAModelHandler(object):
         # edges for supervision
         # srna
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label = \
-            torch.from_numpy(np.array(edges['train']['supervision']['label'])).float()
+            torch.from_numpy(np.array(edges['train']['supervision']['label_srna'])).float()
+
         train_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['train']['supervision']['label_index_0'])),
             torch.from_numpy(np.array(edges['train']['supervision']['label_index_1']))], dim=0)
         # RBP
         train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label = \
-            torch.from_numpy(np.array(edges['train']['supervision']['label'])).float()
+            torch.from_numpy(np.array(edges['train']['supervision']['label_rbp'])).float()
+
         train_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['train']['supervision']['label_index_2'])),
-            torch.from_numpy(np.array(edges['train']['supervision']['label_index_1']))], dim=0)
+            torch.from_numpy(np.array(edges['train']['supervision']['label_index_3']))], dim=0)
+
         # ------  Test Data  ------
         test_data = HeteroData()
         # ------  Nodes
@@ -380,22 +474,22 @@ class GraphRNAModelHandler(object):
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_index = test_edge_index
         # RBP
         test_edge_index_rbp = torch.stack([torch.from_numpy(np.array(edges['train']['all']['label_index_2'])),
-                        torch.from_numpy(np.array(edges['train']['all']['label_index_1']))], dim=0)
+                        torch.from_numpy(np.array(edges['train']['all']['label_index_3']))], dim=0)
         test_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_index = test_edge_index_rbp
         test_data = T.ToUndirected()(test_data)
         # test edges for supervision
         # sRNA
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label = \
-            torch.from_numpy(np.array(edges['test']['label'])).float()
+            torch.from_numpy(np.array(edges['test']['label_srna'])).float()
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['test']['label_index_0'])),
             torch.from_numpy(np.array(edges['test']['label_index_1']))], dim=0)
         # RBP
         test_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label = \
-            torch.from_numpy(np.array(edges['test']['label'])).float()
+            torch.from_numpy(np.array(edges['test']['label_rbp'])).float()
         test_data[cls.rbp, cls.rbp_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['test']['label_index_2'])),
-            torch.from_numpy(np.array(edges['test']['label_index_1']))], dim=0)
+            torch.from_numpy(np.array(edges['test']['label_index_3']))], dim=0)
         if cls.debug_logs:
             logger.debug(f"\n Train data:\n ============== \n{train_data}\n"
                          f"\n Test data:\n ============== \n{test_data}\n")
@@ -405,6 +499,7 @@ class GraphRNAModelHandler(object):
     @classmethod
     def _init_train_test_hetero_data(cls, unq_train: pd.DataFrame, unq_test: pd.DataFrame, train_neg_sampling: bool) \
             -> (HeteroData, HeteroData):
+            # TODO 
         """
 
         Parameters
@@ -419,7 +514,9 @@ class GraphRNAModelHandler(object):
         """
         logger.debug("initializing train and test hetero data")
         df = unq_train
-        unq_train_pos, unq_train_neg = cls._pos_neg_split(df=unq_train, binary_label_col=cls.binary_intr_label_col)
+        # -- there arent negative samples yet
+        # unq_train_pos, unq_train_neg = cls._pos_neg_split(df=unq_train, binary_label_col=cls.binary_intr_label_col)
+        unq_train_pos = unq_train
         # 1 - random negative sampling - train
         if train_neg_sampling:
             # 1.1 - take only positive samples from train and add random negatives
@@ -428,50 +525,65 @@ class GraphRNAModelHandler(object):
                                       _shuffle=_shuffle_train)
             _shuffle_test = True
             if _shuffle_test:
-                unq_test = pd.DataFrame(shuffle(unq_test)).reset_index(drop=True)
+                for key in unq_test:
+                    unq_test[key] = pd.DataFrame(shuffle(unq_test[key])).reset_index(drop=True)           
             if cls.debug_logs:
                 logger.debug(f"_shuffle_train = {_shuffle_train}, _shuffle_test = {_shuffle_test}")
 
         # 2 - split train edges into message passing & supervision
         unq_train_spr, unq_train_mp = split_df_samples(df=df, ratio=cls.train_supervision_ratio)
+        
         edges = {
             'train': {
                 'all': {
-                    'label': list(df[cls.binary_intr_label_col]),
-                    'label_index_0': list(df[cls.srna_nid_col]),
-                    'label_index_1': list(df[cls.mrna_nid_col]),
-                    'label_index_2': list(df[cls.rbp_nid_col])
+                    'label_srna': df[cls.binary_srna_intr_label_col].dropna().astype(int).tolist(),
+                    'label_rbp': df[cls.binary_rbp_intr_label_col].dropna().astype(int).tolist(),
+                    'label_index_0': df[cls.srna_nid_col].dropna().astype(int).tolist(),
+                    'label_index_1': df[cls.mrna_nid_col_with_srna].dropna().astype(int).tolist(),
+                    'label_index_2': df[cls.rbp_nid_col].dropna().astype(int).tolist(),
+                    'label_index_3': df[cls.mrna_nid_col_with_rbp].dropna().astype(int).tolist()
                 },
                 'message_passing': {
-                    'label': list(unq_train_mp[cls.binary_intr_label_col]),
-                    'label_index_0': list(unq_train_mp[cls.srna_nid_col]),
-                    'label_index_1': list(unq_train_mp[cls.mrna_nid_col]),
-                    'label_index_2': list(unq_train_mp[cls.rbp_nid_col])
-
+                    'label_srna': unq_train_mp[cls.binary_srna_intr_label_col].dropna().astype(int).tolist(),
+                    'label_rbp': unq_train_mp[cls.binary_rbp_intr_label_col].dropna().astype(int).tolist(),
+                    'label_index_0': unq_train_mp[cls.srna_nid_col].dropna().astype(int).tolist(),
+                    'label_index_1': unq_train_mp[cls.mrna_nid_col_with_srna].dropna().astype(int).tolist(),
+                    'label_index_2': unq_train_mp[cls.rbp_nid_col].dropna().astype(int).tolist(),
+                    'label_index_3': unq_train_mp[cls.mrna_nid_col_with_rbp].dropna().astype(int).tolist()
                 },
                 'supervision': {
-                    'label': list(unq_train_spr[cls.binary_intr_label_col]),
-                    'label_index_0': list(unq_train_spr[cls.srna_nid_col]),
-                    'label_index_1': list(unq_train_spr[cls.mrna_nid_col]),
-                    'label_index_2': list(unq_train_spr[cls.rbp_nid_col])
-
+                    'label_srna': unq_train_spr[cls.binary_srna_intr_label_col].dropna().astype(int).tolist(),
+                    'label_rbp': unq_train_spr[cls.binary_rbp_intr_label_col].dropna().astype(int).tolist(),
+                    'label_index_0': unq_train_spr[cls.srna_nid_col].dropna().astype(int).tolist(),
+                    'label_index_1': unq_train_spr[cls.mrna_nid_col_with_srna].dropna().astype(int).tolist(),
+                    'label_index_2': unq_train_spr[cls.rbp_nid_col].dropna().astype(int).tolist(),
+                    'label_index_3': unq_train_spr[cls.mrna_nid_col_with_rbp].dropna().astype(int).tolist()
                 }
             },
             'test': {
-                'label': list(unq_test[cls.binary_intr_label_col]),
-                'label_index_0': list(unq_test[cls.srna_nid_col]),
-                'label_index_1': list(unq_test[cls.mrna_nid_col]),
-                'label_index_2': list(unq_test[cls.rbp_nid_col]) ######### remove ???????????
+                'label_srna': unq_test['sRNA'][cls.binary_srna_intr_label_col].dropna().astype(int).tolist(),
+                'label_rbp': unq_test['RBP'][cls.binary_rbp_intr_label_col].dropna().astype(int).tolist(),
+                'label_index_0': unq_test['sRNA'][cls.srna_nid_col].dropna().astype(int).tolist(),
+                'label_index_1': unq_test['sRNA'][cls.mrna_nid_col_with_srna].dropna().astype(int).tolist(),
+                'label_index_2': unq_test['RBP'][cls.rbp_nid_col].dropna().astype(int).tolist(),
+                'label_index_3': unq_test['RBP'][cls.mrna_nid_col_with_rbp].dropna().astype(int).tolist()
             }
         }
 
         logger.debug(f"\n{len(cls.srna_nodes)} sRNA nodes, {len(cls.mrna_nodes)} mRNA nodes \n{len(cls.rbp_nodes)} RBP nodes \n"
-                     f"Train: {len(edges['train']['all']['label'])} interactions, "
-                     f"P: {sum(edges['train']['all']['label'])}, "
-                     f"N: {len(edges['train']['all']['label']) - sum(edges['train']['all']['label'])} \n"
-                     f"Test: {len(edges['test']['label'])} interactions, "
-                     f"P: {sum(edges['test']['label'])}, "
-                     f"N: {len(edges['test']['label']) - sum(edges['test']['label'])}")
+                     f"Train: {len(edges['train']['all']['label_srna'])} srna interactions, "
+                     f"P: {sum(edges['train']['all']['label_srna'])}, "
+                     f"N: {len(edges['train']['all']['label_srna']) - sum(edges['train']['all']['label_srna'])} \n"
+                     f"Test: {len(edges['test']['label_srna'])} interactions, "
+                     f"P: {sum(edges['test']['label_srna'])}, "
+                     f"N: {len(edges['test']['label_srna']) - sum(edges['test']['label_srna'])} \n"
+
+                    f"Train: {len(edges['train']['all']['label_rbp'])} rbp interactions, "
+                     f"P: {sum(edges['train']['all']['label_rbp'])}, "
+                     f"N: {len(edges['train']['all']['label_rbp']) - sum(edges['train']['all']['label_rbp'])} \n"
+                     f"Test: {len(edges['test']['label_rbp'])} interactions, "
+                     f"P: {sum(edges['test']['label_rbp'])}, "
+                     f"N: {len(edges['test']['label_rbp']) - sum(edges['test']['label_rbp'])}")
 
         # 3 - initialize data sets
         train_data, test_data = cls._generate_train_and_test(edges=edges)
@@ -549,7 +661,7 @@ class GraphRNAModelHandler(object):
         # 2.2 - save
         eval_data_preds = pd.DataFrame({
             cls.srna_nid_col: torch.cat(srna_nids, dim=0).cpu().numpy(),
-            cls.mrna_nid_col: torch.cat(mrna_nids, dim=0).cpu().numpy(),
+            cls.mrna_nid_col_with_srna: torch.cat(mrna_nids, dim=0).cpu().numpy(),
             'y_true': y_true,
             'y_graph_score': y_graph_score
         })
@@ -563,8 +675,10 @@ class GraphRNAModelHandler(object):
 
     @classmethod
     def add_rna_metadata(cls, _df: pd.DataFrame, sort_df: bool = False, sort_by_col: str = None) -> pd.DataFrame:
+        # TODO 
         assert cls.srna_nid_col in _df.columns.values, f"{cls.srna_nid_col} column is missing in _df"
-        assert cls.mrna_nid_col in _df.columns.values, f"{cls.mrna_nid_col} column is missing in _df"
+        assert cls.mrna_nid_col_with_srna in _df.columns.values, f"{cls.mrna_nid_col_with_srna} column is missing in _df"
+        assert cls.mrna_nid_col_with_rbp in _df.columns.values, f"{cls.mrna_nid_col_with_rbp} column is missing in _df"
         assert cls.rbp_nid_col in _df.columns.values, f"{cls.rbp_nid_col} column is missing in _df"
 
         srna_meta_cols = [c for c in cls.srna_nodes.columns.values if c != cls.srna_nid_col]
@@ -595,16 +709,17 @@ class GraphRNAModelHandler(object):
         _df = unq_intr
         _df[out_col_y_true] = y_true
         _df[out_col_y_score] = y_score
-        _df = cls.add_rna_metadata(_df=_df, sort_df=sort_df, sort_by_col=out_col_y_score)
+        # TODO ?
+        # _df = cls.add_rna_metadata(_df=_df, sort_df=sort_df, sort_by_col=out_col_y_score)
 
         return _df
 
     @classmethod
-    def run_cross_validation(cls, X: pd.DataFrame, y: List[int], n_splits: int, model_args: dict,
+    def run_cross_validation(cls, X: pd.DataFrame, y_srna: List[int], y_rbp: List[int], n_splits: int, model_args: dict,
                              metadata: pd.DataFrame = None, srna_acc_col: str = 'sRNA_accession_id_Eco',
                              rbp_acc_col: str = 'RBP_accession_id_Eco', 
                              mrna_acc_with_srna_col: str = 'mRNA_with_sRNA_accession_id_Eco',
-                             mrna_acc_with_rbp_col=: str = 'mRNA_with_RBP_accession_id_Eco', 
+                             mrna_acc_with_rbp_col: str = 'mRNA_with_RBP_accession_id_Eco', 
                              is_syn_col: str = 'is_synthetic', 
                              neg_df: pd.DataFrame = None, **kwargs) \
             -> (Dict[int, pd.DataFrame], Dict[int, dict]):
@@ -642,15 +757,21 @@ class GraphRNAModelHandler(object):
         """
         logger.debug(f"running cross validation with {n_splits} folds")
         # 1 - remove all synthetic samples
+
         logger.warning("removing all synthetic samples")
-        X_no_syn, y_no_syn, metadata_no_syn = \
-            cls._remove_synthetic_samples(X=X, y=y, metadata=metadata, is_syn_col=is_syn_col)
+        X_no_syn, y_srna_no_syn, y_rbp_no_syn, metadata_no_syn = \
+            cls._remove_synthetic_samples(X=X, y_srna=y_srna, y_rbp=y_rbp, metadata=metadata, is_syn_col=is_syn_col)
+        
 
         # 2 - get unique interactions data (train + val)
-        unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y=y_no_syn, srna_acc_col=srna_acc_col,
+        unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y_srna=y_srna_no_syn, y_rbp=y_rbp_no_syn, srna_acc_col=srna_acc_col,
                                         rbp_acc_col=rbp_acc_col, mrna_acc_with_srna_col=mrna_acc_with_srna_col,
-                                        mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, df_nm='all')
-        unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
+                                        mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, df_nm='test')
+
+
+        # --- there arent negatives yet
+        # unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
+        unq_intr_pos = unq_intr
 
         # 3 - define graph nodes (if needed) and map interaction
         if not cls.nodes_are_defined:
@@ -658,6 +779,7 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_with_srna_col=mrna_acc_with_srna_col,
                                                       mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, rbp_acc_col=rbp_acc_col)
+        
         # 4 - random negative sampling - all cv data
 
         # for efrat data - RF, XGB
@@ -678,41 +800,50 @@ class GraphRNAModelHandler(object):
             unq_data = unq_intr_pos
         #####################################
 
-        unq_y = np.array(unq_data[cls.binary_intr_label_col])
-        unq_intr_data = unq_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col]]
+        # unq_y = np.array(unq_data[cls.binary_intr_label_col])
 
+        unq_intr_data = unq_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col, cls.binary_srna_intr_label_col, cls.binary_rbp_intr_label_col]]
         # Separate mRNA-sRNA and mRNA-RBP interactions, assuming columns are named accordingly
-        mRNA_sRNA_interactions = unq_intr_data[['mrna_interact_with_srna', 'srna']].dropna()
-        mRNA_RBP_interactions = unq_intr_data[['mrna_interact_with_rbp', 'rbp']].dropna()
+        mRNA_sRNA_interactions = unq_intr_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col]].dropna()
+        mRNA_RBP_interactions = unq_intr_data[[cls.mrna_nid_col_with_rbp, cls.rbp_nid_col]].dropna()
 
         # Assuming both interaction types have a label column in unq_intr_data
         # Example label column: 'interaction_label'
-        mRNA_sRNA_labels = unq_intr_data['interaction_label'].loc[mRNA_sRNA_interactions.index]
-        mRNA_RBP_labels = unq_intr_data['interaction_label'].loc[mRNA_RBP_interactions.index]
+        mRNA_sRNA_labels = unq_intr_data[cls.binary_srna_intr_label_col].loc[mRNA_sRNA_interactions.index]
+        mRNA_RBP_labels = unq_intr_data[cls.binary_rbp_intr_label_col].loc[mRNA_RBP_interactions.index]
 
 
         # 5 - split data into folds
         # cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
                                                         #  label_col=cls.binary_intr_label_col)
         # For mRNA-sRNA interactions
-        sRNA_cv_folds = stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, n_splits=5)
+        sRNA_cv_folds = stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, label_col=cls.binary_srna_intr_label_col, n_splits=2)
 
         # For mRNA-RBP interactions
-        RBP_cv_folds = stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, n_splits=5)
+        RBP_cv_folds = stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, label_col=cls.binary_rbp_intr_label_col, n_splits=2)
+
 
         combined_cv_folds = {}
 
         for i in sRNA_cv_folds.keys():
             combined_cv_folds[i] = {
-                'sRNA_train': sRNA_cv_folds[i]['train_data'],
-                'sRNA_train_labels': sRNA_cv_folds[i]['train_labels'],
-                'RBP_train': RBP_cv_folds[i]['train_data'],
-                'RBP_train_labels': RBP_cv_folds[i]['train_labels'],
-                'sRNA_val': sRNA_cv_folds[i]['val_data'],
-                'sRNA_val_labels': sRNA_cv_folds[i]['val_labels'],
-                'RBP_val': RBP_cv_folds[i]['val_data'],
-                'RBP_val_labels': RBP_cv_folds[i]['val_labels']
+                'sRNA_train': sRNA_cv_folds[i]['unq_train'],
+                'sRNA_val': sRNA_cv_folds[i]['unq_val'],
+                'RBP_train': RBP_cv_folds[i]['unq_train'],
+                'RBP_val': RBP_cv_folds[i]['unq_val']#,
+                # 'sRNA_val_labels': sRNA_cv_folds[i]['val_labels'],
+                # 'RBP_val': RBP_cv_folds[i]['val_data'],
+                # 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
             }
+#                 'sRNA_train': sRNA_cv_folds[i]['train_data'],
+#                 'sRNA_train_labels': sRNA_cv_folds[i]['train_labels'],
+#                 'RBP_train': RBP_cv_folds[i]['train_data'],
+#                 'RBP_train_labels': RBP_cv_folds[i]['train_labels'],
+#                 'sRNA_val': sRNA_cv_folds[i]['val_data'],
+#                 'sRNA_val_labels': sRNA_cv_folds[i]['val_labels'],
+#                 'RBP_val': RBP_cv_folds[i]['val_data'],
+#                 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
+#             }
 
         dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
         dummy_y_train, dummy_y_val = list(), list()
@@ -721,21 +852,42 @@ class GraphRNAModelHandler(object):
         # 6 - predict on folds
         cv_training_history = {}
         cv_prediction_dfs = {}
-        train_neg_sampling = False  # negatives were already added to cv_data_unq
-        for fold, fold_data_unq in combined_cv_folds.items():
+        train_neg_sampling = True 
+        for fold, fold_data_unq in combined_cv_folds.items(): 
             logger.debug(f"starting fold {fold}")
-            # 6.1 - predict on validation set (pos + random sampled neg)
-            predictions, training_history = \
-                cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
-                                   model_args=model_args, metadata_train=dummy_meta_train, metadata_test=dummy_meta_val,
-                                   unq_train=fold_data_unq['unq_train'], unq_test=fold_data_unq['unq_val'],
-                                   train_neg_sampling=train_neg_sampling, srna_acc_col=srna_acc_col, mrna_acc_col=mrna_acc_col, **kwargs)
+            
+            # Extract training and validation data for both sRNA and RBP
+            sRNA_train = fold_data_unq['sRNA_train']
+            sRNA_val = fold_data_unq['sRNA_val']
+            RBP_train = fold_data_unq['RBP_train']
+            RBP_val = fold_data_unq['RBP_val']
+
+            # Train and test model with both sRNA and RBP data
+            predictions, training_history = cls.train_and_test(
+                X_train=dummy_x_train, 
+                y_train=dummy_y_train, 
+                X_test=dummy_x_val, 
+                y_test=dummy_y_val,
+                model_args=model_args, 
+                metadata_train=dummy_meta_train, 
+                metadata_test=dummy_meta_val,
+                unq_train={'sRNA': sRNA_train, 'RBP': RBP_train},  # Passing both sRNA and RBP training data
+                unq_test={'sRNA': sRNA_val, 'RBP': RBP_val},       # Passing both sRNA and RBP validation data
+                train_neg_sampling=train_neg_sampling, 
+                srna_acc_col=srna_acc_col, 
+                mrna_acc_with_srna_col=mrna_acc_with_srna_col,
+                mrna_acc_with_rbp_col=mrna_acc_with_rbp_col,
+                rbp_acc_col=rbp_acc_col,
+                **kwargs
+            )
+
             # 6.2 - fold's training history
             cv_training_history[fold] = training_history
             # 6.3 - fold's predictions df
             y_val_graph_score = predictions['test_y_graph_score']
-            unq_val = fold_data_unq['unq_val'][[cls.srna_nid_col, cls.mrna_nid_col]]
-            y_val = fold_data_unq['unq_val'][cls.binary_intr_label_col]
+            unq_val = fold_data_unq['sRNA_val'][[cls.srna_nid_col, cls.mrna_nid_col_with_srna]]
+            # y_val = fold_data_unq['unq_val'][cls.binary_intr_label_col]
+            y_val = fold_data_unq['sRNA_val'][cls.binary_srna_intr_label_col]
             cv_pred_df = cls.get_predictions_df(unq_intr=unq_val, y_true=y_val, y_score=y_val_graph_score)
             cv_prediction_dfs[fold] = cv_pred_df
 
@@ -746,7 +898,9 @@ class GraphRNAModelHandler(object):
                        model_args: dict, metadata_train: pd.DataFrame, metadata_test: pd.DataFrame,
                        unq_train: pd.DataFrame = None, unq_test: pd.DataFrame = None,
                        train_neg_sampling: bool = True, srna_acc_col: str = 'sRNA_accession_id_Eco',
-                       mrna_acc_col: str = 'mRNA_accession_id_Eco',
+                       mrna_acc_with_srna_col: str = 'mRNA_mirna_accession_id_Eco', 
+                       mrna_acc_with_rbp_col: str = 'mRNA_rbp_accession_id_Eco',
+                       rbp_acc_col: str = 'RBP_accession_id_Eco',
                        is_syn_col: str = 'is_synthetic', **kwargs) -> (Dict[str, object], Dict[str, object]):
         """
         torch_geometric.__version__ = '2.1.0'
@@ -797,7 +951,7 @@ class GraphRNAModelHandler(object):
 
             out_test_pred = pd.DataFrame({
                 srna_acc_col: metadata_test[srna_acc_col],
-                mrna_acc_col: metadata_test[mrna_acc_col]
+                mrna_acc_with_srna_col: metadata_test[mrna_acc_with_srna_col]
             })
             # 2 - remove synthetic data from train
             if sum(metadata_train[is_syn_col]) > 0:
@@ -826,8 +980,8 @@ class GraphRNAModelHandler(object):
             assert len(out_test_pred) == _len
         else:
             out_test_pred = pd.DataFrame({
-                cls.srna_nid_col: unq_test[cls.srna_nid_col],
-                cls.mrna_nid_col: unq_test[cls.mrna_nid_col]
+                cls.srna_nid_col: unq_test['sRNA'][cls.srna_nid_col],
+                cls.mrna_nid_col_with_srna: unq_test['sRNA'][cls.mrna_nid_col_with_srna]
             })
         # 5 - init train & test sets (HeteroData)
         train_data, test_data = cls._init_train_test_hetero_data(unq_train=unq_train, unq_test=unq_test,
@@ -861,12 +1015,13 @@ class GraphRNAModelHandler(object):
         # 10 - update outputs
         # 10.1 - test predictions df
         _len = len(out_test_pred)
-        out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col], how='left')
+        out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col_with_srna], how='left')
         assert len(out_test_pred) == _len
-        out_test_pred = cls.add_rna_metadata(_df=out_test_pred)
+        # TODO ?
+        # out_test_pred = cls.add_rna_metadata(_df=out_test_pred)
         # 10.2 - GraphRNA prediction scores
         test_graph_score = out_test_pred['y_graph_score']
         # 10.3 - update
         predictions.update({'test_y_graph_score': test_graph_score, 'out_test_pred': out_test_pred})
-
+        print("predictions: ", predictions)
         return predictions, training_history

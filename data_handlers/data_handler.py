@@ -114,3 +114,51 @@ class DataHandler(object):
             f"{mrna_eco_accession_id_col} not in {self.mrna_data_file} columns"
 
         return srna_eco, mrna_eco, srna_eco_accession_id_col, mrna_eco_accession_id_col
+
+    def load_rna_triple_data(self):
+        """
+        Load RNA data including sRNAs, mRNAs (both types), and RBPs from EcoCyc.
+
+        :return:
+        srna_eco - pd.DataFrame: DataFrame containing unique sRNAs of Escherichia coli K12 MG1655.
+        srna_eco_accession_id_col - str: The column in srna_eco containing unique ID per sRNA.
+        mrna_eco_with_rbp - pd.DataFrame: DataFrame containing mRNAs associated with RBPs.
+        mrna_eco_with_srna - pd.DataFrame: DataFrame containing mRNAs associated with sRNAs.
+        mrna_eco_accession_id_col - str: The column in mrna_eco containing unique ID per mRNA.
+        rbp_eco - pd.DataFrame: DataFrame containing unique RBPs.
+        rbp_eco_accession_id_col - str: The column in rbp_eco containing unique ID per RBP.
+        """
+        # Load sRNA data from EcoCyc
+        srna_eco = read_df(join(self.data_path, self.srna_data_file))
+        srna_eco_accession_id_col = self.srna_accession_id_col
+        assert srna_eco_accession_id_col in srna_eco.columns.values, \
+            f"{srna_eco_accession_id_col} not in {self.srna_data_file} columns"
+
+        # Load mRNA data associated with RBPs from EcoCyc
+        mrna_eco_with_rbp = read_df(join(self.data_path, self.mrna_data_with_rbp_file))
+        mrna_eco_with_rbp_accession_id_col = self.mrna_accession_id_col_with_rbp
+        assert mrna_eco_with_rbp_accession_id_col in mrna_eco_with_rbp.columns.values, \
+            f"{mrna_eco_with_rbp_accession_id_col} not in {self.mrna_data_with_rbp_file} columns"
+
+        # Load mRNA data associated with sRNAs from EcoCyc
+        mrna_eco_with_srna = read_df(join(self.data_path, self.mrna_data_with_srna_file))
+        mrna_eco_with_srna_accession_id_col = self.mrna_accession_id_col_with_srna
+        assert mrna_eco_with_srna_accession_id_col in mrna_eco_with_srna.columns.values, \
+            f"{mrna_eco_with_srna_accession_id_col} not in {self.mrna_data_with_srna_file} columns"
+
+        # Load RBP data from EcoCyc
+        rbp_eco = read_df(join(self.data_path, self.rbp_data_file))
+        rbp_eco_accession_id_col = self.rbp_accession_id_col
+        assert rbp_eco_accession_id_col in rbp_eco.columns.values, \
+            f"{rbp_eco_accession_id_col} not in {self.rbp_data_file} columns"
+
+        return (
+            srna_eco, 
+            srna_eco_accession_id_col, 
+            mrna_eco_with_rbp, 
+            mrna_eco_with_rbp_accession_id_col,
+            mrna_eco_with_srna, 
+            mrna_eco_with_srna_accession_id_col,
+            rbp_eco, 
+            rbp_eco_accession_id_col
+        )

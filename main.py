@@ -25,30 +25,57 @@ from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
 
 def main():
 
-# ------ mirna mrna:
+# ------ triple: mirna mrna rbp:
     # ----- configuration
-    data="mirna"
-    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
-    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+    data="triple"
+    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp"
+    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
     print("paths")
 
     # data for XGBoost / RandomForest:
     # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
     # ----- load data for GraphRNA:
-    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
+    train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False)
 
     # ----- load data for XGBoost / RandomForest
-    train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
+    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
 
     # ----- run GraphRNA
     model_name = "GNN"
     graph_rna = GraphRNAModelHandler()
     test = None
     cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
-    write cv results to folds dfs
+    # write cv results to folds dfs
     for fold, fold_df in cv_predictions_dfs.items():
         write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+
+
+# # ------ mirna mrna:
+#     # ----- configuration
+    # data="mirna"
+    # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
+    # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+    # print("paths")
+
+    # # data for XGBoost / RandomForest:
+    # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
+    
+    # # ----- load data for GraphRNA:
+    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
+
+    # # ----- load data for XGBoost / RandomForest
+    # # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
+
+    # # ----- run GraphRNA
+    # model_name = "GNN"
+    # graph_rna = GraphRNAModelHandler()
+    # test = None
+    # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+
+    # write cv results to folds dfs
+    # for fold, fold_df in cv_predictions_dfs.items():
+        # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
     # # # ----- run XGBoost
     # model_name = "XGB"
@@ -153,6 +180,32 @@ def load_data_mir(data_path: str, added_neg: bool = False):
 
     return train_fragments, kwargs
 
+def load_data_triple(data_path: str, added_neg: bool = False):
+    # if added_neg:
+    #     train_fragments_file = "combined_train.csv"
+    # else:
+    #     train_fragments_file = "h3.csv"
+    train_fragments_file = "rbp1.csv"
+
+    dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg)
+    train_fragments = dhm.load_interactions_datasets(added_neg=added_neg)
+    mirna_eco, mirna_eco_accession_id_col, mrna_eco_with_rbp, mrna_eco_with_rbp_accession_id_col, mrna_eco_with_mirna, mrna_eco_with_mirna_accession_id_col, rbp_eco, rbp_eco_accession_id_col = dhm.load_rna_triple_data()
+
+    # 2.1 - update kwargs
+    # when running model that is not GNN - this kwargs doesn't correspond to the pos+neg data, but it doesn't matter in the code, 
+    # because there is no use of the kwargs in this models.
+    kwargs = {
+        'srna_eco': mirna_eco,
+        'me_acc_col_with_srna': mrna_eco_with_mirna_accession_id_col,
+        'me_acc_col_with_rbp' : mrna_eco_with_rbp_accession_id_col,
+        'mrna_eco_with_srna': mrna_eco_with_mirna,
+        'mrna_eco_with_rbp': mrna_eco_with_rbp,
+        'rbp_eco': rbp_eco,
+        're_acc_col': rbp_eco_accession_id_col,
+        'se_acc_col': mirna_eco_accession_id_col,
+    }
+
+    return train_fragments, kwargs
 
 def load_data(data_path: str):
     """
@@ -248,6 +301,18 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
             model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'], 
             metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
             srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID', **kwargs)
+                
+        return cv_predictions_dfs
+
+# ------------triple:
+    if data == "triple":
+        cv_predictions_dfs, cv_training_history = \
+            model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
+            y_rbp=train_fragments['y_rbp'],
+            metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
+            srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
+            mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
+            **kwargs)
                 
         return cv_predictions_dfs
 
