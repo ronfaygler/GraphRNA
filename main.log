@@ -1669,10 +1669,15 @@ Test: 343 interactions, P: 343, N: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dfed6ba (the code is running with negatives)
 =======
 >>>>>>> 9bb2f1c (split the label to 2 labels (mirna, rbp))
+=======
+=======
+>>>>>>> dfed6ba (the code is running with negatives)
+>>>>>>> 19853bd (the code is running with negatives)
 2024-10-07 15:09:20.702; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-07 15:09:20.703; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-07 15:09:20.703; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -3089,6 +3094,9 @@ Test: 2 interactions, P: 2, N: 0
 2024-10-07 23:41:28.410; models_handlers.model_handlers_utils; ERROR y_true values are [1.0] (expected [0, 1])  ->  metrics are set to None
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 19853bd (the code is running with negatives)
 =======
 >>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
 =======
@@ -3105,6 +3113,7 @@ Test: 2 interactions, P: 2, N: 0
 >>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
 =======
 >>>>>>> dfed6ba (the code is running with negatives)
+<<<<<<< HEAD
 2024-10-08 10:45:25.430; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-08 10:45:25.430; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-08 10:45:25.430; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -3946,6 +3955,7 @@ Test: 684 interactions, P: 342, N: 342
 =======
 >>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
 >>>>>>> 9bb2f1c (split the label to 2 labels (mirna, rbp))
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> 4076914 (finish handle the rebase)
@@ -8160,3 +8170,7 @@ Test: 684 interactions, P: 342, N: 342
 >>>>>>> 3e58fc3 (running fake data succeed in run cv)
 =======
 >>>>>>> d2aad3d (split the label to 2 labels (mirna, rbp))
+=======
+=======
+>>>>>>> 19853bd (the code is running with negatives)
+>>>>>>> 417874a (the code is running with negatives)

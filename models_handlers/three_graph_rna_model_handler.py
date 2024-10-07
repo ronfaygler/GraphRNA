@@ -52,7 +52,7 @@ class GraphRNAModelHandler(object):
 
     ##  sRNA
     srna_nodes = None  # init in _prepare_data
-    srna_nid_col = 'mirna_node_id'
+    srna_nid_col = 'srna_node_id'
     srna_eco_acc_col = None
     srna = 'srna'
     
@@ -442,7 +442,6 @@ class GraphRNAModelHandler(object):
                                      rbp_map=rbp_map, r_map_acc_col=cls.rbp_eco_acc_col)
 
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.rbp_nid_col, cls.mrna_nid_col_with_rbp]).reset_index(drop=True)
-        print("unique_intr: after sort_values\n", unique_intr)
 
         return unique_intr
 
