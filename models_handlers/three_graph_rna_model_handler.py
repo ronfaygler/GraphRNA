@@ -793,20 +793,8 @@ class GraphRNAModelHandler(object):
         mRNA_RBP_labels = unq_intr_data[cls.binary_rbp_intr_label_col].loc[mRNA_RBP_interactions.index]
 
 
-        unq_intr_data = unq_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col, cls.binary_srna_intr_label_col, cls.binary_rbp_intr_label_col]]
-        # Separate mRNA-sRNA and mRNA-RBP interactions, assuming columns are named accordingly
-        mRNA_sRNA_interactions = unq_intr_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col]].dropna()
-        mRNA_RBP_interactions = unq_intr_data[[cls.mrna_nid_col_with_rbp, cls.rbp_nid_col]].dropna()
-
-        # Assuming both interaction types have a label column in unq_intr_data
-        # Example label column: 'interaction_label'
-        mRNA_sRNA_labels = unq_intr_data[cls.binary_srna_intr_label_col].loc[mRNA_sRNA_interactions.index]
-        mRNA_RBP_labels = unq_intr_data[cls.binary_rbp_intr_label_col].loc[mRNA_RBP_interactions.index]
-
-
         # 5 - split data into folds
         # For mRNA-sRNA interactions
-
         sRNA_cv_folds = stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, label_col=cls.binary_srna_intr_label_col, n_splits=2)
 
         # For mRNA-RBP interactions
