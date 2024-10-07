@@ -181,26 +181,6 @@ class GraphRNAModelHandler(object):
                      f"(before: {len(mask_not_synthetic)}, after: {len(metadata)})")
         return X, y_srna, y_rbp, metadata
 
-    # @classmethod
-    # def _add_neg_samples(cls, unq_intr_pos: pd.DataFrame, ratio: float, _shuffle: bool = False) -> HeteroData:
-    #     assert sum(unq_intr_pos[cls.binary_intr_label_col]) == len(unq_intr_pos), "unq_intr_pos has negatives"
-    #     _pos = list(zip(list(unq_intr_pos[cls.srna_nid_col]), list(unq_intr_pos[cls.mrna_nid_col])))
-    #     _all = list(itertools.product(list(cls.srna_nodes[cls.srna_nid_col]), list(cls.mrna_nodes[cls.mrna_nid_col])))
-    #     _unknown = pd.Series(list(set(_all) - set(_pos)))
-    #     _unknown_df = pd.DataFrame({
-    #         cls.binary_intr_label_col: 0,
-    #         cls.srna_nid_col: _unknown.apply(lambda x: x[0]),
-    #         cls.mrna_nid_col: _unknown.apply(lambda x: x[1])
-    #     })
-
-    #     n = max(int(len(_pos) * ratio), 1)
-    #     _neg_samples = _unknown_df.sample(n=n, random_state=cls.sampling_seed)
-    #     out = pd.concat(objs=[unq_intr_pos, _neg_samples], axis=0, ignore_index=True).reset_index(drop=True)
-    #     if _shuffle:
-    #         out = pd.DataFrame(shuffle(out)).reset_index(drop=True)
-
-    #     return out
-
     @classmethod
     def _add_neg_samples(cls, unq_intr_pos: dict, ratio: float, _shuffle: bool = False) -> pd.DataFrame:
         # Ensure the positive interactions are correctly identified
@@ -813,27 +793,12 @@ class GraphRNAModelHandler(object):
         mRNA_RBP_labels = unq_intr_data[cls.binary_rbp_intr_label_col].loc[mRNA_RBP_interactions.index]
 
 
-        unq_intr_data = unq_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col, cls.binary_srna_intr_label_col, cls.binary_rbp_intr_label_col]]
-        # Separate mRNA-sRNA and mRNA-RBP interactions, assuming columns are named accordingly
-        mRNA_sRNA_interactions = unq_intr_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col]].dropna()
-        mRNA_RBP_interactions = unq_intr_data[[cls.mrna_nid_col_with_rbp, cls.rbp_nid_col]].dropna()
-
-        # Assuming both interaction types have a label column in unq_intr_data
-        # Example label column: 'interaction_label'
-        mRNA_sRNA_labels = unq_intr_data[cls.binary_srna_intr_label_col].loc[mRNA_sRNA_interactions.index]
-        mRNA_RBP_labels = unq_intr_data[cls.binary_rbp_intr_label_col].loc[mRNA_RBP_interactions.index]
-
-
         # 5 - split data into folds
-        # cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
-                                                        #  label_col=cls.binary_intr_label_col)
         # For mRNA-sRNA interactions
-
         sRNA_cv_folds = stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, label_col=cls.binary_srna_intr_label_col, n_splits=2)
 
         # For mRNA-RBP interactions
         RBP_cv_folds = stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, label_col=cls.binary_rbp_intr_label_col, n_splits=2)
-
 
         combined_cv_folds = {}
 
@@ -847,15 +812,6 @@ class GraphRNAModelHandler(object):
                 # 'RBP_val': RBP_cv_folds[i]['val_data'],
                 # 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
             }
-#                 'sRNA_train': sRNA_cv_folds[i]['train_data'],
-#                 'sRNA_train_labels': sRNA_cv_folds[i]['train_labels'],
-#                 'RBP_train': RBP_cv_folds[i]['train_data'],
-#                 'RBP_train_labels': RBP_cv_folds[i]['train_labels'],
-#                 'sRNA_val': sRNA_cv_folds[i]['val_data'],
-#                 'sRNA_val_labels': sRNA_cv_folds[i]['val_labels'],
-#                 'RBP_val': RBP_cv_folds[i]['val_data'],
-#                 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
-#             }
 
         dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
         dummy_y_train, dummy_y_val = list(), list()
