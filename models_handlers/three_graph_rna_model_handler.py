@@ -50,7 +50,7 @@ class GraphRNAModelHandler(object):
 
     ##  sRNA
     srna_nodes = None  # init in _prepare_data
-    srna_nid_col = 'mirna_node_id'
+    srna_nid_col = 'srna_node_id'
     srna_eco_acc_col = None
     srna = 'srna'
     
@@ -417,7 +417,6 @@ class GraphRNAModelHandler(object):
                                      rbp_map=rbp_map, r_map_acc_col=cls.rbp_eco_acc_col)
 
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col_with_srna, cls.rbp_nid_col, cls.mrna_nid_col_with_rbp]).reset_index(drop=True)
-        print("unique_intr: after sort_values\n", unique_intr)
 
         return unique_intr
 
@@ -815,20 +814,15 @@ class GraphRNAModelHandler(object):
 
 
         unq_intr_data = unq_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col, cls.mrna_nid_col_with_rbp, cls.rbp_nid_col, cls.binary_srna_intr_label_col, cls.binary_rbp_intr_label_col]]
-        print("unq_intr_data: ", unq_intr_data)
         # Separate mRNA-sRNA and mRNA-RBP interactions, assuming columns are named accordingly
-        mRNA_sRNA_interactions = unq_intr_data[['mrna_node_id_with_mirna', 'mirna_node_id']].dropna()
-        mRNA_RBP_interactions = unq_intr_data[['mrna_node_id_with_rbp', 'rbp_node_id']].dropna()
+        mRNA_sRNA_interactions = unq_intr_data[[cls.mrna_nid_col_with_srna, cls.srna_nid_col]].dropna()
+        mRNA_RBP_interactions = unq_intr_data[[cls.mrna_nid_col_with_rbp, cls.rbp_nid_col]].dropna()
 
         # Assuming both interaction types have a label column in unq_intr_data
         # Example label column: 'interaction_label'
         mRNA_sRNA_labels = unq_intr_data[cls.binary_srna_intr_label_col].loc[mRNA_sRNA_interactions.index]
         mRNA_RBP_labels = unq_intr_data[cls.binary_rbp_intr_label_col].loc[mRNA_RBP_interactions.index]
-        # print("mRNA_sRNA_interactions: \n", mRNA_sRNA_interactions)
-        # print("mRNA_RBP_interactions: \n", mRNA_RBP_interactions)
 
-        # print("mRNA_sRNA_labels: \n", mRNA_sRNA_labels)
-        # print("mRNA_RBP_labels: \n", mRNA_RBP_labels)
 
         # 5 - split data into folds
         # cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
