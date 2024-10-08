@@ -1084,5 +1084,5 @@ class GraphRNAModelHandler(object):
         test_graph_score = out_test_pred['y_graph_score']
         # 10.3 - update
         predictions.update({'test_y_graph_score': test_graph_score, 'out_test_pred': out_test_pred})
-        print("predictions: ", predictions)
+        # print("predictions: ", predictions)
         return predictions, training_history
