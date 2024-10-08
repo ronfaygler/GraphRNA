@@ -53,15 +53,10 @@ def main():
 
 # # ------ mirna mrna:
 #     # ----- configuration
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 23f61bc (running fake data succeed in run cv)
     # data="mirna"
     # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
     # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
     # print("paths")
-<<<<<<< HEAD
 
     # # data for XGBoost / RandomForest:
     # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
@@ -81,44 +76,6 @@ def main():
     # write cv results to folds dfs
     # for fold, fold_df in cv_predictions_dfs.items():
         # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
-=======
-#     data="mirna"
-#     data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
-#     outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
-#     print("paths")
-=======
->>>>>>> 23f61bc (running fake data succeed in run cv)
-
-    # # data for XGBoost / RandomForest:
-    # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
-    
-    # # ----- load data for GraphRNA:
-    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
-
-    # # ----- load data for XGBoost / RandomForest
-    # # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
-
-<<<<<<< HEAD
-#     # ----- run GraphRNA
-#     model_name = "GNN"
-#     graph_rna = GraphRNAModelHandler()
-#     test = None
-#     cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
-#     write cv results to folds dfs
-#     for fold, fold_df in cv_predictions_dfs.items():
-#         write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
->>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
-=======
-    # # ----- run GraphRNA
-    # model_name = "GNN"
-    # graph_rna = GraphRNAModelHandler()
-    # test = None
-    # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
-
-    # write cv results to folds dfs
-    # for fold, fold_df in cv_predictions_dfs.items():
-        # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
->>>>>>> 23f61bc (running fake data succeed in run cv)
 
     # # # ----- run XGBoost
     # model_name = "XGB"
@@ -350,21 +307,12 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
 # ------------triple:
     if data == "triple":
         cv_predictions_dfs, cv_training_history = \
-<<<<<<< HEAD
-<<<<<<< HEAD
             model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
-            y_rbp=train_fragments['y_rbp'],
-=======
-            model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'], 
->>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
-=======
-            model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
-            y_rbp=train_fragments['y_rbp'],
->>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
-            metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
-            srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
-            mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
-            **kwargs)
+                y_rbp=train_fragments['y_rbp'],
+                metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
+                srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
+                mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
+                **kwargs)
                 
         return cv_predictions_dfs
 
