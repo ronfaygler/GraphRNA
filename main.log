@@ -3110,6 +3110,7 @@ Test: 2 interactions, P: 2, N: 0
 2024-10-08 10:45:30.857; models_handlers.three_graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-08 10:45:31.930; models_handlers.three_graph_rna_model_handler; DEBUG evaluating test set
 2024-10-08 10:45:32.049; models_handlers.model_handlers_utils; ERROR y_true values are [1.0] (expected [0, 1])  ->  metrics are set to None
+<<<<<<< HEAD
 2024-10-15 15:25:56.050; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-15 15:25:56.050; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-15 15:25:56.052; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
@@ -3902,3 +3903,5 @@ Test: 684 interactions, P: 342, N: 342
 =======
 >>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
 >>>>>>> 9bb2f1c (split the label to 2 labels (mirna, rbp))
+=======
+>>>>>>> 4076914 (finish handle the rebase)
