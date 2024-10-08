@@ -31,7 +31,6 @@ def main():
     # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp"
     # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
     # print("paths")
-<<<<<<< HEAD
 
     # # data for XGBoost / RandomForest:
     # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
