@@ -58,16 +58,11 @@ def main():
 
 # # ------ mirna mrna:
 #     # ----- configuration
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 23f61bc (running fake data succeed in run cv)
     # data="mirna"
     # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
     # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
 >>>>>>> 917594e (start debugging by running main, create fake dfs and update data handlers)
     # print("paths")
-<<<<<<< HEAD
 
     # # data for XGBoost / RandomForest:
     # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
@@ -121,6 +116,7 @@ def main():
 =======
     # for fold, fold_df in cv_predictions_dfs.items():
         # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+<<<<<<< HEAD
 =======
 #     data="mirna"
 #     data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
@@ -163,6 +159,8 @@ def main():
         # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 >>>>>>> 23f61bc (running fake data succeed in run cv)
 >>>>>>> f55a26c (running fake data succeed in run cv)
+=======
+>>>>>>> 4076914 (finish handle the rebase)
 
     # # # ----- run XGBoost
     # model_name = "XGB"
@@ -397,15 +395,17 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
 # ------------triple:
     if data == "triple":
         cv_predictions_dfs, cv_training_history = \
-<<<<<<< HEAD
-<<<<<<< HEAD
             model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4076914 (finish handle the rebase)
                 y_rbp=train_fragments['y_rbp'],
                 metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
                 srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
                 mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
                 **kwargs)
+<<<<<<< HEAD
 =======
             y_rbp=train_fragments['y_rbp'],
 =======
@@ -420,6 +420,8 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
             mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
             **kwargs)
 >>>>>>> 917594e (start debugging by running main, create fake dfs and update data handlers)
+=======
+>>>>>>> 4076914 (finish handle the rebase)
                 
         return cv_predictions_dfs
 

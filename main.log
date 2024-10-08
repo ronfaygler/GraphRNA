@@ -3114,6 +3114,9 @@ Test: 2 interactions, P: 2, N: 0
 =======
 >>>>>>> dfed6ba (the code is running with negatives)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4076914 (finish handle the rebase)
 2024-10-08 10:45:25.430; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-08 10:45:25.430; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-08 10:45:25.430; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -3158,8 +3161,11 @@ Test: 2 interactions, P: 2, N: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90e3df8 (ran successfully random neg on mrna-mirna only)
+=======
+>>>>>>> e4aba89 (finish handle the rebase)
 2024-10-15 15:25:56.050; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-15 15:25:56.050; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-15 15:25:56.052; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
@@ -8173,4 +8179,9 @@ Test: 684 interactions, P: 342, N: 342
 =======
 =======
 >>>>>>> 19853bd (the code is running with negatives)
+<<<<<<< HEAD
 >>>>>>> 417874a (the code is running with negatives)
+=======
+=======
+>>>>>>> 4076914 (finish handle the rebase)
+>>>>>>> e4aba89 (finish handle the rebase)
