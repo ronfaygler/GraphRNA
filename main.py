@@ -192,7 +192,7 @@ def load_data_triple(data_path: str, added_neg: bool = False):
     #     train_fragments_file = "combined_train.csv"
     # else:
     #     train_fragments_file = "h3.csv"
-    train_fragments_file = "rbp1.csv"
+    train_fragments_file = "combined_rbp_mirna_interactions.csv"
 
     dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg)
     train_fragments = dhm.load_interactions_datasets(added_neg=added_neg)

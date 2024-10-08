@@ -4,10 +4,13 @@ from sklearn.metrics import roc_auc_score, roc_curve, precision_recall_curve, au
 import numpy as np
 import xgboost
 from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
 
-def create_rna_df(data_path, train_fragments_file, output_file, id_col, seq_col):
+
+def create_rna_df(data_path, file_name, id_col, seq_col, output_file=""):
     '''    create srna / mrna files    '''
-    train_df = pd.read_csv(join(data_path, train_fragments_file)) 
+    train_df = pd.read_csv(join(data_path, file_name)) 
     # Create a new DataFrame with the specified columns and values
     rna_df = pd.DataFrame({
         "EcoCyc_accession_id": train_df[id_col],
@@ -23,8 +26,43 @@ def create_rna_df(data_path, train_fragments_file, output_file, id_col, seq_col)
 
     # Display the populated DataFrame
     rna_df = rna_df.drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-    rna_df.to_csv(join(data_path, output_file), index=False)
+    
+    if id_col.startswith("mRNA"):
+        return rna_df
 
+    rna_df.to_csv(join(data_path, output_file), index=False)
+    print(f"created rna data file in {output_file}")
+
+#rbp
+# create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
+#         file_name="ENCORI_hg38_RBPTarget.csv", 
+#         id_col='RBP', seq_col='RBP', 
+        # output_file="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/DATA_rbp_eco.csv")
+
+# # Create mRNA DataFrame from rbp interactions
+# mrna_df_1 = create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
+#                            file_name="ENCORI_hg38_RBPTarget.csv", 
+#                            id_col='mRNA_ID_with_RBP', 
+#                            seq_col='geneName')
+
+# # Create mRNA DataFrame from mirna interactions
+# mrna_df_2 = create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
+#                            file_name="h3.csv", 
+#                            id_col='mRNA_ID_with_sRNA',  # Assuming this is still relevant for the second file
+#                            seq_col='sequence')
+
+# # Combine both DataFrames and drop duplicates
+# combined_df = pd.concat([mrna_df_1, mrna_df_2], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+
+# # Save the combined DataFrame to a CSV file
+# combined_df.to_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/DATA_mrna_eco.csv", index=False)
+# print("Created combined RNA data file at DATA_mrna_eco.csv")
+
+# --- mirna
+# create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
+#         file_name="h3.csv", 
+#         id_col='miRNA ID', seq_col='miRNA sequence',
+#         output_file="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/DATA_mirna_eco.csv")
 
 #---------- create calculate metrics
 def calculate_metrics(y_true_list, y_score_list):
@@ -215,16 +253,6 @@ def is_train_and_fold_lengths_equal(train_fragments_df):
 
 # train_fragments_df = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir/h3.csv")
 # is_train_and_fold_lengths_equal(train_fragments_df)
-
-
-import pandas as pd
-import numpy as np
-from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-
-from sklearn.model_selection import GridSearchCV
-from xgboost import XGBClassifier
 
 
 def combine_and_XGB():
@@ -457,13 +485,63 @@ def combine_and_XGB():
         file.write(f"Test Accuracy: {test_acc:.4f}\n")
 
 
+def update_mrna_mirna_intr_file(input_path, output_path, prev_col_name, new_col_name):
+    df = pd.read_csv(input_path)
+    #  remove the line with the types of columns
+    df = df.iloc[1:]
+    df.rename(columns={prev_col_name: new_col_name}, inplace=True)
+    # Remove characters from '|' in the 'mRNA_ID_with_sRNA' column
+    df[new_col_name] = df[new_col_name].str.split('|').str[0]
+    # Save the modified DataFrame back to a CSV file
+    df.to_csv(output_path, index=False)
+    print(f"Modified mrna mirna intr file and saved to {output_path}.")
 
-# combine_and_XGB()
+# update_mrna_mirna_intr_file(input_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir/h3.csv", output_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/h3.csv", prev_col_name='Gene_ID', new_col_name='mRNA_ID_with_sRNA')
 
-def add_col(df):
-    df['Seed_match_A'] = ['value1', 'value2', 'value3', 'value4']
-    df.to_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/rbp1.csv", index=False)
+
+def convert_txt_to_df(input_path, output_csv_path):
+    # Read the text file into a DataFrame, skipping commented lines
+    df = pd.read_csv(input_path, sep='\t', comment='#')
     
-df = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/rbp1.csv")
-add_col(df)
+    df = df.iloc[:-1] # in case the data isnt full
+    df.rename(columns={'geneID': 'mRNA_ID_with_RBP'}, inplace=True)
 
+    df.to_csv(output_csv_path, index=False)
+    print(f'converted txt to df and renamed geneID to mRNA_ID_with_RBP \nfrom {input_path} into {output_csv_path}')
+# convert_txt_to_df(input_path = "/sise/home/ronfay/ENCORI_hg38_RBPTarget.txt", output_csv_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/ENCORI_hg38_RBPTarget.csv")
+
+
+def add_col(file_path):
+    df = pd.read_csv(file_path)
+    df['Seed_match_A'] = 'value'
+    df.to_csv(file_path, index=False)
+    print('added Seed_match_A col')
+# add_col(file_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/ENCORI_hg38_RBPTarget.csv")
+
+
+def combine_rbp_mirna_interactions_csvs(df1, df2, output_path):
+    # Concatenate the DataFrames along the columns
+    combined_df = pd.concat([df1, df2], axis=1)
+    
+    # Optionally, you can reset the index if needed
+    combined_df.reset_index(drop=True, inplace=True)
+
+    # Display the first few rows of the combined DataFrame
+    print("combined_df: \n",combined_df.head())
+    
+    # Save the combined DataFrame to a CSV file if needed
+    combined_df.to_csv(output_path, index=False)
+    print(f"combined rbp mirna interactions and saved to {output_path}")
+
+# df1 = pd.read_csv('/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/ENCORI_hg38_RBPTarget.csv')
+# df2 = pd.read_csv('/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/h3.csv')
+# output_path='/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/combined_rbp_mirna_interactions.csv'
+# combine_rbp_mirna_interactions_csvs(df1, df2, output_path)
+
+
+df1 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/h3.csv")
+df2 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/ENCORI_hg38_RBPTarget.csv")
+
+# print(df.head())
+print("len mirna: ", len(df1))
+print("len rbp: ", len(df2))
