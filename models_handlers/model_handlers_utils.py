@@ -154,13 +154,8 @@ def get_stratified_cv_folds(X: pd.DataFrame, y: np.array, n_splits: int, metadat
 
 
 def stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.array, label_col: str, n_splits: int = 5, seed: int = None):
-    
-    print("unq_intr_data: ", unq_intr_data)
-    print("y: ", labels)
 
     unq_intr_data = unq_intr_data.reset_index(drop=True)
-    # label_srna_col = 'interaction_label_srna'
-    # label_rbp_col = 'interaction_label_rbp'
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
     cv_folds = {}
@@ -179,6 +174,7 @@ def stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.array,
             "unq_val": unq_val
         }
         cv_folds[i] = fold_data
+
 
     return cv_folds
 

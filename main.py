@@ -308,11 +308,11 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
     if data == "triple":
         cv_predictions_dfs, cv_training_history = \
             model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
-            y_rbp=train_fragments['y_rbp'],
-            metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
-            srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
-            mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
-            **kwargs)
+                y_rbp=train_fragments['y_rbp'],
+                metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
+                srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
+                mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
+                **kwargs)
                 
         return cv_predictions_dfs
 

@@ -28,12 +28,13 @@ class DataHandler_Mirna_Mrna(DataHandler):
         # RNA data files
         # it's called srna because the parent class
         self.srna_data_file = "DATA_mirna_eco.csv"
+
         # interactions features and label columns
         # with open(join(self.data_path,'features_cols.txt'), 'r') as file:
         #     self.features_cols = [line.strip() for line in file]
         # self.label_col = "interaction_label"
 
-        # TODO ?
+        # TODO ? when data real, change ebp and srna files
         # --- rbp
         self.mrna_data_with_rbp_file = "DATA_mrna_eco.csv"
         self.mrna_data_with_srna_file = "DATA_mrna_eco.csv"
@@ -45,7 +46,7 @@ class DataHandler_Mirna_Mrna(DataHandler):
 
         self.features_cols=["Seed_match_A"]
         self.label_mirna_col = "interaction_label_mirna"
-        self.label_rbp_col = "interaction_label_mirna"
+        self.label_rbp_col = "interaction_label_rbp"
 
     def load_interactions_datasets(self, added_neg):
         train_fragments = read_df(join(self.data_path, self.train_fragments_file))
@@ -55,8 +56,7 @@ class DataHandler_Mirna_Mrna(DataHandler):
             train_fragments[self.label_rbp_col] = 1
 
         train_fragments['is_synthetic'] = False
-        # print("added_neg: ", added_neg)
-        # print("train_fragments: ", train_fragments)
+        # train_fragments = DataHandler.split_dataset(self, dataset=train_fragments)
         train_fragments = self.split_dataset(dataset=train_fragments)
         
         return train_fragments
