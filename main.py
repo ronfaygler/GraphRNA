@@ -37,14 +37,8 @@ def main():
     outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
     print("paths")
 
-    # data for XGBoost / RandomForest:
-    # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
-    
     # ----- load data for GraphRNA:
     train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False)
-
-    # ----- load data for XGBoost / RandomForest
-    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
 
     # ----- run GraphRNA
     model_name = "GNN"
