@@ -813,10 +813,10 @@ class GraphRNAModelHandler(object):
 
         # 5 - split data into folds
         # For mRNA-sRNA interactions
-        sRNA_cv_folds = three_stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, label_col=cls.binary_srna_intr_label_col, n_splits=2)
+        sRNA_cv_folds = three_stratified_cv_for_interaction(mRNA_sRNA_interactions, mRNA_sRNA_labels, label_col=cls.binary_srna_intr_label_col, n_splits=5)
 
         # For mRNA-RBP interactions
-        RBP_cv_folds = three_stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, label_col=cls.binary_rbp_intr_label_col, n_splits=2)
+        RBP_cv_folds = three_stratified_cv_for_interaction(mRNA_RBP_interactions, mRNA_RBP_labels, label_col=cls.binary_rbp_intr_label_col, n_splits=5)
 
         combined_cv_folds = {}
 
@@ -830,6 +830,28 @@ class GraphRNAModelHandler(object):
                 # 'RBP_val': RBP_cv_folds[i]['val_data'],
                 # 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
             }
+        
+        # Check and remove duplicates in sRNA_train
+        print(f"Duplicates in sRNA_train for fold {i}: {combined_cv_folds[i]['sRNA_train'].duplicated().sum()}")
+        combined_cv_folds[i]['sRNA_train'] = combined_cv_folds[i]['sRNA_train'].drop_duplicates()
+
+        # Check and remove duplicates in sRNA_val
+        print(f"Duplicates in sRNA_val for fold {i}: {combined_cv_folds[i]['sRNA_val'].duplicated().sum()}")
+        combined_cv_folds[i]['sRNA_val'] = combined_cv_folds[i]['sRNA_val'].drop_duplicates()
+
+        # Check and remove duplicates in RBP_train
+        print(f"Duplicates in RBP_train for fold {i}: {combined_cv_folds[i]['RBP_train'].duplicated().sum()}")
+        combined_cv_folds[i]['RBP_train'] = combined_cv_folds[i]['RBP_train'].drop_duplicates()
+
+        # Check and remove duplicates in RBP_val
+        print(f"Duplicates in RBP_val for fold {i}: {combined_cv_folds[i]['RBP_val'].duplicated().sum()}")
+        combined_cv_folds[i]['RBP_val'] = combined_cv_folds[i]['RBP_val'].drop_duplicates()
+
+        # Print final results to confirm removal
+        print(f"Remaining duplicates after removal in sRNA_train for fold {i}: {combined_cv_folds[i]['sRNA_train'].duplicated().sum()}")
+        print(f"Remaining duplicates after removal in sRNA_val for fold {i}: {combined_cv_folds[i]['sRNA_val'].duplicated().sum()}")
+        print(f"Remaining duplicates after removal in RBP_train for fold {i}: {combined_cv_folds[i]['RBP_train'].duplicated().sum()}")
+        print(f"Remaining duplicates after removal in RBP_val for fold {i}: {combined_cv_folds[i]['RBP_val'].duplicated().sum()}")
         # print("combined_cv_folds: \n", combined_cv_folds)
         
         dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
@@ -980,6 +1002,13 @@ class GraphRNAModelHandler(object):
                 cls.srna_nid_col: unq_test['sRNA'][cls.srna_nid_col],
                 cls.mrna_nid_col_with_srna: unq_test['sRNA'][cls.mrna_nid_col_with_srna]
             })
+        print(out_test_pred.duplicated(subset=[cls.srna_nid_col, cls.mrna_nid_col_with_srna]).sum(), "duplicates in out_test_pred.")
+        # Remove duplicates based on the specified columns, keeping the first occurrence
+        out_test_pred = out_test_pred.drop_duplicates(subset=[cls.srna_nid_col, cls.mrna_nid_col_with_srna], keep='first')
+
+        # Print the number of duplicates after removing
+        print(out_test_pred.duplicated(subset=[cls.srna_nid_col, cls.mrna_nid_col_with_srna]).sum(), "duplicates remaining after removal.")
+
         # 5 - init train & test sets (HeteroData)
         train_data, test_data = cls._init_train_test_hetero_data(unq_train=unq_train, unq_test=unq_test,
                                                                  train_neg_sampling=train_neg_sampling)
@@ -997,7 +1026,7 @@ class GraphRNAModelHandler(object):
                              srna_num_embeddings=srna_num_emb, mrna_num_embeddings=mrna_num_emb, rbp_num_embeddings=rbp_num_emb, model_args=model_args)
         if cls.debug_logs:
             logger.debug(hga_model)
-
+        
         # 8 - train HeteroGraph model
         hg_model = cls._train_hgnn(hga_model=hga_model, train_data=train_data, model_args=model_args)
         training_history = {}
@@ -1007,7 +1036,11 @@ class GraphRNAModelHandler(object):
         predictions = {}
         test_scores, test_pred_df = cls._eval_hgnn(trained_model=hg_model, eval_data=test_data, model_args=model_args,
                                                    **kwargs)
+        
         assert pd.isnull(test_pred_df).sum().sum() == 0, "some null predictions"
+        
+        print(test_pred_df.duplicated(subset=[cls.srna_nid_col, cls.mrna_nid_col_with_srna]).sum(), "duplicates in test_pred_df")
+        # print(out_test_pred.duplicated(subset=[cls.srna_nid_col, cls.mrna_nid_col_with_srna]).sum(), "duplicates in out_test_pred")
 
         # 10 - update outputs
         # 10.1 - test predictions df

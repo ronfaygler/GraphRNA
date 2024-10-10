@@ -64,6 +64,7 @@ def create_rna_df(data_path, file_name, id_col, seq_col, output_file=""):
 #         id_col='miRNA ID', seq_col='miRNA sequence',
 #         output_file="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/DATA_mirna_eco.csv")
 
+
 #---------- create calculate metrics
 def calculate_metrics(y_true_list, y_score_list):
     auc_value = roc_auc_score(y_true_list, y_score_list)
@@ -539,9 +540,9 @@ def combine_rbp_mirna_interactions_csvs(df1, df2, output_path):
 # combine_rbp_mirna_interactions_csvs(df1, df2, output_path)
 
 
-df1 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/h3.csv")
-df2 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/ENCORI_hg38_RBPTarget.csv")
+# df1 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/h3.csv")
+# df2 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/ENCORI_hg38_RBPTarget.csv")
 
-# print(df.head())
-print("len mirna: ", len(df1))
-print("len rbp: ", len(df2))
+# # print(df.head())
+# print("len mirna: ", len(df1))
+# print("len rbp: ", len(df2))
