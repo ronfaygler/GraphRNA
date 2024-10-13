@@ -126,6 +126,7 @@ def get_stratified_cv_folds(X: pd.DataFrame, y: np.array, n_splits: int, metadat
     lbl = LabelEncoder()
     lbl.fit(y)
     y_enc = lbl.transform(y)
+
     # 1.2 - reset df indexes
     X = X.reset_index(drop=True)
     if metadata is not None:
@@ -154,14 +155,47 @@ def get_stratified_cv_folds(X: pd.DataFrame, y: np.array, n_splits: int, metadat
 
 
 def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.array, label_col: str, n_splits: int = 5, seed: int = None):
+    
+    print("y before: ", labels)
+    # Count unique values
+    unique, counts = np.unique(labels, return_counts=True)
+    # Combine unique values and their counts
+    unique_counts_labels = dict(zip(unique, counts))
+    print("unique_counts_labels: ", unique_counts_labels)
 
+    # logger.debug(f"getting stratified {n_splits} cv folds")
+    is_length_compatible = len(labels) == len(unq_intr_data)
+    assert is_length_compatible, "labels and unq_intr_data are incompatible in length"
+    # assert unq_intr_data.shape[1] == 4, "unq_intr_data format is pd.DataFrame (u_samples, [edge_index_0, edge_index_1])"
+
+    # 1 - data preparation
+    # 1.1 - encode y labels
+    # lbl = LabelEncoder()
+    # lbl.fit(labels)
+    # y_enc = lbl.transform(labels)
+
+    # print("y_enc: ", y_enc)
+    # # Count unique values
+    # unique_y_enc, counts_y_enc = np.unique(y_enc, return_counts=True)
+    # # Combine unique values and their counts
+    # unique_counts_y_enc = dict(zip(unique_y_enc, counts_y_enc))
+    # print("unique_counts_y_enc: ", unique_counts_y_enc)
+    
+    # 1.2 - reset df indexes
     unq_intr_data = unq_intr_data.reset_index(drop=True)
-    print("unq_intr_data:", unq_intr_data)
+    is_length_compatible = len(labels) == len(unq_intr_data)
+    assert is_length_compatible, "labels and unq_intr_data are compatible in length"
+
+    # print("unq_intr_data:", unq_intr_data)
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
     cv_folds = {}
     for i, (train_index, val_index) in enumerate(skf.split(X=np.array(unq_intr_data), y=labels)):
         # Train fold
         unq_train = pd.DataFrame(unq_intr_data.iloc[list(train_index), :]).reset_index(drop=True)
+        print("labels: ", len(labels))
+        print("train_index: ", train_index)
+        print("len train_index: ", len(train_index))
+
         unq_train[label_col] = list(labels[train_index])
 
         # Validation
@@ -202,7 +236,14 @@ def get_stratified_cv_folds_for_unique(unq_intr_data: pd.DataFrame, unq_y: np.ar
     }
     """
     print("X: ", unq_intr_data)
-    print("y: ", unq_y)
+    
+    print("y before: ", unq_y)
+    # Count unique values
+    unique, counts = np.unique(unq_y, return_counts=True)
+    # Combine unique values and their counts
+    unique_counts_labels = dict(zip(unique, counts))
+    print("unique_counts_labels: ", unique_counts_labels)
+
     # logger.debug(f"getting stratified {n_splits} cv folds")
     is_length_compatible = len(unq_y) == len(unq_intr_data)
     assert is_length_compatible, "unq_y and unq_intr_data are compatible in length"
@@ -213,6 +254,14 @@ def get_stratified_cv_folds_for_unique(unq_intr_data: pd.DataFrame, unq_y: np.ar
     lbl = LabelEncoder()
     lbl.fit(unq_y)
     y_enc = lbl.transform(unq_y)
+
+    print("y_enc: ", y_enc)
+    # Count unique values
+    unique_y_enc, counts_y_enc = np.unique(y_enc, return_counts=True)
+    # Combine unique values and their counts
+    unique_counts_y_enc = dict(zip(unique_y_enc, counts_y_enc))
+    print("unique_counts_y_enc: ", unique_counts_y_enc)
+
     # 1.2 - reset df indexes
     unq_intr_data = unq_intr_data.reset_index(drop=True)
 
