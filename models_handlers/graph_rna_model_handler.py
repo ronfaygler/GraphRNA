@@ -598,7 +598,7 @@ class GraphRNAModelHandler(object):
         # 6 - predict on folds
         cv_training_history = {}
         cv_prediction_dfs = {}
-        train_neg_sampling = False  # negatives were already added to cv_data_unq
+        train_neg_sampling = True  # negatives were already added to cv_data_unq
         for fold, fold_data_unq in cv_data_unq.items():
             logger.debug(f"starting fold {fold}")
             
