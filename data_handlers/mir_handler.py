@@ -50,8 +50,13 @@ class DataHandler_Mirna_Mrna(DataHandler):
             self.label_mirna_col = "interaction_label_mirna"
             self.label_rbp_col = "interaction_label_rbp"
 
+        else:
+            self.label_col = "interaction_label"
+
     def load_interactions_datasets(self, added_neg):
         train_fragments = read_df(join(self.data_path, self.train_fragments_file))
+        train_fragments['is_synthetic'] = False
+
         if not added_neg:
             if self.is_rbp:
                 train_fragments[self.label_mirna_col] = 1

@@ -187,14 +187,14 @@ def load_data_mir(data_path: str, neg_path: str='', added_neg: bool = False, is_
 
     return train_fragments, kwargs
 
-def load_data_triple(data_path: str, added_neg: bool = False):
+def load_data_triple(data_path: str, added_neg: bool = False, is_rbp:bool = True):
     # if added_neg:
     #     train_fragments_file = "combined_train.csv"
     # else:
     #     train_fragments_file = "h3.csv"
     train_fragments_file = "combined_rbp_mirna_interactions.csv"
 
-    dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg)
+    dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg, is_rbp=is_rbp)
     train_fragments = dhm.load_interactions_datasets(added_neg=added_neg)
     mirna_eco, mirna_eco_accession_id_col, mrna_eco_with_rbp, mrna_eco_with_rbp_accession_id_col, mrna_eco_with_mirna, mrna_eco_with_mirna_accession_id_col, rbp_eco, rbp_eco_accession_id_col = dhm.load_rna_triple_data()
 

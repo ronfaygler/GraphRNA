@@ -156,7 +156,7 @@ def get_stratified_cv_folds(X: pd.DataFrame, y: np.array, n_splits: int, metadat
 
 def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.array, label_col: str, n_splits: int = 5, seed: int = None):
     
-    print("y before: ", labels)
+    # print("y before: ", labels)
     # Count unique values
     unique, counts = np.unique(labels, return_counts=True)
     # Combine unique values and their counts
@@ -183,6 +183,8 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
     
     # 1.2 - reset df indexes
     unq_intr_data = unq_intr_data.reset_index(drop=True)
+    labels = labels.reset_index(drop=True)
+
     is_length_compatible = len(labels) == len(unq_intr_data)
     assert is_length_compatible, "labels and unq_intr_data are compatible in length"
 
@@ -192,9 +194,16 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
     for i, (train_index, val_index) in enumerate(skf.split(X=np.array(unq_intr_data), y=labels)):
         # Train fold
         unq_train = pd.DataFrame(unq_intr_data.iloc[list(train_index), :]).reset_index(drop=True)
-        print("labels: ", len(labels))
-        print("train_index: ", train_index)
-        print("len train_index: ", len(train_index))
+        
+        # print("labels: ", labels)
+        # print("len labels: ", len(labels))
+        # print("train_index: ", train_index)
+        # print("len train_index: ", len(train_index))
+        # print("unq_train: ", unq_train)
+        # print("len unq_train: ", len(unq_train))
+        
+        # missing_indices = [index for index in train_index if index not in labels.index]
+        # print("Missing indices in labels: ", missing_indices)
 
         unq_train[label_col] = list(labels[train_index])
 

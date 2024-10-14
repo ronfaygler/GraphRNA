@@ -598,9 +598,25 @@ class GraphRNAModelHandler(object):
         # 6 - predict on folds
         cv_training_history = {}
         cv_prediction_dfs = {}
-        train_neg_sampling = True  # negatives were already added to cv_data_unq
+        train_neg_sampling = False  # negatives were already added to cv_data_unq
         for fold, fold_data_unq in cv_data_unq.items():
             logger.debug(f"starting fold {fold}")
+            
+            # Extract training and validation data for both sRNA and RBP
+            unq_train = fold_data_unq['unq_train']
+            unq_val = fold_data_unq['unq_val']
+            # Printing the values
+            print("unq_train:")
+            print(unq_train)
+            unique, counts = np.unique(unq_train['interaction_label'], return_counts=True)
+            unique_counts_labels = dict(zip(unique, counts))
+            print("unique_counts unq_train: ", unique_counts_labels)
+            print("unq_val:")
+            print(unq_val)
+            unique, counts = np.unique(unq_val['interaction_label'], return_counts=True)
+            unique_counts_labels = dict(zip(unique, counts))
+            print("unique_counts unq_val: ", unique_counts_labels)
+
             # 6.1 - predict on validation set (pos + random sampled neg)
             predictions, training_history = \
                 cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
@@ -704,6 +720,9 @@ class GraphRNAModelHandler(object):
                 cls.srna_nid_col: unq_test[cls.srna_nid_col],
                 cls.mrna_nid_col: unq_test[cls.mrna_nid_col]
             })
+        print("unq_train in train_and_test: ", unq_train)
+        print("unq_test in train_and_test: ", unq_test)
+
         # 5 - init train & test sets (HeteroData)
         train_data, test_data = cls._init_train_test_hetero_data(unq_train=unq_train, unq_test=unq_test,
                                                                  train_neg_sampling=train_neg_sampling)
@@ -735,6 +754,7 @@ class GraphRNAModelHandler(object):
         # 10.1 - test predictions df
         _len = len(out_test_pred)
         out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col], how='left')
+        print("out_test_pred before assertion: ", out_test_pred)
         assert len(out_test_pred) == _len
         out_test_pred = cls.add_rna_metadata(_df=out_test_pred)
         # 10.2 - GraphRNA prediction scores
