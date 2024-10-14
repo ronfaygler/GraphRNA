@@ -9,8 +9,9 @@ from utils.utils_general import get_logger_config_dict, write_df
 from data_handlers.data_handler import DataHandler
 from data_handlers.mir_handler import DataHandler_Mirna_Mrna
 
-# --- not for rbp:
+# --- not rbp:
 # from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
+
 import shap
 import matplotlib.pyplot as plt
 
@@ -40,7 +41,7 @@ def main():
     print("paths")
 
     # ----- load data for GraphRNA:
-    train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False)
+    train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False, is_rbp=True)
 
     # ----- run GraphRNA
     model_name = "GNN"

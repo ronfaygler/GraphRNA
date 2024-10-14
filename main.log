@@ -5761,8 +5761,11 @@ Test: 3366 interactions, P: 3366, N: 0
 2024-10-13 16:50:21.619; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 081cee9 (continue debuggind and adding neg to test)
 =======
+=======
+>>>>>>> 219046b (continue debugging- now there are negatives in test, but not equal to positives and the y_score is bad)
 2024-10-14 15:09:19.803; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-14 15:09:19.804; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-14 15:09:19.804; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -6288,6 +6291,7 @@ Test: 6989 interactions, P: 3356, N: 3633
 2024-10-14 17:08:13.018; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = True
 2024-10-14 17:08:13.020; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
 2024-10-14 17:08:14.220; models_handlers.graph_rna_model_handler; DEBUG 
+<<<<<<< HEAD
 =======
 Train: 3079 interactions, P: 3079, N: 0 
 Test: 343 interactions, P: 343, N: 0
@@ -6479,6 +6483,68 @@ Test: 685 interactions, P: 343, N: 342
 Train: 6161 interactions, P: 3080, N: 3081 
 Test: 685 interactions, P: 343, N: 342
 <<<<<<< HEAD
+=======
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 6160 interactions, P: 3080, N: 3080 
+Test: 685 interactions, P: 343, N: 342
+2024-10-14 17:08:14.244; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-14 17:14:34.748; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-14 17:14:34.748; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-14 17:14:34.749; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-14 17:14:34.749; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-14 17:14:34.818; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-14 17:14:34.819; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-14 17:14:34.823; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-14 17:14:34.829; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-14 17:14:34.836; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-14 17:14:34.840; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-14 17:14:34.844; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-14 17:14:36.197; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-14 17:14:36.226; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = True
+2024-10-14 17:14:36.227; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-14 17:14:37.370; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 6160 interactions, P: 3080, N: 3080 
+Test: 685 interactions, P: 343, N: 342
+2024-10-14 17:14:37.393; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-14 17:15:44.697; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-14 17:15:44.697; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-14 17:15:44.698; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-14 17:15:44.699; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-14 17:15:44.761; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-14 17:15:44.761; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-14 17:15:44.765; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-14 17:15:44.768; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-14 17:15:44.773; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-14 17:15:44.777; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-14 17:15:44.779; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-14 17:15:46.015; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-14 17:15:46.041; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = True
+2024-10-14 17:15:46.067; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-14 17:15:47.175; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 6160 interactions, P: 3080, N: 3080 
+Test: 685 interactions, P: 343, N: 342
+2024-10-14 17:15:47.197; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-14 17:17:23.625; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-14 17:17:23.625; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 10 folds
+2024-10-14 17:17:23.625; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-14 17:17:23.626; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-14 17:17:23.691; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3518, after: 3518)
+2024-10-14 17:17:23.691; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3518, after: 3518)
+2024-10-14 17:17:23.694; models_handlers.graph_rna_model_handler; DEBUG  all: 3518 interactions (P: 3518, N: 0)
+2024-10-14 17:17:23.698; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3423 interactions (P: 3423, N: 0)
+2024-10-14 17:17:23.703; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-14 17:17:23.706; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-14 17:17:23.708; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-14 17:17:24.964; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-14 17:17:24.990; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-14 17:17:25.012; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-14 17:17:25.027; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 6161 interactions, P: 3080, N: 3081 
+Test: 685 interactions, P: 343, N: 342
+>>>>>>> 219046b (continue debugging- now there are negatives in test, but not equal to positives and the y_score is bad)
 2024-10-14 17:17:25.054; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-14 17:23:02.162; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-14 17:23:02.162; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
@@ -7242,6 +7308,7 @@ Train: 27238 rbp interactions, P: 12704, N: 14534
 Test: 6994 interactions, P: 3361, N: 3633
 2024-10-14 18:03:06.239; models_handlers.three_graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-14 18:03:09.131; models_handlers.three_graph_rna_model_handler; DEBUG evaluating test set
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 6fe549b (continue debugging- now there are negatives in test, but not equal to positives and the y_score is bad)
 =======
@@ -8461,3 +8528,5 @@ Test: 684 interactions, P: 342, N: 342
 >>>>>>> c91c66f (try to fix duplicated data in test and train srna-mrna)
 =======
 >>>>>>> c3ed2c4 (continue debuggind and adding neg to test)
+=======
+>>>>>>> 219046b (continue debugging- now there are negatives in test, but not equal to positives and the y_score is bad)
