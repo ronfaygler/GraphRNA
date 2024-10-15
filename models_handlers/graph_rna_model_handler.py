@@ -349,30 +349,32 @@ class GraphRNAModelHandler(object):
 
         # 2 - split train edges into message passing & supervision
         unq_train_spr, unq_train_mp = split_df_samples(df=df, ratio=cls.train_supervision_ratio)
+        
         edges = {
             'train': {
                 'all': {
-                    'label': list(df[cls.binary_intr_label_col]),
-                    'label_index_0': list(df[cls.srna_nid_col]),
-                    'label_index_1': list(df[cls.mrna_nid_col])
+                    'label': list(df[cls.binary_intr_label_col].dropna().astype(int)),
+                    'label_index_0': list(df[cls.srna_nid_col].dropna().astype(int)),
+                    'label_index_1': list(df[cls.mrna_nid_col].dropna().astype(int))
                 },
                 'message_passing': {
-                    'label': list(unq_train_mp[cls.binary_intr_label_col]),
-                    'label_index_0': list(unq_train_mp[cls.srna_nid_col]),
-                    'label_index_1': list(unq_train_mp[cls.mrna_nid_col])
+                    'label': list(unq_train_mp[cls.binary_intr_label_col].dropna().astype(int)),
+                    'label_index_0': list(unq_train_mp[cls.srna_nid_col].dropna().astype(int)),
+                    'label_index_1': list(unq_train_mp[cls.mrna_nid_col].dropna().astype(int))
                 },
                 'supervision': {
-                    'label': list(unq_train_spr[cls.binary_intr_label_col]),
-                    'label_index_0': list(unq_train_spr[cls.srna_nid_col]),
-                    'label_index_1': list(unq_train_spr[cls.mrna_nid_col])
+                    'label': list(unq_train_spr[cls.binary_intr_label_col].dropna().astype(int)),
+                    'label_index_0': list(unq_train_spr[cls.srna_nid_col].dropna().astype(int)),
+                    'label_index_1': list(unq_train_spr[cls.mrna_nid_col].dropna().astype(int))
                 }
             },
             'test': {
-                'label': list(unq_test[cls.binary_intr_label_col]),
-                'label_index_0': list(unq_test[cls.srna_nid_col]),
-                'label_index_1': list(unq_test[cls.mrna_nid_col])
+                'label': list(unq_test[cls.binary_intr_label_col].dropna().astype(int)),
+                'label_index_0': list(unq_test[cls.srna_nid_col].dropna().astype(int)),
+                'label_index_1': list(unq_test[cls.mrna_nid_col].dropna().astype(int))
             }
         }
+
 
         logger.debug(f"\n{len(cls.srna_nodes)} sRNA nodes, {len(cls.mrna_nodes)} mRNA nodes \n"
                      f"Train: {len(edges['train']['all']['label'])} interactions, "
@@ -435,6 +437,22 @@ class GraphRNAModelHandler(object):
         ground_truth = torch.cat(ground_truths, dim=0).cpu().numpy()
         y_true = list(ground_truth)
         y_graph_score = list(scores_arr)
+        
+        ########
+        y_true_len = len(y_true)
+        y_graph_score_len = len(y_graph_score)
+
+        print(f"y_true_len: {y_true_len}")
+        print(f"y_graph_score_len: {y_graph_score_len}")
+
+        # Check for null values in the lists
+        if any(pd.isnull(y_true)):
+            print("Null values found in y_true")
+
+        if any(pd.isnull(y_graph_score)):
+            print("Null values found in y_graph_score")
+        ########
+
         # 2.2 - save
         eval_data_preds = pd.DataFrame({
             cls.srna_nid_col: torch.cat(srna_nids, dim=0).cpu().numpy(),
@@ -540,29 +558,33 @@ class GraphRNAModelHandler(object):
         # 4 - random negative sampling - all cv data
 
         # for efrat data - RF, XGB
-        # if not neg_df:
-        # ############################################################################################################
-        #     _shuffle = True
-        #     unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
-        #                                     _shuffle=_shuffle)
+        if neg_df is None:
+            print("in not neg df")
+        ############################################################################################################
+            _shuffle = True
+            unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
+                                            _shuffle=_shuffle)
         # ############################################################################################################
 
-        if neg_df:
+        else:
             print("in if neg_df")
             _shuffle = True
             unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=neg_df, ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
         
         #####################################
         # # for RBP:
-        else:
-            print("nott in if neg_df")
-            unq_data = unq_intr_pos
+        # else:
+        #     print("nott in if neg_df")
+        #     unq_data = unq_intr_pos
         #####################################
 
         unq_y = np.array(unq_data[cls.binary_intr_label_col])
+        
         print("unq_data: ", unq_data['miRNA ID'], unq_data['Gene_ID'] )
         print("unq_data cols: ", unq_data.columns)
+
         unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
+
         print("unq_intr_data: ", unq_intr_data)
         print("unq_intr_data cols: ", unq_intr_data.columns)
 

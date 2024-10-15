@@ -44,7 +44,7 @@ def split_df_samples(df: pd.DataFrame, ratio: float, seed: int = None) -> (pd.Da
         np.random.seed(seed)
     num_samp_1 = int(len(df) * ratio)
     print("df: ", df)
-    print("inter srna", df['interaction_label_mirna'])
+    # print("inter srna", df['interaction_label_mirna'])
     print("len(df):", len(df))
     all_idx = np.arange(len(df))
     df_1_idx = sorted(np.random.choice(a=all_idx, size=num_samp_1, replace=False))

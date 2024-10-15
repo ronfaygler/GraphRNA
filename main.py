@@ -9,7 +9,7 @@ from utils.utils_general import get_logger_config_dict, write_df
 from data_handlers.data_handler import DataHandler
 from data_handlers.mir_handler import DataHandler_Mirna_Mrna
 
-# from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
+from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
 import shap
 import matplotlib.pyplot as plt
 
@@ -19,7 +19,7 @@ import logging.config
 logging.config.dictConfig(get_logger_config_dict(filename="main", file_level='DEBUG'))
 logger = logging.getLogger(__name__)
 
-from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
+# from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
 
 
 
@@ -27,42 +27,16 @@ def main():
 
 # ------ triple: mirna mrna rbp:
     # ----- configuration
-    data="triple"
-    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp"
-    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
-    print("paths")
-
-    # data for XGBoost / RandomForest:
-    # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
-    
-    # ----- load data for GraphRNA:
-    train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False)
-
-    # ----- load data for XGBoost / RandomForest
-    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
-
-    # ----- run GraphRNA
-    model_name = "GNN"
-    graph_rna = GraphRNAModelHandler()
-    test = None
-    cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
-    # write cv results to folds dfs
-    for fold, fold_df in cv_predictions_dfs.items():
-        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
-
-
-# # ------ mirna mrna:
-#     # ----- configuration
-    # data="mirna"
-    # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
-    # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+    # data="triple"
+    # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp"
+    # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
     # print("paths")
 
     # # data for XGBoost / RandomForest:
     # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
     # # ----- load data for GraphRNA:
-    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
+    # train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False, is_rbp=True)
 
     # # ----- load data for XGBoost / RandomForest
     # # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
@@ -72,10 +46,40 @@ def main():
     # graph_rna = GraphRNAModelHandler()
     # test = None
     # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+    # # write cv results to folds dfs
+    # for fold, fold_df in cv_predictions_dfs.items():
+    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+
+
+# # ------ mirna mrna:
+#     # ----- configuration
+    data="mirna"
+    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
+    neg_dir = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/neg_data"
+    neg_path="NPS_CLIP_Random.csv"
+    outputs_path = f"/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+
+    print("paths")
+
+    # add neg samples for the first time:
+    # out, neg_df = combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_dir=neg_dir, neg_path=neg_path, ratio=1, _shuffle=True)
+    
+    # ----- load data for without neg:
+    train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
+    neg_df=None
+
+    # ----- load data with neg :
+    # train_fragments, kwargs = load_data_mir(data_path=data_path, neg_path=neg_path, added_neg=True, is_rbp=False)
+
+    # ----- run GraphRNA
+    model_name = "GNN"
+    graph_rna = GraphRNAModelHandler()
+    test = None
+    cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, neg_df=neg_df, **kwargs)
 
     # write cv results to folds dfs
-    # for fold, fold_df in cv_predictions_dfs.items():
-        # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+    for fold, fold_df in cv_predictions_dfs.items():
+        write_df(df=fold_df, file_path=join(join(outputs_path, neg_path[:-4]), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
     # # # ----- run XGBoost
     # model_name = "XGB"
@@ -139,32 +143,35 @@ def main():
 
 
 #----------- combine pos+neg
-def combine_pos_neg_samples(data_path: pd.DataFrame, pos_path: str, neg_path: str, ratio: float, _shuffle: bool = False):
+def combine_pos_neg_samples(data_path: pd.DataFrame, pos_path: str, neg_dir: str, neg_path: str, ratio: float, _shuffle: bool = False):
     train_df = pd.read_csv(join(data_path, pos_path))
+    # remove type row
+    train_df = train_df.iloc[1:].reset_index(drop=True)
     train_df['interaction_label'] = 1
 
-    # create df neg+pos 
-    neg_df =  pd.read_csv(join(data_path, neg_path))
-    # Remove the first row from neg_df
+    neg_df =  pd.read_csv(join(neg_dir, neg_path))
+    # remove type row
     neg_df = neg_df.iloc[1:].reset_index(drop=True)
     neg_df['interaction_label'] = 0
 
+    assert len(train_df) <= len(neg_df), "neg df is smaller than pos df"
+    
+    # create df neg+pos 
     n = max(int(len(train_df) * ratio), 1)
     _neg_samples = neg_df.sample(n=n, random_state=20)
     out = pd.concat(objs=[train_df, _neg_samples], axis=0, ignore_index=True).reset_index(drop=True)
     if _shuffle:
         out = pd.DataFrame(shuffle(out)).reset_index(drop=True)
-    out.to_csv(join(data_path, "combined_train.csv"))
-    return out
+    out.to_csv(join(data_path, f"combined_train_{neg_path[:-4]}.csv"))
+    return out, neg_df
 
 
-def load_data_mir(data_path: str, added_neg: bool = False):
+def load_data_mir(data_path: str, neg_path: str='', added_neg: bool = False, is_rbp: bool = False):
     if added_neg:
-        train_fragments_file = "combined_train.csv"
+        train_fragments_file = f"combined_train_{neg_path[:-4]}.csv"
     else:
         train_fragments_file = "h3.csv"
-
-    dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg)
+    dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg, is_rbp=is_rbp)
     train_fragments = dhm.load_interactions_datasets(added_neg=added_neg)
     mirna_eco, mrna_eco, mirna_eco_accession_id_col, mrna_eco_accession_id_col = dhm.load_rna_data()
 
@@ -255,7 +262,7 @@ def load_data(data_path: str):
     return train_fragments, test_complete, test_filtered, kwargs
 
 
-def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[str, object], model_name: str="", data: str="mirna", **kwargs) -> \
+def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[str, object], model_name: str="", data: str="mirna", neg_df: pd.DataFrame=None, **kwargs) -> \
         (Dict[int, pd.DataFrame], pd.DataFrame):
     """
     Returns
@@ -300,7 +307,7 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
         cv_predictions_dfs, cv_training_history = \
             model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'], 
             metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
-            srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID', **kwargs)
+            srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID',neg_df=neg_df, **kwargs)
                 
         return cv_predictions_dfs
 
