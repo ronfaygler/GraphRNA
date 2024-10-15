@@ -804,25 +804,17 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_with_srna_col=mrna_acc_with_srna_col,
                                                       mrna_acc_with_rbp_col=mrna_acc_with_rbp_col, rbp_acc_col=rbp_acc_col)
-        print("empty srna" , unq_intr_pos['srna_node_id'].isnull().sum())
+        
         # 4 - random negative sampling - all cv data
-        # for efrat data - RF, XGB
+        # for efrat data - RF, XGB, shani - GNN - RBP
         if not neg_df:
-        ############################################################################################################
             _shuffle = True
             unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
                                             _shuffle=_shuffle, is_intr=True)
-        # ############################################################################################################
 
         if neg_df:
             _shuffle = True
             unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=neg_df, ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
-        
-        #####################################
-        # for RBP:
-        # else:
-        #     unq_data = unq_intr_pos
-        #####################################
 
         # unq_y = np.array(unq_data[cls.binary_intr_label_col])
 

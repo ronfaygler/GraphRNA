@@ -49,8 +49,8 @@ def main():
     test = None
     cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
     # # write cv results to folds dfs
-    for fold, fold_df in cv_predictions_dfs.items():
-        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+    # for fold, fold_df in cv_predictions_dfs.items():
+    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
 
 # # ------ mirna mrna:
@@ -313,7 +313,6 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
 # ------------triple:
     if data == "triple":
         cv_predictions_dfs, cv_training_history = \
-<<<<<<< HEAD
             model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
                 y_rbp=train_fragments['y_rbp'],
                 metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
