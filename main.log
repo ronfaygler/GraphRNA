@@ -7310,7 +7310,10 @@ Test: 6994 interactions, P: 3361, N: 3633
 2024-10-14 18:03:09.131; models_handlers.three_graph_rna_model_handler; DEBUG evaluating test set
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 6fe549b (continue debugging- now there are negatives in test, but not equal to positives and the y_score is bad)
+=======
+>>>>>>> bfd0062 (fine results)
 =======
 2024-10-14 19:20:50.633; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-14 19:20:50.634; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
@@ -7568,8 +7571,11 @@ Test: 6994 interactions, P: 3361, N: 3633
 2024-10-14 19:38:37.601; models_handlers.three_graph_rna_model_handler; DEBUG  RBP data from EcoCyc: 11 unique RBPs of E.coli
 2024-10-14 19:38:37.603; models_handlers.three_graph_rna_model_handler; DEBUG mapping interactions to edges
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 10a4f23 (continue debug)
 =======
+=======
+>>>>>>> bfd0062 (fine results)
 2024-10-15 11:19:29.702; models_handlers.three_graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-15 11:19:29.702; models_handlers.three_graph_rna_model_handler; DEBUG running cross validation with 10 folds
 2024-10-15 11:19:29.702; models_handlers.three_graph_rna_model_handler; WARNING removing all synthetic samples
@@ -8170,6 +8176,7 @@ Train: 30586 rbp interactions, P: 14236, N: 16350
 Test: 3543 interactions, P: 1726, N: 1817
 2024-10-15 12:26:05.726; models_handlers.three_graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-15 12:26:08.663; models_handlers.three_graph_rna_model_handler; DEBUG evaluating test set
+<<<<<<< HEAD
 >>>>>>> f2d2daf (fine results)
 =======
 2024-10-15 16:53:44.969; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
@@ -8530,3 +8537,6 @@ Test: 684 interactions, P: 342, N: 342
 >>>>>>> c3ed2c4 (continue debuggind and adding neg to test)
 =======
 >>>>>>> 219046b (continue debugging- now there are negatives in test, but not equal to positives and the y_score is bad)
+=======
+>>>>>>> 6498dd5 (fine results)
+>>>>>>> bfd0062 (fine results)

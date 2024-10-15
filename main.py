@@ -49,8 +49,8 @@ def main():
     test = None
     cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
     # # write cv results to folds dfs
-    # for fold, fold_df in cv_predictions_dfs.items():
-    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+    for fold, fold_df in cv_predictions_dfs.items():
+        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
 
 # # ------ mirna mrna:
