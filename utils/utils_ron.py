@@ -145,14 +145,18 @@ def create_metric_df(dfs):
     # final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/RF/RF_Mock_miRNA_metrics_summary.csv", index=False)
 
     # final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/categorial_XGB_Mock_miRNA_metrics_summary.csv", index=False)
-    final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/metrics_summary.csv", index=False)
+    # final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/metrics_summary.csv", index=False)
+    final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/metrics_summary.csv", index=False)
+
 
 
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/RF/cv_fold{i}_predictions_RandomForest.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/cv_fold{i}_predictions_XGBoost.csv") for i in range(10)]
-dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
+# dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
+dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
+
 create_metric_df(dfs)
 
 

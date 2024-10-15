@@ -10,7 +10,7 @@ from data_handlers.data_handler import DataHandler
 from data_handlers.mir_handler import DataHandler_Mirna_Mrna
 
 # --- not rbp:
-# from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
+from models_handlers.graph_rna_model_handler import GraphRNAModelHandler
 
 import shap
 import matplotlib.pyplot as plt
@@ -22,7 +22,7 @@ logging.config.dictConfig(get_logger_config_dict(filename="main", file_level='DE
 logger = logging.getLogger(__name__)
 
 # --- for rbp:
-from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
+# from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
 
 
 
@@ -30,24 +30,19 @@ def main():
 
 # ------ triple: mirna mrna rbp:
     # ----- configuration
-<<<<<<< HEAD
     # data="triple"
     # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp"
     # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
-=======
-    data="triple"
-    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp"
-    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp"
-    print("paths")
+    # print("paths")
 
-    # ----- load data for GraphRNA:
-    train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False, is_rbp=True)
+    # # ----- load data for GraphRNA:
+    # train_fragments, kwargs = load_data_triple(data_path=data_path, added_neg=False, is_rbp=True)
 
-    # ----- run GraphRNA
-    model_name = "GNN"
-    graph_rna = GraphRNAModelHandler()
-    test = None
-    cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+    # # ----- run GraphRNA
+    # model_name = "GNN"
+    # graph_rna = GraphRNAModelHandler()
+    # test = None
+    # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
     # # write cv results to folds dfs
     # for fold, fold_df in cv_predictions_dfs.items():
     #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
@@ -55,30 +50,30 @@ def main():
 
 # # ------ mirna mrna:
 #     # ----- configuration
-    # data="mirna"
-    # data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
-    # outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
->>>>>>> 917594e (start debugging by running main, create fake dfs and update data handlers)
-    # print("paths")
+    data="mirna"
+    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
+    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+    neg_dir = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/neg_data"
+    print("paths")
 
-    # # data for XGBoost / RandomForest:
-    # # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv", neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
+    # add neg for the first time . data for XGBoost / RandomForest:
+    # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv",neg_dir=neg_dir,  neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
-    # # ----- load data for GraphRNA:
-    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=False)
+    # ----- load data without neg:
+    train_fragments, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False)
 
-    # # ----- load data for XGBoost / RandomForest
-    # # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
+    # ----- load data for XGBoost / RandomForest (with neg)
+    # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
 
-    # # ----- run GraphRNA
-    # model_name = "GNN"
-    # graph_rna = GraphRNAModelHandler()
-    # test = None
-    # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
+    # ----- run GraphRNA
+    model_name = "GNN"
+    graph_rna = GraphRNAModelHandler()
+    test = None
+    cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
 
     # write cv results to folds dfs
-    # for fold, fold_df in cv_predictions_dfs.items():
-        # write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+    for fold, fold_df in cv_predictions_dfs.items():
+        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN-Random_neg'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
 
     # # # ----- run XGBoost
     # model_name = "XGB"
@@ -281,7 +276,7 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
     # 1 - define model args
     model_args = model_h.get_model_args()
     # 2 - run cross validation
-    cv_n_splits = 10
+    cv_n_splits = 5
 
     # ------------mrna mirna:
     if model_name == "XGB" or model_name == "RF":
@@ -319,23 +314,6 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object], test: Dict[s
                 srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
                 mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
                 **kwargs)
-<<<<<<< HEAD
-=======
-            y_rbp=train_fragments['y_rbp'],
-=======
-            model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'], 
->>>>>>> 7a6a684 (start debugging by running main, create fake dfs and update data handlers)
-=======
-            model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
-            y_rbp=train_fragments['y_rbp'],
->>>>>>> 5eea181 (split the label to 2 labels (mirna, rbp))
-            metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
-            srna_acc_col='miRNA ID', rbp_acc_col='RBP', 
-            mrna_acc_with_srna_col='mRNA_ID_with_sRNA' , mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
-            **kwargs)
->>>>>>> 917594e (start debugging by running main, create fake dfs and update data handlers)
-=======
->>>>>>> 4076914 (finish handle the rebase)
                 
         return cv_predictions_dfs
 
