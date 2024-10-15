@@ -108,10 +108,13 @@ def create_metric_df(dfs):
 
     all_metrics = []
     for i, df in enumerate(dfs):
-        # Extract the y_true and y_score columns
-        y_true = df['y_true'].values
-        y_score = df['y_score'].values
-        
+        # Drop rows where 'y_true' or 'y_graph_score' is null
+        df_clean = df[['y_true', 'y_graph_score']].dropna()
+
+        # Extract the y_true and y_score columns after removing null values
+        y_true = df_clean['y_true'].values
+        y_score = df_clean['y_graph_score'].values
+            
         # Calculate metrics for the entire DataFrame
         auc_value, pauc_value, pr_auc_value, f1_value, acc_value, tnr_value, fpr, tpr, thresholds = calculate_metrics(y_true, y_score)
         
@@ -141,14 +144,16 @@ def create_metric_df(dfs):
     # Save the final DataFrame to a CSV file
     # final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/RF/RF_Mock_miRNA_metrics_summary.csv", index=False)
 
-    final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/categorial_XGB_Mock_miRNA_metrics_summary.csv", index=False)
+    # final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/categorial_XGB_Mock_miRNA_metrics_summary.csv", index=False)
+    final_metrics_df.to_csv("/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/metrics_summary.csv", index=False)
 
 
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/RF/cv_fold{i}_predictions_RandomForest.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/cv_fold{i}_predictions_XGBoost.csv") for i in range(10)]
-# create_metric_df(dfs)
+dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
+create_metric_df(dfs)
 
 
 def get_features_cols(self):

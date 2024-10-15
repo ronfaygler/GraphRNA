@@ -201,14 +201,15 @@ class GraphRNAModelHandler(object):
             print("unq_intr_pos in _add_neg_samples: ", unq_intr_pos)
             # Extract positive interaction pairs (for miRNA-sRNA and mRNA-RBP)
             # Filter rows where both srna_nid_col and mrna_nid_col_with_srna are not null
-            filtered_data = unq_intr_pos.dropna(subset=[cls.srna_nid_col, cls.mrna_nid_col_with_srna])
+            filtered_mirna_mrna = unq_intr_pos.dropna(subset=[cls.srna_nid_col, cls.mrna_nid_col_with_srna])
+            filtered_rbp_mrna = unq_intr_pos.dropna(subset=[cls.rbp_nid_col, cls.mrna_nid_col_with_rbp])
 
             # Now zip only the non-null values
-            _pos_mirna_mrna = list(zip(filtered_data[cls.srna_nid_col], filtered_data[cls.mrna_nid_col_with_srna]))
+            _pos_mirna_mrna = list(zip(filtered_mirna_mrna[cls.srna_nid_col], filtered_mirna_mrna[cls.mrna_nid_col_with_srna]))
 
             # _pos_mirna_mrna = list(zip(list(unq_intr_pos[cls.srna_nid_col]), list(unq_intr_pos[cls.mrna_nid_col_with_srna])))
             print('len(_pos_mirna_mrna): ', len(_pos_mirna_mrna))
-            _pos_rbp_mrna = list(zip(list(unq_intr_pos[cls.rbp_nid_col]), list(unq_intr_pos[cls.mrna_nid_col_with_rbp])))
+            _pos_rbp_mrna = list(zip(list(filtered_rbp_mrna[cls.rbp_nid_col]), list(filtered_rbp_mrna[cls.mrna_nid_col_with_rbp])))
             print('len(_pos_rbp_mrna): ', len(_pos_rbp_mrna))
 
         else:
@@ -736,7 +737,7 @@ class GraphRNAModelHandler(object):
         _df[out_col_y_score] = y_score
         # TODO ?
         _df = cls.add_rna_metadata(_df=_df, sort_df=sort_df, sort_by_col=out_col_y_score)
-
+        print("df after sort values: ", _df[out_col_y_score])
         return _df
 
     @classmethod
@@ -848,10 +849,10 @@ class GraphRNAModelHandler(object):
 
         # 5 - split data into folds
         # For mRNA-sRNA interactions
-        sRNA_cv_folds = three_stratified_cv_for_interaction(unq_intr_data=mRNA_sRNA_interactions, labels=mRNA_sRNA_labels, label_col=cls.binary_srna_intr_label_col, n_splits=5)
+        sRNA_cv_folds = three_stratified_cv_for_interaction(unq_intr_data=mRNA_sRNA_interactions, labels=mRNA_sRNA_labels, label_col=cls.binary_srna_intr_label_col, n_splits=n_splits)
 
         # For mRNA-RBP interactions
-        RBP_cv_folds = three_stratified_cv_for_interaction(unq_intr_data=mRNA_RBP_interactions, labels=mRNA_RBP_labels, label_col=cls.binary_rbp_intr_label_col, n_splits=5)
+        RBP_cv_folds = three_stratified_cv_for_interaction(unq_intr_data=mRNA_RBP_interactions, labels=mRNA_RBP_labels, label_col=cls.binary_rbp_intr_label_col, n_splits=n_splits)
 
         combined_cv_folds = {}
 
@@ -861,9 +862,6 @@ class GraphRNAModelHandler(object):
                 'sRNA_val': sRNA_cv_folds[i]['unq_val'],
                 'RBP_train': RBP_cv_folds[i]['unq_train'],
                 'RBP_val': RBP_cv_folds[i]['unq_val']#,
-                # 'sRNA_val_labels': sRNA_cv_folds[i]['val_labels'],
-                # 'RBP_val': RBP_cv_folds[i]['val_data'],
-                # 'RBP_val_labels': RBP_cv_folds[i]['val_labels']
             }
             # Check and remove duplicates in sRNA_train
             combined_cv_folds[i]['sRNA_train'] = combined_cv_folds[i]['sRNA_train'].drop_duplicates()
