@@ -195,6 +195,12 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
         # Train fold
         unq_train = pd.DataFrame(unq_intr_data.iloc[list(train_index), :]).reset_index(drop=True)
         
+        # # Count the occurrences of each unique label (non-null)
+        # label_counts = unq_train[label_col].dropna().value_counts()
+        # # Print the count of each unique label
+        # print("Counts of each unique label in unq_train:")
+        # print(label_counts)
+
         # print("labels: ", labels)
         # print("len labels: ", len(labels))
         # print("train_index: ", train_index)
@@ -210,6 +216,12 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
         # Validation
         unq_val = pd.DataFrame(unq_intr_data.iloc[list(val_index), :]).reset_index(drop=True)
         unq_val[label_col] = list(labels[val_index])
+        
+        # # Count the occurrences of each unique label (non-null)
+        # label_counts = unq_val[label_col].dropna().value_counts()
+        # # Print the count of each unique label
+        # print("Counts of each unique label in unq_val:")
+        # print(label_counts)
 
         # Store unique train and val splits
         fold_data = { 

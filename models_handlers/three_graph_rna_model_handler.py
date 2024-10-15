@@ -115,15 +115,17 @@ class GraphRNAModelHandler(object):
     @staticmethod
     def log_df_stats(df: pd.DataFrame, label_srna_col: str, label_rbp_col: str, df_nm: str = None):
         df_nm = 'df' if pd.isnull(df_nm) else df_nm
-        len_srna_df = 3517
-        _pos_df_srna = sum(df[label_srna_col].iloc[:len_srna_df])
-        # _pos_df_srna = df[label_srna_col].notna().sum()
+        len_srna_df = df['miRNA ID'].notna().sum()
+        _pos_df_srna = df.loc[df['miRNA ID'].notna(), label_srna_col].sum()
 
+        # _pos_df_srna = sum(df[label_srna_col].iloc[:len_srna_df])
+        # _pos_df_srna = df['miRNA ID'].notna().sum()
+        print("sum_not null: ", len_srna_df)
+        
         _pos_df_rbp = sum(df[label_rbp_col])
         # _pos_df_rbp = df[label_rbp_col].notna().sum()
 
         print("Df: ", df)
-        # len_rbp_df, len_srna_df
         logger.debug(f' {df_nm}: {len_srna_df} interactions mrna-srna (P: {_pos_df_srna}, N: {len_srna_df - _pos_df_srna}')
         logger.debug(f' {df_nm}: {len(df)} interactions mrna-rbp (P: {_pos_df_rbp}, N: {len(df) - _pos_df_rbp})')
 
