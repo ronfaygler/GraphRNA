@@ -38,14 +38,13 @@ def write_df(df, file_path, encoding='utf-8', keep_index=False):
     return df
 
 
+
 def split_df_samples(df: pd.DataFrame, ratio: float, seed: int = None) -> (pd.DataFrame, pd.DataFrame):
     assert 0 < ratio < 1, "invalid ratio (should be between 0 to 1)"
     if seed is not None:
         np.random.seed(seed)
+    
     num_samp_1 = int(len(df) * ratio)
-    print("df: ", df)
-    # print("inter srna", df['interaction_label_mirna'])
-    print("len(df):", len(df))
     all_idx = np.arange(len(df))
     df_1_idx = sorted(np.random.choice(a=all_idx, size=num_samp_1, replace=False))
     df_2_idx = sorted(set(all_idx) - set(df_1_idx))
@@ -55,6 +54,37 @@ def split_df_samples(df: pd.DataFrame, ratio: float, seed: int = None) -> (pd.Da
     assert len(df_1) + len(df_2) == len(df), "mismatch"
 
     return df_1, df_2
+
+def split_df_samples_rbp(df_dict: dict, ratio: float, seed: int = None) -> (pd.DataFrame, pd.DataFrame):
+    assert 0 < ratio < 1, "invalid ratio (should be between 0 to 1)"
+    if seed is not None:
+        np.random.seed(seed)
+    
+    # Prepare dictionary to hold the split dataframes
+    split_dataframes = {'df_1': [], 'df_2': []}
+    
+    for key, df in df_dict.items():
+        num_samp_1 = int(len(df) * ratio)
+        
+        all_idx = np.arange(len(df))
+        df_1_idx = sorted(np.random.choice(a=all_idx, size=num_samp_1, replace=False))
+        df_2_idx = sorted(set(all_idx) - set(df_1_idx))
+        
+        df_1 = df.iloc[df_1_idx, :].reset_index(drop=True)
+        df_2 = df.iloc[df_2_idx, :].reset_index(drop=True)
+        
+        # Ensure the lengths match
+        assert len(df_1) + len(df_2) == len(df), f"Mismatch in splitting DataFrame {key}"
+        
+        # Add the split DataFrames to the results
+        split_dataframes['df_1'].append(df_1)
+        split_dataframes['df_2'].append(df_2)
+    
+    # Convert lists of DataFrames into single DataFrames if needed
+    split_dataframes['df_1'] = pd.concat(split_dataframes['df_1'], ignore_index=True)
+    split_dataframes['df_2'] = pd.concat(split_dataframes['df_2'], ignore_index=True)
+
+    return split_dataframes['df_1'], split_dataframes['df_2']
 
 
 def get_logger_config_dict(filename: str = 'default_log', file_level: str = 'INFO', console_level: str = 'DEBUG',

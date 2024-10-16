@@ -29,7 +29,6 @@ class DataHandler_Mirna_Mrna(DataHandler):
         # RNA data files
         # it's called srna because the parent class
         self.srna_data_file = "DATA_mirna_eco.csv"
-        
         # interactions features and label columns
         with open(join(self.data_path,'features_cols.txt'), 'r') as file:
             self.features_cols = [line.strip() for line in file]
@@ -43,15 +42,20 @@ class DataHandler_Mirna_Mrna(DataHandler):
             self.mrna_data_with_srna_file = "DATA_mrna_eco.csv"
             self.mrna_accession_id_col_with_rbp = "EcoCyc_accession_id"
             self.mrna_accession_id_col_with_srna = "EcoCyc_accession_id"
-
             self.rbp_data_file = "DATA_rbp_eco.csv"
             self.rbp_accession_id_col = "EcoCyc_accession_id"
             # self.features_cols=["Seed_match_A"]
             self.label_mirna_col = "interaction_label_mirna"
             self.label_rbp_col = "interaction_label_rbp"
 
+        else:
+            self.label_col = "interaction_label"
+
+
     def load_interactions_datasets(self, added_neg):
         train_fragments = read_df(join(self.data_path, self.train_fragments_file))
+        train_fragments['is_synthetic'] = False
+
         if not added_neg:
             if self.is_rbp:
                 train_fragments[self.label_mirna_col] = 1
@@ -68,7 +72,7 @@ class DataHandler_Mirna_Mrna(DataHandler):
         
         return train_fragments
     
-    # --- RBP :
+    # # --- RBP :
     def split_dataset(self, dataset: pd.DataFrame) -> Dict[str, object]:
         """
         :return:
