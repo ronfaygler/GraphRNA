@@ -8957,6 +8957,7 @@ Train: 5476 interactions, P: 2738, N: 2738
 Test: 1368 interactions, P: 684, N: 684
 2024-10-16 16:30:08.434; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-16 16:30:09.605; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+<<<<<<< HEAD
 2024-10-20 13:41:49.486; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-20 13:45:21.552; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-20 13:45:21.553; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 1 folds
@@ -9608,3 +9609,5 @@ Test: 1405 interactions, P: 701, N: 704
 Train: 5555 interactions, P: 2746, N: 2809 
 Test: 1405 interactions, P: 701, N: 704
 2024-10-21 14:00:43.279; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+=======
+>>>>>>> adf9227 (changing threshold to use youden_index)
