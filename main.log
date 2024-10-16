@@ -8901,3 +8901,59 @@ Test: 1368 interactions, P: 684, N: 684
 2024-10-15 17:54:14.801; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-15 17:54:15.378; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
 >>>>>>> 4b295a9 (ran random neg on mrna-mirna 5 and 10 folds)
+2024-10-16 16:30:02.341; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-16 16:30:02.341; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 5 folds
+2024-10-16 16:30:02.342; models_handlers.graph_rna_model_handler; WARNING removing all synthetic samples
+2024-10-16 16:30:02.342; models_handlers.graph_rna_model_handler; DEBUG removing synthetic samples from train
+2024-10-16 16:30:02.367; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from X (before: 3517, after: 3517)
+2024-10-16 16:30:02.368; models_handlers.graph_rna_model_handler; DEBUG removed 0 synthetic samples from metadata (before: 3517, after: 3517)
+2024-10-16 16:30:02.377; models_handlers.graph_rna_model_handler; DEBUG  all: 3517 interactions (P: 3517, N: 0)
+2024-10-16 16:30:02.383; models_handlers.graph_rna_model_handler; DEBUG  unique_all: 3422 interactions (P: 3422, N: 0)
+2024-10-16 16:30:02.390; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
+2024-10-16 16:30:02.395; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 203 unique sRNAs of E.coli
+2024-10-16 16:30:02.400; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-16 16:30:03.549; models_handlers.graph_rna_model_handler; DEBUG starting fold 0
+2024-10-16 16:30:03.564; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-16 16:30:03.578; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-16 16:30:03.589; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 5475 interactions, P: 2737, N: 2738 
+Test: 1369 interactions, P: 685, N: 684
+2024-10-16 16:30:03.612; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-16 16:30:04.422; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-16 16:30:04.495; models_handlers.graph_rna_model_handler; DEBUG starting fold 1
+2024-10-16 16:30:04.511; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-16 16:30:04.526; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-16 16:30:04.537; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 5475 interactions, P: 2737, N: 2738 
+Test: 1369 interactions, P: 685, N: 684
+2024-10-16 16:30:04.547; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-16 16:30:05.274; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-16 16:30:05.350; models_handlers.graph_rna_model_handler; DEBUG starting fold 2
+2024-10-16 16:30:05.367; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-16 16:30:05.384; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-16 16:30:05.398; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 5475 interactions, P: 2738, N: 2737 
+Test: 1369 interactions, P: 684, N: 685
+2024-10-16 16:30:05.410; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-16 16:30:06.355; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-16 16:30:06.441; models_handlers.graph_rna_model_handler; DEBUG starting fold 3
+2024-10-16 16:30:06.463; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-16 16:30:06.483; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-16 16:30:06.501; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 5475 interactions, P: 2738, N: 2737 
+Test: 1369 interactions, P: 684, N: 685
+2024-10-16 16:30:06.518; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-16 16:30:08.283; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-16 16:30:08.365; models_handlers.graph_rna_model_handler; DEBUG starting fold 4
+2024-10-16 16:30:08.386; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-16 16:30:08.406; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-16 16:30:08.422; models_handlers.graph_rna_model_handler; DEBUG 
+203 sRNA nodes, 2367 mRNA nodes 
+Train: 5476 interactions, P: 2738, N: 2738 
+Test: 1368 interactions, P: 684, N: 684
+2024-10-16 16:30:08.434; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-16 16:30:09.605; models_handlers.graph_rna_model_handler; DEBUG evaluating test set

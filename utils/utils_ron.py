@@ -71,9 +71,12 @@ def calculate_metrics(y_true_list, y_score_list):
 
     # Calculate FPR, TPR, and thresholds
     fpr, tpr, thresholds = roc_curve(y_true_list, y_score_list)
+    youden_index = tpr - fpr
+    optimal_threshold = thresholds[np.argmax(youden_index)]
 
     # Calculate pAUC (Partial AUC up to FPR of 0.1, for example)
     pauc_value = auc(fpr[fpr <= 0.1], tpr[fpr <= 0.1])
+    
 
     # Calculate precision, recall, and thresholds for Precision-Recall curve
     precision, recall, pr_thresholds = precision_recall_curve(y_true_list, y_score_list)
@@ -82,7 +85,7 @@ def calculate_metrics(y_true_list, y_score_list):
     pr_auc_value = auc(recall, precision)
 
     # Calculate F1 Score
-    y_pred = (y_score_list > 0.5).astype(int)  # Convert probabilities to binary predictions
+    y_pred = (y_score_list > optimal_threshold).astype(int)  # Convert probabilities to binary predictions
     f1_value = f1_score(y_true_list, y_pred)
 
     # Calculate Accuracy
