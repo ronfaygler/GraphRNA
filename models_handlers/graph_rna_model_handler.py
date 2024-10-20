@@ -695,10 +695,6 @@ class GraphRNAModelHandler(object):
             cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
                                         mrna_acc_col=mrna_acc_col)
 
-            print("before map interactions:")
-            print("unq_train in train_and_test: ", unq_train)
-            print("unq_test in train_and_test: ", unq_test)
-
             # 5 - map interactions to edges
             unq_train = cls._map_interactions_to_edges(unique_intr=unq_train, srna_acc_col=srna_acc_col,
                                                        mrna_acc_col=mrna_acc_col)
