@@ -8958,6 +8958,9 @@ Test: 1368 interactions, P: 684, N: 684
 2024-10-16 16:30:08.434; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-16 16:30:09.605; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f482379 (start using train and test split)
 2024-10-20 13:41:49.486; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-20 13:45:21.552; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-20 13:45:21.553; models_handlers.graph_rna_model_handler; DEBUG running cross validation with 1 folds
@@ -9335,6 +9338,7 @@ Test: 279 interactions, P: 141, N: 138
 203 sRNA nodes, 2367 mRNA nodes 
 Train: 270 interactions, P: 125, N: 145 
 Test: 279 interactions, P: 141, N: 138
+<<<<<<< HEAD
 2024-10-20 19:37:34.316; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
 2024-10-20 19:37:34.316; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
 2024-10-20 19:37:34.318; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 2367 unique mRNAs of E.coli
@@ -9611,3 +9615,5 @@ Test: 1405 interactions, P: 701, N: 704
 2024-10-21 14:00:43.279; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 =======
 >>>>>>> adf9227 (changing threshold to use youden_index)
+=======
+>>>>>>> f482379 (start using train and test split)
