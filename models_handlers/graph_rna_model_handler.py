@@ -188,7 +188,6 @@ class GraphRNAModelHandler(object):
         srna_acc = metadata[srna_acc_col]
         mrna_acc = metadata[mrna_acc_col]
         y = list(map(int, y))
-        print(" y: ", y)
         assert sorted(set(y)) in [[0, 1], [1]], "y is not binary"
         assert sum(pd.isnull(srna_acc)) + sum(pd.isnull(mrna_acc)) == 0, "some acc id are null"
         # 2 - get unique sRNA-mRNA interactions
@@ -219,7 +218,9 @@ class GraphRNAModelHandler(object):
                    m_map_acc_col: str, srna_map: pd.DataFrame, s_map_acc_col: str) -> pd.DataFrame:
         _len, _cols = len(intr), list(intr.columns.values)
         intr = pd.merge(intr, mrna_map, left_on=mrna_acc_col, right_on=m_map_acc_col, how='left')
+        # Check for empty values after merging with mrna_map
         intr = pd.merge(intr, srna_map, left_on=srna_acc_col, right_on=s_map_acc_col, how='left')
+
         assert len(intr) == _len, "duplications post merge"
         intr = intr[[cls.srna_nid_col, cls.mrna_nid_col] + _cols]
         return intr
@@ -258,8 +259,10 @@ class GraphRNAModelHandler(object):
     def _map_interactions_to_edges(cls, unique_intr: pd.DataFrame, srna_acc_col: str, mrna_acc_col: str) -> \
             (pd.DataFrame, pd.DataFrame, pd.DataFrame):
         logger.debug("mapping interactions to edges")
+
         mrna_map = cls.mrna_nodes[[cls.mrna_nid_col, cls.mrna_eco_acc_col]]
         srna_map = cls.srna_nodes[[cls.srna_nid_col, cls.srna_eco_acc_col]]
+
         unique_intr = cls._map_inter(intr=unique_intr, mrna_acc_col=mrna_acc_col, srna_acc_col=srna_acc_col,
                                      mrna_map=mrna_map, m_map_acc_col=cls.mrna_eco_acc_col, srna_map=srna_map,
                                      s_map_acc_col=cls.srna_eco_acc_col)
@@ -307,9 +310,6 @@ class GraphRNAModelHandler(object):
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label = \
             torch.from_numpy(np.array(edges['test']['label'])).float()
 
-        print(len(edges['test']['label_index_0']), len(edges['test']['label_index_1']))
-        print("edges 0:" , edges['test']['label_index_0'], "edges 1:", edges['test']['label_index_1'])
-
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['test']['label_index_0'])),
             torch.from_numpy(np.array(edges['test']['label_index_1']))], dim=0)
@@ -351,23 +351,6 @@ class GraphRNAModelHandler(object):
 
         # 2 - split train edges into message passing & supervision
         unq_train_spr, unq_train_mp = split_df_samples(df=df, ratio=cls.train_supervision_ratio)
-
-        print("unq_test[cls.srna_nid_col]: ", unq_test[cls.srna_nid_col])
-        num_nan = unq_test[cls.srna_nid_col].isna().sum()
-        print(f'Total NaN values in unq_test[{cls.srna_nid_col}]: {num_nan}')
-
-        print("unq_test[cls.mrna_nid_col]: ", unq_test[cls.mrna_nid_col])
-        num_nan = unq_test[cls.mrna_nid_col].isna().sum()
-        print(f'Total NaN values in unq_test[{cls.mrna_nid_col}]: {num_nan}')
-
-        
-        print("unq_train[cls.srna_nid_col]: ", unq_train[cls.srna_nid_col])
-        num_nan = unq_train[cls.srna_nid_col].isna().sum()
-        print(f'Total NaN values in unq_train[{cls.srna_nid_col}]: {num_nan}')
-
-        print("unq_train[cls.mrna_nid_col]: ", unq_train[cls.mrna_nid_col])
-        num_nan = unq_train[cls.mrna_nid_col].isna().sum()
-        print(f'Total NaN values in unq_train[{cls.mrna_nid_col}]: {num_nan}')
 
         edges = {
             'train': {
@@ -562,7 +545,6 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_col=mrna_acc_col)
         # 4 - random negative sampling - all cv data
-        print("unq_intr_neg: " , unq_intr_neg)
         if not unq_intr_neg.empty:
             print("unq_intr_neg isnt empty")
             _shuffle = True
@@ -712,10 +694,6 @@ class GraphRNAModelHandler(object):
             cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
                                         mrna_acc_col=mrna_acc_col)
 
-            print("before map interactions:")
-            print("unq_train in train_and_test: ", unq_train)
-            print("unq_test in train_and_test: ", unq_test)
-
             # 5 - map interactions to edges
             unq_train = cls._map_interactions_to_edges(unique_intr=unq_train, srna_acc_col=srna_acc_col,
                                                        mrna_acc_col=mrna_acc_col)
@@ -730,17 +708,6 @@ class GraphRNAModelHandler(object):
                 cls.srna_nid_col: unq_test[cls.srna_nid_col],
                 cls.mrna_nid_col: unq_test[cls.mrna_nid_col]
             })
-        print("unq_train in train_and_test: ", unq_train)
-        print("unq_test in train_and_test: ", unq_test)
-        num_nan = unq_train.isna().sum().sum()
-        print(f'Total NaN values in unq_train: {num_nan}')
-        num_nan = unq_test.isna().sum().sum()
-        print(f'Total NaN values in unq_test: {num_nan}')
-
-        num_nan = unq_test[cls.srna_nid_col].isna().sum()
-        print(f'Total NaN values in unq_test srna: {num_nan}')
-        num_nan = unq_test[cls.mrna_nid_col].isna().sum()
-        print(f'Total NaN values in unq_test mrna: {num_nan}')
 
         # 5 - init train & test sets (HeteroData)
         train_data, test_data = cls._init_train_test_hetero_data(unq_train=unq_train, unq_test=unq_test,
@@ -773,9 +740,8 @@ class GraphRNAModelHandler(object):
         # 10.1 - test predictions df
         _len = len(out_test_pred)
         out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col], how='left')
-        print("out_test_pred before assertion: ", out_test_pred)
         assert len(out_test_pred) == _len
-        out_test_pred = cls.add_rna_metadata(_df=out_test_pred)
+        out_test_pred = cls.add_rna_metadata(_df=out_test_pred, sort_df=True, sort_by_col="y_graph_score")
         # 10.2 - GraphRNA prediction scores
         test_graph_score = out_test_pred['y_graph_score']
         # 10.3 - update
@@ -860,7 +826,6 @@ class GraphRNAModelHandler(object):
         # # 2 - get unique interactions data (train + val)
         # unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y=y_no_syn, srna_acc_col=srna_acc_col,
         #                                  mrna_acc_col=mrna_acc_col, df_nm='all')
-        # print("unq_intr after _get_unique_inter: ", unq_intr)
         # unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
 
         # # 3 - define graph nodes (if needed) and map interaction
@@ -869,7 +834,6 @@ class GraphRNAModelHandler(object):
         # unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
         #                                               mrna_acc_col=mrna_acc_col)
         # 4 - random negative sampling - all cv data
-        print("unq_intr_neg: ", unq_intr_neg)
 
         if not unq_intr_neg.empty:
             print("unq_intr_neg isnt empty")

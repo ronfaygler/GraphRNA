@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # --- for rbp:
 # from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
 
-
+from utils.utils_ron import create_rna_df 
 
 def main():
 
@@ -77,12 +77,12 @@ def main():
     model_name = "GNN"
     graph_rna = GraphRNAModelHandler()
 
-    dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
-    dummy_y_train, dummy_y_val = list(), list()
-    dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
+    # dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
+    # dummy_y_train, dummy_y_val = list(), list()
+    # dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
 
     # 6 - predict on folds
-    cv_training_history = {}
+    # cv_training_history = {}
     # cv_prediction_dfs = {}
     train_neg_sampling = False  # negatives were already added to cv_data_unq
     cv_predictions_dfs = [] # To collect CV predictions
@@ -98,6 +98,19 @@ def main():
         test_file = get_random_clip_file(test_dir)
         print( "train_file: ", train_file, "test_file: ", test_file)
         if train_file and test_file:
+            # --- TODO: extract function
+            mirna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
+            mirna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
+            combined_df = pd.concat([mirna_train, mirna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+            combined_df.to_csv(join(data_path, "DATA_mirna_eco.csv"), index=False)
+            print("Created combined miRNA data file at DATA_mirna_eco.csv")
+
+            mrna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
+            mrna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
+            combined_df = pd.concat([mrna_train, mrna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+            combined_df.to_csv(join(data_path, "DATA_mrna_eco.csv"), index=False)
+            print("Created combined mRNA data file at DATA_mrna_eco.csv")
+
             train_fragments, test, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False, train_file=train_file, 
                                                         test_file=test_file)
             print(f"Loop {i}:")
@@ -113,6 +126,8 @@ def main():
         break
 
     all_folds_predictions = pd.concat(cv_predictions_dfs).reset_index(drop=True)
+    all_folds_predictions.to_csv(join(data_path, "all_folds_predictions.csv"), index=False)
+
     return cv_predictions_dfs, all_folds_predictions
 
         # cv_predictions_dfs, cv_training_history = \
