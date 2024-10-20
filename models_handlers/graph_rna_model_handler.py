@@ -47,7 +47,8 @@ class GraphRNAModelHandler(object):
     # ---  interactions (sRNA - mRNA)
     srna_mrna_val_col = None  # in case additional edge features are requested
     srna_to_mrna = 'targets'  # ("rates")
-    binary_intr_label_col = 'interaction_label'
+    # binary_intr_label_col = 'interaction_label'
+    binary_intr_label_col = 'Label'
 
     # ------  Params  ------
     # --- train data
@@ -186,6 +187,8 @@ class GraphRNAModelHandler(object):
         _len = len(metadata)
         srna_acc = metadata[srna_acc_col]
         mrna_acc = metadata[mrna_acc_col]
+        y = list(map(int, y))
+        print(" y: ", y)
         assert sorted(set(y)) in [[0, 1], [1]], "y is not binary"
         assert sum(pd.isnull(srna_acc)) + sum(pd.isnull(mrna_acc)) == 0, "some acc id are null"
         # 2 - get unique sRNA-mRNA interactions
@@ -217,7 +220,6 @@ class GraphRNAModelHandler(object):
         _len, _cols = len(intr), list(intr.columns.values)
         intr = pd.merge(intr, mrna_map, left_on=mrna_acc_col, right_on=m_map_acc_col, how='left')
         intr = pd.merge(intr, srna_map, left_on=srna_acc_col, right_on=s_map_acc_col, how='left')
-        print("intr after merges: \n", intr)
         assert len(intr) == _len, "duplications post merge"
         intr = intr[[cls.srna_nid_col, cls.mrna_nid_col] + _cols]
         return intr
@@ -258,15 +260,11 @@ class GraphRNAModelHandler(object):
         logger.debug("mapping interactions to edges")
         mrna_map = cls.mrna_nodes[[cls.mrna_nid_col, cls.mrna_eco_acc_col]]
         srna_map = cls.srna_nodes[[cls.srna_nid_col, cls.srna_eco_acc_col]]
-        # print("mrna_map: \n", mrna_map)
-        # print("unique_intr: \n", unique_intr)
         unique_intr = cls._map_inter(intr=unique_intr, mrna_acc_col=mrna_acc_col, srna_acc_col=srna_acc_col,
                                      mrna_map=mrna_map, m_map_acc_col=cls.mrna_eco_acc_col, srna_map=srna_map,
                                      s_map_acc_col=cls.srna_eco_acc_col)
-        print("unique_intr: after _map_inter\n", unique_intr)
 
         unique_intr = unique_intr.sort_values(by=[cls.srna_nid_col, cls.mrna_nid_col]).reset_index(drop=True)
-        print("unique_intr: after sort_values\n", unique_intr)
 
         return unique_intr
 
@@ -308,6 +306,10 @@ class GraphRNAModelHandler(object):
         # test edges for supervision
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label = \
             torch.from_numpy(np.array(edges['test']['label'])).float()
+
+        print(len(edges['test']['label_index_0']), len(edges['test']['label_index_1']))
+        print("edges 0:" , edges['test']['label_index_0'], "edges 1:", edges['test']['label_index_1'])
+
         test_data[cls.srna, cls.srna_to_mrna, cls.mrna].edge_label_index = \
             torch.stack([torch.from_numpy(np.array(edges['test']['label_index_0'])),
             torch.from_numpy(np.array(edges['test']['label_index_1']))], dim=0)
@@ -349,7 +351,24 @@ class GraphRNAModelHandler(object):
 
         # 2 - split train edges into message passing & supervision
         unq_train_spr, unq_train_mp = split_df_samples(df=df, ratio=cls.train_supervision_ratio)
+
+        print("unq_test[cls.srna_nid_col]: ", unq_test[cls.srna_nid_col])
+        num_nan = unq_test[cls.srna_nid_col].isna().sum()
+        print(f'Total NaN values in unq_test[{cls.srna_nid_col}]: {num_nan}')
+
+        print("unq_test[cls.mrna_nid_col]: ", unq_test[cls.mrna_nid_col])
+        num_nan = unq_test[cls.mrna_nid_col].isna().sum()
+        print(f'Total NaN values in unq_test[{cls.mrna_nid_col}]: {num_nan}')
+
         
+        print("unq_train[cls.srna_nid_col]: ", unq_train[cls.srna_nid_col])
+        num_nan = unq_train[cls.srna_nid_col].isna().sum()
+        print(f'Total NaN values in unq_train[{cls.srna_nid_col}]: {num_nan}')
+
+        print("unq_train[cls.mrna_nid_col]: ", unq_train[cls.mrna_nid_col])
+        num_nan = unq_train[cls.mrna_nid_col].isna().sum()
+        print(f'Total NaN values in unq_train[{cls.mrna_nid_col}]: {num_nan}')
+
         edges = {
             'train': {
                 'all': {
@@ -438,20 +457,6 @@ class GraphRNAModelHandler(object):
         y_true = list(ground_truth)
         y_graph_score = list(scores_arr)
         
-        ########
-        y_true_len = len(y_true)
-        y_graph_score_len = len(y_graph_score)
-
-        print(f"y_true_len: {y_true_len}")
-        print(f"y_graph_score_len: {y_graph_score_len}")
-
-        # Check for null values in the lists
-        if any(pd.isnull(y_true)):
-            print("Null values found in y_true")
-
-        if any(pd.isnull(y_graph_score)):
-            print("Null values found in y_graph_score")
-        ########
 
         # 2.2 - save
         eval_data_preds = pd.DataFrame({
@@ -548,6 +553,7 @@ class GraphRNAModelHandler(object):
         # 2 - get unique interactions data (train + val)
         unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y=y_no_syn, srna_acc_col=srna_acc_col,
                                          mrna_acc_col=mrna_acc_col, df_nm='all')
+        
         unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
 
         # 3 - define graph nodes (if needed) and map interaction
@@ -556,9 +562,15 @@ class GraphRNAModelHandler(object):
         unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
                                                       mrna_acc_col=mrna_acc_col)
         # 4 - random negative sampling - all cv data
+        print("unq_intr_neg: " , unq_intr_neg)
+        if not unq_intr_neg.empty:
+            print("unq_intr_neg isnt empty")
+            _shuffle = True
+            unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=unq_intr_neg, 
+                                                    ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
 
         # for efrat data - RF, XGB
-        if neg_df is None:
+        elif neg_df is None:
             print("in not neg df")
         ############################################################################################################
             _shuffle = True
@@ -571,6 +583,7 @@ class GraphRNAModelHandler(object):
             _shuffle = True
             unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=neg_df, ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
         
+            
         #####################################
         # # for RBP:
         # else:
@@ -580,13 +593,7 @@ class GraphRNAModelHandler(object):
 
         unq_y = np.array(unq_data[cls.binary_intr_label_col])
         
-        print("unq_data: ", unq_data['miRNA ID'], unq_data['Gene_ID'] )
-        print("unq_data cols: ", unq_data.columns)
-
         unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
-
-        print("unq_intr_data: ", unq_intr_data)
-        print("unq_intr_data cols: ", unq_intr_data.columns)
 
         # 5 - split data into folds
         cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
@@ -638,7 +645,7 @@ class GraphRNAModelHandler(object):
     def train_and_test(cls, X_train: pd.DataFrame, y_train: List[int], X_test: pd.DataFrame, y_test: List[int],
                        model_args: dict, metadata_train: pd.DataFrame, metadata_test: pd.DataFrame,
                        unq_train: pd.DataFrame = None, unq_test: pd.DataFrame = None,
-                       train_neg_sampling: bool = True, srna_acc_col: str = 'sRNA_accession_id_Eco',
+                       train_neg_sampling: bool = False, srna_acc_col: str = 'sRNA_accession_id_Eco',
                        mrna_acc_col: str = 'mRNA_accession_id_Eco',
                        is_syn_col: str = 'is_synthetic', **kwargs) -> (Dict[str, object], Dict[str, object]):
         """
@@ -683,7 +690,6 @@ class GraphRNAModelHandler(object):
         # 1 - define graph nodes
         if not cls.nodes_are_defined:
             cls._define_nodes_and_edges(**kwargs)
-
         # if not cv
         if unq_train is None or unq_test is None:
             out_test_pred = pd.DataFrame({
@@ -706,6 +712,10 @@ class GraphRNAModelHandler(object):
             cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
                                         mrna_acc_col=mrna_acc_col)
 
+            print("before map interactions:")
+            print("unq_train in train_and_test: ", unq_train)
+            print("unq_test in train_and_test: ", unq_test)
+
             # 5 - map interactions to edges
             unq_train = cls._map_interactions_to_edges(unique_intr=unq_train, srna_acc_col=srna_acc_col,
                                                        mrna_acc_col=mrna_acc_col)
@@ -722,6 +732,15 @@ class GraphRNAModelHandler(object):
             })
         print("unq_train in train_and_test: ", unq_train)
         print("unq_test in train_and_test: ", unq_test)
+        num_nan = unq_train.isna().sum().sum()
+        print(f'Total NaN values in unq_train: {num_nan}')
+        num_nan = unq_test.isna().sum().sum()
+        print(f'Total NaN values in unq_test: {num_nan}')
+
+        num_nan = unq_test[cls.srna_nid_col].isna().sum()
+        print(f'Total NaN values in unq_test srna: {num_nan}')
+        num_nan = unq_test[cls.mrna_nid_col].isna().sum()
+        print(f'Total NaN values in unq_test mrna: {num_nan}')
 
         # 5 - init train & test sets (HeteroData)
         train_data, test_data = cls._init_train_test_hetero_data(unq_train=unq_train, unq_test=unq_test,
@@ -763,3 +782,177 @@ class GraphRNAModelHandler(object):
         predictions.update({'test_y_graph_score': test_graph_score, 'out_test_pred': out_test_pred})
 
         return predictions, training_history
+
+
+    @classmethod
+    def use_train_test(cls, X: pd.DataFrame, y: List[int], n_splits: int, model_args: dict,
+                             metadata: pd.DataFrame = None, srna_acc_col: str = 'sRNA_accession_id_Eco',
+                             mrna_acc_col: str = 'mRNA_accession_id_Eco', is_syn_col: str = 'is_synthetic', 
+                             neg_df: pd.DataFrame = None, iteration: int = 1, **kwargs) \
+            -> (Dict[int, pd.DataFrame], Dict[int, dict]):
+        """
+
+        Parameters
+        ----------
+        X: pd.DataFrame (n_samples, N_features),
+        y: list (n_samples,),
+        n_splits: number of folds for cross validation
+        model_args: Dict of model's constructor and fit() arguments
+        metadata: Optional - pd.DataFrame (n_samples, T_features)
+        srna_acc_col: str  sRNA EcoCyc accession id col in metadata
+        mrna_acc_col: str  mRNA EcoCyc accession id col in metadata
+        is_syn_col: is synthetic indicator col in metadata
+        kwargs:
+            srna_eco - pd.DataFrame: all sRNA metadata from EcoCyc
+            srna_eco_accession_id_col - str: the column in srna_eco containing unique id per sRNA
+            mrna_eco - pd.DataFrame: all mRNA metadata from EcoCyc
+            mrna_eco_accession_id_col - str: the column in mrna_eco containing unique id per mRNA
+
+        Returns
+        -------
+
+        cv_prediction_dfs - Dict in the following format:  {
+            <fold>: pd.DataFrame including the following information:
+                    sRNA accession id, mRNA accession id, interaction label (y_true), graphRNA score, metadata columns.
+        }
+        cv_training_history - Dict in the following format:  {
+            <fold>: {
+                'train': OrderedDict
+                'validation': OrderedDict
+            }
+        }
+        """
+        logger.debug(f"running cross validation with {n_splits} folds")
+        # 1 - remove all synthetic samples
+        logger.warning("removing all synthetic samples")
+
+        # TODO: combine train and test to 1 df
+        
+        X_no_syn, y_no_syn, metadata_no_syn = \
+        cls._remove_synthetic_samples(X=X, y=y, metadata=metadata, is_syn_col=is_syn_col)
+
+        out_test_pred = pd.DataFrame({
+            srna_acc_col: metadata_test[srna_acc_col],
+            mrna_acc_col: metadata_test[mrna_acc_col]
+        })
+        # 2 - remove synthetic data from train
+        if sum(metadata_train[is_syn_col]) > 0:
+            logger.warning("removing synthetic samples from train")
+            X_train, y_train, metadata_train = \
+                cls._remove_synthetic_samples(X=X_train, y=y_train, metadata=metadata_train, is_syn_col=is_syn_col)
+
+        # 3 - get unique interactions data (train and test)
+        unq_train = cls._get_unique_inter(metadata=metadata_train, y=y_train, srna_acc_col=srna_acc_col,
+                                            mrna_acc_col=mrna_acc_col, df_nm='train')
+        unq_test = cls._get_unique_inter(metadata=metadata_test, y=y_test, srna_acc_col=srna_acc_col,
+                                            mrna_acc_col=mrna_acc_col, df_nm='test')
+
+        # 4 - assert no data leakage between train and test
+        cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
+                                    mrna_acc_col=mrna_acc_col)
+
+        # 5 - map interactions to edges
+        unq_train = cls._map_interactions_to_edges(unique_intr=unq_train, srna_acc_col=srna_acc_col,
+                                                    mrna_acc_col=mrna_acc_col)
+        unq_test = cls._map_interactions_to_edges(unique_intr=unq_test, srna_acc_col=srna_acc_col,
+                                                    mrna_acc_col=mrna_acc_col)
+
+        # # 2 - get unique interactions data (train + val)
+        # unq_intr = cls._get_unique_inter(metadata=metadata_no_syn, y=y_no_syn, srna_acc_col=srna_acc_col,
+        #                                  mrna_acc_col=mrna_acc_col, df_nm='all')
+        # print("unq_intr after _get_unique_inter: ", unq_intr)
+        # unq_intr_pos, unq_intr_neg = cls._pos_neg_split(df=unq_intr, binary_label_col=cls.binary_intr_label_col)
+
+        # # 3 - define graph nodes (if needed) and map interaction
+        # if not cls.nodes_are_defined:
+        #     cls._define_nodes_and_edges(**kwargs)
+        # unq_intr_pos = cls._map_interactions_to_edges(unique_intr=unq_intr_pos, srna_acc_col=srna_acc_col,
+        #                                               mrna_acc_col=mrna_acc_col)
+        # 4 - random negative sampling - all cv data
+        print("unq_intr_neg: ", unq_intr_neg)
+
+        if not unq_intr_neg.empty:
+            print("unq_intr_neg isnt empty")
+            _shuffle = True
+            unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=unq_intr_neg, 
+                                                    ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
+
+        # for efrat data - RF, XGB
+        elif neg_df is None:
+            print("in not neg df")
+        ############################################################################################################
+            _shuffle = True
+            unq_data = cls._add_neg_samples(unq_intr_pos=unq_intr_pos, ratio=cls.cv_neg_sampling_ratio_data,
+                                            _shuffle=_shuffle)
+        # ############################################################################################################
+
+        else:
+            print("in if neg_df")
+            _shuffle = True
+            unq_data = cls.combine_pos_neg_samples(unq_intr_pos=unq_intr_pos, neg_df=neg_df, ratio=cls.cv_neg_sampling_ratio_data, _shuffle=_shuffle)
+        
+            
+        #####################################
+        # # for RBP:
+        # else:
+        #     print("nott in if neg_df")
+        #     unq_data = unq_intr_pos
+        #####################################
+
+        unq_y = np.array(unq_data[cls.binary_intr_label_col])
+        
+        unq_intr_data = unq_data[[cls.srna_nid_col, cls.mrna_nid_col]]
+
+        # 5 - split data into folds
+        # cv_data_unq = get_stratified_cv_folds_for_unique(unq_intr_data=unq_intr_data, unq_y=unq_y, n_splits=n_splits,
+        #                                                  label_col=cls.binary_intr_label_col)
+        # dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
+        # dummy_y_train, dummy_y_val = list(), list()
+        # dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
+
+        # # 6 - predict on folds
+        # cv_training_history = {}
+        # cv_prediction_dfs = {}
+        # train_neg_sampling = False  # negatives were already added to cv_data_unq
+
+        # cv_folds = {}
+        fold_data_unq = {
+                "unq_train": unq_train,
+                "unq_val": unq_val
+        }
+        # cv_folds[i] = fold_data
+
+        # for fold, fold_data_unq in cv_data_unq.items():
+        logger.debug(f"starting iteration {iteration}")
+        
+        # Extract training and validation data for both sRNA and RBP
+        unq_train = fold_data_unq['unq_train']
+        unq_val = fold_data_unq['unq_val']
+        # Printing the values
+        print("unq_train:")
+        print(unq_train)
+        unique, counts = np.unique(unq_train['interaction_label'], return_counts=True)
+        unique_counts_labels = dict(zip(unique, counts))
+        print("unique_counts unq_train: ", unique_counts_labels)
+        print("unq_val:")
+        print(unq_val)
+        unique, counts = np.unique(unq_val['interaction_label'], return_counts=True)
+        unique_counts_labels = dict(zip(unique, counts))
+        print("unique_counts unq_val: ", unique_counts_labels)
+
+        # 6.1 - predict on validation set (pos + random sampled neg)
+        predictions, training_history = \
+            cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
+                                model_args=model_args, metadata_train=dummy_meta_train, metadata_test=dummy_meta_val,
+                                unq_train=fold_data_unq['unq_train'], unq_test=fold_data_unq['unq_val'],
+                                train_neg_sampling=train_neg_sampling, srna_acc_col=srna_acc_col, mrna_acc_col=mrna_acc_col, **kwargs)
+        # 6.2 - fold's training history
+        cv_training_history[iteration] = training_history
+        # 6.3 - fold's predictions df
+        y_val_graph_score = predictions['test_y_graph_score']
+        unq_val = fold_data_unq['unq_val'][[cls.srna_nid_col, cls.mrna_nid_col]]
+        y_val = fold_data_unq['unq_val'][cls.binary_intr_label_col]
+        cv_pred_df = cls.get_predictions_df(unq_intr=unq_val, y_true=y_val, y_score=y_val_graph_score)
+        cv_prediction_dfs[iteration] = cv_pred_df
+
+        return dummy_x_train, dummy_x_val, dummy_y_train, dummy_y_val, dummy_meta_train, dummy_meta_val, cv_training_history, cv_prediction_dfs
