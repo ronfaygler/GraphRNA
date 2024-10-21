@@ -8,9 +8,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 
 
-def create_rna_df(data_path, file_name, id_col, seq_col, output_file=""):
+def create_rna_df(data_path, file_name, id_col, seq_col, output_file="", is_train_test=False):
     '''    create srna / mrna files    '''
-    train_df = pd.read_csv(join(data_path, file_name)) 
+    if is_train_test: # the full path is here
+        train_df = pd.read_csv(file_name)
+    else:
+        train_df = pd.read_csv(join(data_path, file_name)) 
     # Create a new DataFrame with the specified columns and values
     rna_df = pd.DataFrame({
         "EcoCyc_accession_id": train_df[id_col],
@@ -27,7 +30,7 @@ def create_rna_df(data_path, file_name, id_col, seq_col, output_file=""):
     # Display the populated DataFrame
     rna_df = rna_df.drop_duplicates(subset='EcoCyc_accession_id', keep='first')
     
-    if id_col.startswith("mRNA"):
+    if id_col.startswith("mRNA") or is_train_test:
         return rna_df
 
     rna_df.to_csv(join(data_path, output_file), index=False)
@@ -37,7 +40,7 @@ def create_rna_df(data_path, file_name, id_col, seq_col, output_file=""):
 # create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
 #         file_name="ENCORI_hg38_RBPTarget.csv", 
 #         id_col='RBP', seq_col='RBP', 
-        # output_file="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/DATA_rbp_eco.csv")
+#         output_file="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/DATA_rbp_eco.csv")
 
 # # Create mRNA DataFrame from rbp interactions
 # mrna_df_1 = create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
@@ -58,7 +61,7 @@ def create_rna_df(data_path, file_name, id_col, seq_col, output_file=""):
 # combined_df.to_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/DATA_mrna_eco.csv", index=False)
 # print("Created combined RNA data file at DATA_mrna_eco.csv")
 
-# --- mirna
+# --- mirna from rbp
 # create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
 #         file_name="h3.csv", 
 #         id_col='miRNA ID', seq_col='miRNA sequence',
@@ -71,9 +74,12 @@ def calculate_metrics(y_true_list, y_score_list):
 
     # Calculate FPR, TPR, and thresholds
     fpr, tpr, thresholds = roc_curve(y_true_list, y_score_list)
+    youden_index = tpr - fpr
+    optimal_threshold = thresholds[np.argmax(youden_index)]
 
     # Calculate pAUC (Partial AUC up to FPR of 0.1, for example)
     pauc_value = auc(fpr[fpr <= 0.1], tpr[fpr <= 0.1])
+    
 
     # Calculate precision, recall, and thresholds for Precision-Recall curve
     precision, recall, pr_thresholds = precision_recall_curve(y_true_list, y_score_list)
@@ -82,7 +88,7 @@ def calculate_metrics(y_true_list, y_score_list):
     pr_auc_value = auc(recall, precision)
 
     # Calculate F1 Score
-    y_pred = (y_score_list > 0.5).astype(int)  # Convert probabilities to binary predictions
+    y_pred = (y_score_list > optimal_threshold).astype(int)  # Convert probabilities to binary predictions
     f1_value = f1_score(y_true_list, y_pred)
 
     # Calculate Accuracy
