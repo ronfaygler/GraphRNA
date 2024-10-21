@@ -52,9 +52,9 @@ def main():
 # # ------ mirna mrna:
 #     # ----- configuration
     data="mirna"
-    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
-    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
-    neg_dir = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/neg_data"
+    data_path = "data_mir"
+    outputs_path = "outputs_mir"
+    neg_dir = "neg_data"
     print("paths")
 
     # -- train-test split 
