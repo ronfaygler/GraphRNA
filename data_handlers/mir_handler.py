@@ -17,10 +17,16 @@ class DataHandler_Mirna_Mrna(DataHandler):
     ----------
     Same as parameters
     """
-    def __init__(self, data_path: str, train_fragments_file: str, added_neg: bool = False, is_rbp: bool = False):
+    def __init__(self, data_path: str, train_fragments_file: str, added_neg: bool = False, is_rbp: bool = False, test_file: str = ""):
         DataHandler.__init__(self, data_path).__init__()
         del self.test_filtered_file
-        del self.test_complete_file
+        if test_file:
+            self.test_complete_file = test_file
+            self.is_test = True
+        else:
+            del self.test_complete_file
+            self.is_test = False
+
 
         self.is_rbp = is_rbp
         # interactions data file
@@ -48,29 +54,40 @@ class DataHandler_Mirna_Mrna(DataHandler):
             self.label_mirna_col = "interaction_label_mirna"
             self.label_rbp_col = "interaction_label_rbp"
 
-        else:
-            self.label_col = "interaction_label"
-
+        if test_file:
+            self.label_col = "Label"
 
     def load_interactions_datasets(self, added_neg):
-        train_fragments = read_df(join(self.data_path, self.train_fragments_file))
-        train_fragments['is_synthetic'] = False
+        if self.is_test:
+            train_fragments = read_df(self.train_fragments_file)
+            train_fragments=train_fragments[1:]
+        else:
+            train_fragments = read_df(join(self.data_path, self.train_fragments_file))
 
-        if not added_neg:
-            if self.is_rbp:
-                train_fragments[self.label_mirna_col] = 1
-                train_fragments[self.label_rbp_col] = 1
-            else:
-                train_fragments[self.label_col] = 1
+        test_complete = None
 
         train_fragments['is_synthetic'] = False
+
+        if not self.is_test:
+            if not added_neg:
+                if self.is_rbp:
+                    train_fragments[self.label_mirna_col] = 1
+                    train_fragments[self.label_rbp_col] = 1
+                else:
+                    train_fragments[self.label_col] = 1
 
         if self.is_rbp:
             train_fragments = self.split_dataset(dataset=train_fragments)
         else:
             train_fragments = DataHandler.split_dataset(self, dataset=train_fragments)
+
+            if self.is_test:
+                test_complete = read_df(self.test_complete_file)
+                test_complete = test_complete[1:]
+                test_complete = DataHandler.split_dataset(self, dataset=test_complete)
         
-        return train_fragments
+            
+        return train_fragments, test_complete
     
     # # --- RBP :
     def split_dataset(self, dataset: pd.DataFrame) -> Dict[str, object]:
