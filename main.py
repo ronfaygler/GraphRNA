@@ -52,15 +52,15 @@ def main():
 # # ------ mirna mrna:
 #     # ----- configuration
     data="mirna"
-    data_path = "data_mir"
-    outputs_path = "outputs_mir"
-    neg_dir = "neg_data"
+    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
+    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+    neg_dir = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/neg_data"
     print("paths")
 
     # -- train-test split 
     # Define the root directories for train and test
-    train_root = "Train_Test_files/DATA TRAIN"
-    test_root = "Train_Test_files/DATA TEST"
+    train_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TRAIN"
+    test_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TEST"
 
     train_test=True
 
@@ -75,7 +75,6 @@ def main():
         return None  # Return None if no matching file is found
 
     model_name = "GNN"
-    graph_rna = GraphRNAModelHandler()
 
     # dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
     # dummy_y_train, dummy_y_val = list(), list()
@@ -88,47 +87,63 @@ def main():
     cv_predictions_dfs = [] # To collect CV predictions
 
     # Loop through 20 folders for both train and test
-    for i in range(num_folders):
-        # Construct paths to the current train and test directories
-        train_dir = os.path.join(train_root, str(i))
-        test_dir = os.path.join(test_root, str(i))
+    # for i in range(num_folders):
+    i=2
+    graph_rna = GraphRNAModelHandler()
 
-        # Get the train and test file starting with 'NPS_CLIP_Random'
-        train_file = get_random_clip_file(train_dir)
-        test_file = get_random_clip_file(test_dir)
-        print( "train_file: ", train_file, "test_file: ", test_file)
-        if train_file and test_file:
-            # --- TODO: extract function
+    # Construct paths to the current train and test directories
+    train_dir = os.path.join(train_root, str(i))
+    test_dir = os.path.join(test_root, str(i))
+
+    # Log the directories being used
+    print(f"Processing folder {i}: train_dir={train_dir}, test_dir={test_dir}")
+    
+    # Get the train and test file starting with 'NPS_CLIP_Random'
+    train_file = get_random_clip_file(train_dir)
+    test_file = get_random_clip_file(test_dir)
+    
+    print(f"train_file: {train_file}, test_file: {test_file}")
+    
+    if train_file and test_file:
+        print(f"Loop {i}: Starting RNA data creation.")
+        
+        try:
             mirna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
             mirna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
             combined_df = pd.concat([mirna_train, mirna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-            combined_df.to_csv(join(data_path, "DATA_mirna_eco.csv"), index=False)
-            print("Created combined miRNA data file at DATA_mirna_eco.csv")
+            combined_df.to_csv(join(data_path, f"DATA_mirna_eco{i}.csv"), index=False)
+            print(f"Created combined miRNA data file at DATA_mirna_eco{i}.csv")
 
             mrna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
             mrna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
             combined_df = pd.concat([mrna_train, mrna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-            combined_df.to_csv(join(data_path, "DATA_mrna_eco.csv"), index=False)
-            print("Created combined mRNA data file at DATA_mrna_eco.csv")
+            combined_df.to_csv(join(data_path, f"DATA_mrna_eco{i}.csv"), index=False)
+            print(f"Created combined mRNA data file at DATA_mrna_eco{i}.csv")
+            
+        except Exception as e:
+            print(f"Error in loop {i} during RNA data creation: {e}")
+            # continue
+            return
 
+        # Process predictions
+        try:
             train_fragments, test, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False, train_file=train_file, 
-                                                        test_file=test_file)
-            print(f"Loop {i}:")
-
-        else:
-            print(f"Loop {i}: Train or Test file not found.")
-
-        cv_n_splits = 1
-    
-        test_predictions_df = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, train_test=train_test, **kwargs)
-        cv_predictions_dfs.append(test_predictions_df)
+                                                        test_file=test_file, iteration=i)
         
-        break
+            test_predictions_df = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, train_test=train_test, **kwargs)
+            cv_predictions_dfs.append(test_predictions_df)
+            test_predictions_df.to_csv(join(data_path, f"train_test_predictions/loop{i}_predictions.csv"), index=False)
+        except Exception as e:
+            print(f"Error in loop {i} during training and evaluation: {e}")
 
-    all_folds_predictions = pd.concat(cv_predictions_dfs).reset_index(drop=True)
-    all_folds_predictions.to_csv(join(data_path, "all_folds_predictions.csv"), index=False)
+    else:
+        print(f"Loop {i}: Train or Test file not found.")
 
-    return cv_predictions_dfs, all_folds_predictions
+
+    # all_folds_predictions = pd.concat(cv_predictions_dfs).reset_index(drop=True)
+    # all_folds_predictions.to_csv(join(data_path, "train_test_predictions/all_folds_predictions.csv"), index=False)
+
+    return
 
         # cv_predictions_dfs, cv_training_history = \
         #     model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'], 
@@ -266,14 +281,16 @@ def combine_pos_neg_samples(data_path: pd.DataFrame, pos_path: str, neg_dir: str
     return out, neg_df
 
 
-def load_data_mir(data_path: str, neg_path: str='', added_neg: bool = False, is_rbp: bool = False, train_file: str="", test_file: str = ""):
-    if train_file!="":
+def load_data_mir(data_path: str, neg_path: str='', added_neg: bool = False, is_rbp: bool = False, 
+train_file: str="", test_file: str = "", iteration: int=0):
+    if train_file != "":
         train_fragments_file = train_file
     elif added_neg:
         train_fragments_file = f"combined_train_{neg_path[:-4]}.csv"
     else:
         train_fragments_file = "h3.csv"
-    dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg, is_rbp=is_rbp, test_file=test_file)
+    dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, 
+    added_neg=added_neg, is_rbp=is_rbp, test_file=test_file, iteration=iteration)
     train_fragments, test = dhm.load_interactions_datasets(added_neg=added_neg)
     mirna_eco, mrna_eco, mirna_eco_accession_id_col, mrna_eco_accession_id_col = dhm.load_rna_data()
 
@@ -286,7 +303,6 @@ def load_data_mir(data_path: str, neg_path: str='', added_neg: bool = False, is_
         'se_acc_col': mirna_eco_accession_id_col,
         'me_acc_col': mrna_eco_accession_id_col
     }
-
     return train_fragments, test, kwargs
 
 def load_data_triple(data_path: str, added_neg: bool = False, is_rbp:bool = True):
@@ -382,6 +398,7 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object],
                           sRNA accession id, mRNA accession id, interaction label (y_true),
                           model's prediction score (y_score OR y_graph_score), metadata columns.
     """
+    # print("kwargs:", kwargs)
     # 1 - define model args
     model_args = model_h.get_model_args()
     # 2 - run cross validation

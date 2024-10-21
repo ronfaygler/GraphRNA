@@ -210,9 +210,18 @@ class GraphRNAModelHandler(object):
         train_tup = set(zip(unq_train[srna_acc_col], unq_train[mrna_acc_col], unq_train[cls.binary_intr_label_col]))
         test_tup = set(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
         dupl = sorted(train_tup - (train_tup - test_tup))
-        print("dup: ", dupl)
+        if len(dupl) != 0:
+            print("dup: ", dupl)
+            print("len(dupl)", len(dupl))
+            # Remove the duplicates from the test set
+            unq_test['interaction_tuple'] = list(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
+            unq_test = unq_test[~unq_test['interaction_tuple'].isin(dupl)].drop(columns=['interaction_tuple'])
+            test_tup = set(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
+            dupl = sorted(train_tup - (train_tup - test_tup))
+            if len(dupl) != 0:
+                print("still dup len: ", len(dupl))
         # assert len(dupl) == 0, f"{len(dupl)} duplicated interactions in train and test"
-        return
+        return unq_test
 
     @classmethod
     def _map_inter(cls, intr: pd.DataFrame, mrna_acc_col: str, srna_acc_col: str, mrna_map: pd.DataFrame,
@@ -352,6 +361,16 @@ class GraphRNAModelHandler(object):
 
         # 2 - split train edges into message passing & supervision
         unq_train_spr, unq_train_mp = split_df_samples(df=df, ratio=cls.train_supervision_ratio)
+        print("unq_train_mp srna:",  len(list(unq_train_mp[cls.srna_nid_col])))
+        print("unq_train_mp mrna:",  len(list(unq_train_mp[cls.mrna_nid_col])))
+        print("unq_train_mp srna after dropna:",  len(list(unq_train_mp[cls.srna_nid_col].dropna())))
+
+        dropped_rows = unq_train_mp[unq_train_mp[cls.mrna_nid_col].isna()]
+        # Print the rows that are being dropped
+        print("Rows being dropped (NaN in mrna_nid_col):")
+        print(dropped_rows)
+
+        print("unq_train_mp mrna after dropna:",  len(list(unq_train_mp[cls.mrna_nid_col].dropna())))
 
         edges = {
             'train': {
@@ -669,6 +688,7 @@ class GraphRNAModelHandler(object):
             'validation': OrderedDict
         }
         """
+        print("kwargs: ", kwargs)
         logger.debug(f"training GraphRNA model  ->  train negative sampling = {train_neg_sampling}")
         # 1 - define graph nodes
         if not cls.nodes_are_defined:
@@ -692,7 +712,7 @@ class GraphRNAModelHandler(object):
                                              mrna_acc_col=mrna_acc_col, df_nm='test')
 
             # 4 - assert no data leakage between train and test
-            cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
+            unq_test = cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
                                         mrna_acc_col=mrna_acc_col)
 
             # 5 - map interactions to edges
@@ -815,9 +835,11 @@ class GraphRNAModelHandler(object):
                                             mrna_acc_col=mrna_acc_col, df_nm='test')
 
         # 4 - assert no data leakage between train and test
-        cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
+        unq_test =cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
                                     mrna_acc_col=mrna_acc_col)
-
+        
+        # assert len(dupl) == 0, f"{len(dupl)} duplicated interactions in train and test"
+        return
         # 5 - map interactions to edges
         unq_train = cls._map_interactions_to_edges(unique_intr=unq_train, srna_acc_col=srna_acc_col,
                                                     mrna_acc_col=mrna_acc_col)

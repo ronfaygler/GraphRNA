@@ -17,7 +17,8 @@ class DataHandler_Mirna_Mrna(DataHandler):
     ----------
     Same as parameters
     """
-    def __init__(self, data_path: str, train_fragments_file: str, added_neg: bool = False, is_rbp: bool = False, test_file: str = ""):
+    def __init__(self, data_path: str, train_fragments_file: str, added_neg: bool = False, is_rbp: bool = False, 
+    test_file: str = "", iteration: int = 0):
         DataHandler.__init__(self, data_path).__init__()
         del self.test_filtered_file
         if test_file:
@@ -34,7 +35,9 @@ class DataHandler_Mirna_Mrna(DataHandler):
 
         # RNA data files
         # it's called srna because the parent class
-        self.srna_data_file = "DATA_mirna_eco.csv"
+        self.mrna_data_file = f"DATA_mrna_eco{iteration}.csv"
+
+        self.srna_data_file = f"DATA_mirna_eco{iteration}.csv"
         # interactions features and label columns
         with open(join(self.data_path,'features_cols.txt'), 'r') as file:
             self.features_cols = [line.strip() for line in file]
