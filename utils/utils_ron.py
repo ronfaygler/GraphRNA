@@ -161,9 +161,9 @@ def create_metric_df(dfs):
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/RF/cv_fold{i}_predictions_RandomForest.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/cv_fold{i}_predictions_XGBoost.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
-dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
+# dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 
-create_metric_df(dfs)
+# create_metric_df(dfs)
 
 
 def get_features_cols(self):
