@@ -51,6 +51,19 @@ def main():
 
 # # ------ mirna mrna:
 #     # ----- configuration
+
+    # Number of directories (from 0 to 19)
+    num_folders = 20
+
+    # Function to get the file that starts with 'NPS_CLIP_Random' from a directory
+    def get_random_clip_file(dir_path, prefix="NPS_CLIP_Random"):
+        for filename in os.listdir(dir_path):
+            if filename.startswith(prefix):
+                return os.path.join(dir_path, filename)
+        return None  # Return None if no matching file is found
+
+    # for i in range(4,5):
+
     data="mirna"
     data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
     outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
@@ -63,16 +76,6 @@ def main():
     test_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TEST"
 
     train_test=True
-
-    # Number of directories (from 0 to 19)
-    num_folders = 20
-
-    # Function to get the file that starts with 'NPS_CLIP_Random' from a directory
-    def get_random_clip_file(dir_path, prefix="NPS_CLIP_Random"):
-        for filename in os.listdir(dir_path):
-            if filename.startswith(prefix):
-                return os.path.join(dir_path, filename)
-        return None  # Return None if no matching file is found
 
     model_name = "GNN"
 
@@ -88,7 +91,7 @@ def main():
 
     # Loop through 20 folders for both train and test
     # for i in range(num_folders):
-    i=2
+    i=4
     graph_rna = GraphRNAModelHandler()
 
     # Construct paths to the current train and test directories
@@ -107,34 +110,35 @@ def main():
     if train_file and test_file:
         print(f"Loop {i}: Starting RNA data creation.")
         
-        try:
-            mirna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
-            mirna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
-            combined_df = pd.concat([mirna_train, mirna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-            combined_df.to_csv(join(data_path, f"DATA_mirna_eco{i}.csv"), index=False)
-            print(f"Created combined miRNA data file at DATA_mirna_eco{i}.csv")
+        # try:
+        mirna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
+        mirna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
+        combined_df = pd.concat([mirna_train, mirna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+        combined_df.to_csv(join(data_path, f"DATA_mirna_eco.csv"), index=False)
+        print(f"Created combined miRNA data file at DATA_mirna_eco{i}.csv")
 
-            mrna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
-            mrna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
-            combined_df = pd.concat([mrna_train, mrna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-            combined_df.to_csv(join(data_path, f"DATA_mrna_eco{i}.csv"), index=False)
-            print(f"Created combined mRNA data file at DATA_mrna_eco{i}.csv")
+        mrna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
+        mrna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
+        combined_df = pd.concat([mrna_train, mrna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+        combined_df.to_csv(join(data_path, f"DATA_mrna_eco.csv"), index=False)
+        print(f"Created combined mRNA data file at DATA_mrna_eco{i}.csv")
             
-        except Exception as e:
-            print(f"Error in loop {i} during RNA data creation: {e}")
-            # continue
-            return
+        # except Exception as e:
+            # print(f"Error in loop {i} during RNA data creation: {e}")
+            # # continue
+            # return
 
         # Process predictions
-        try:
-            train_fragments, test, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False, train_file=train_file, 
-                                                        test_file=test_file, iteration=i)
-        
-            test_predictions_df = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, train_test=train_test, **kwargs)
-            cv_predictions_dfs.append(test_predictions_df)
-            test_predictions_df.to_csv(join(data_path, f"train_test_predictions/loop{i}_predictions.csv"), index=False)
-        except Exception as e:
-            print(f"Error in loop {i} during training and evaluation: {e}")
+        # try:
+        train_fragments, test, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False, train_file=train_file, 
+                                                    test_file=test_file, iteration=i)
+    
+        test_predictions_df = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, train_test=train_test, **kwargs)
+        cv_predictions_dfs.append(test_predictions_df)
+        test_predictions_df.to_csv(join(data_path, f"train_test_predictions/loop{i}_predictions.csv"), index=False)
+
+        # except Exception as e:
+        #     print(f"Error in loop {i} during training and evaluation: {e}")
 
     else:
         print(f"Loop {i}: Train or Test file not found.")
@@ -424,7 +428,49 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object],
     
 # ------------mrna mirna:
     if data == "mirna":
-        if train_test:
+        if train_test:# Define the columns for sRNA and mRNA accession IDs
+            # binary_intr_label_col = 'Label'
+            # srna_acc_col = 'miRNA ID'
+            # mrna_acc_col = 'Gene_ID'
+
+            # # Create tuples of (sRNA, mRNA, interaction_label) for train and test
+            # train_tup = set(zip(train_fragments['metadata'][srna_acc_col], 
+            #                     train_fragments['metadata'][mrna_acc_col], 
+            #                     train_fragments['metadata'][binary_intr_label_col]))
+
+            # test_tup = set(zip(test['metadata'][srna_acc_col], 
+            #                 test['metadata'][mrna_acc_col], 
+            #                 test['metadata'][binary_intr_label_col]))
+
+            # # Find duplicates between train and test sets
+            # dupl = sorted(train_tup - (train_tup - test_tup))
+
+            # if len(dupl) != 0:
+            #     print("dup: ", dupl)
+            #     print("len(dupl):", len(dupl))
+
+            #     # Remove the duplicates from the test set
+            #     test['metadata']['interaction_tuple'] = list(zip(test['metadata'][srna_acc_col], 
+            #                                                     test['metadata'][mrna_acc_col], 
+            #                                                     test['metadata'][binary_intr_label_col]))
+                
+            #     test['metadata'] = test['metadata'][~test['metadata']['interaction_tuple'].isin(dupl)].drop(columns=['interaction_tuple'])
+
+            #     # Recalculate test_tup after removing duplicates
+            #     test_tup = set(zip(test['metadata'][srna_acc_col], 
+            #                     test['metadata'][mrna_acc_col], 
+            #                     test['metadata'][binary_intr_label_col]))
+
+            #     # Check if duplicates still exist
+            #     dupl = sorted(train_tup - (train_tup - test_tup))
+            #     if len(dupl) != 0:
+            #         print("still dup len: ", len(dupl))
+            #     else:
+            #         print("No duplicates after removal.")
+            # else:
+            #     print("No duplicates found.")
+
+
             # 3 - train and test
             predictions, training_history = \
                 model_h.train_and_test(X_train=train_fragments['X'], y_train=train_fragments['y'], X_test=test['X'],

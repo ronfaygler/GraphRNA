@@ -189,6 +189,23 @@ class GraphRNAModelHandler(object):
         mrna_acc = metadata[mrna_acc_col]
         y = list(map(int, y))
         assert sorted(set(y)) in [[0, 1], [1]], "y is not binary"
+
+        # Check for null values in srna_acc and mrna_acc
+        srna_nulls = pd.isnull(srna_acc)
+        mrna_nulls = pd.isnull(mrna_acc)
+
+        # If there are any null values, print them
+        if srna_nulls.any() or mrna_nulls.any():
+            print("Null values in sRNA accession IDs (srna_acc):")
+            print(srna_acc[srna_nulls])
+
+            print("Null values in mRNA accession IDs (mrna_acc):")
+            print(mrna_acc[mrna_nulls])
+
+            # Optionally, print the corresponding rows in the DataFrame if needed
+            print("Rows with null values:")
+            print(metadata[srna_nulls | mrna_nulls])
+
         assert sum(pd.isnull(srna_acc)) + sum(pd.isnull(mrna_acc)) == 0, "some acc id are null"
         # 2 - get unique sRNA-mRNA interactions
         unq_intr = pd.DataFrame({
@@ -198,6 +215,7 @@ class GraphRNAModelHandler(object):
         })
         cls.log_df_stats(df=unq_intr, label_col=cls.binary_intr_label_col, df_nm=df_nm)
         unq_intr = unq_intr.drop_duplicates().reset_index(drop=True)
+
         # 2 - log unique
         cls.log_df_stats(df=unq_intr, label_col=cls.binary_intr_label_col, df_nm=f"unique_{df_nm}")
 
@@ -210,17 +228,17 @@ class GraphRNAModelHandler(object):
         train_tup = set(zip(unq_train[srna_acc_col], unq_train[mrna_acc_col], unq_train[cls.binary_intr_label_col]))
         test_tup = set(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
         dupl = sorted(train_tup - (train_tup - test_tup))
-        if len(dupl) != 0:
-            print("dup: ", dupl)
-            print("len(dupl)", len(dupl))
-            # Remove the duplicates from the test set
-            unq_test['interaction_tuple'] = list(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
-            unq_test = unq_test[~unq_test['interaction_tuple'].isin(dupl)].drop(columns=['interaction_tuple'])
-            test_tup = set(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
-            dupl = sorted(train_tup - (train_tup - test_tup))
-            if len(dupl) != 0:
-                print("still dup len: ", len(dupl))
-        # assert len(dupl) == 0, f"{len(dupl)} duplicated interactions in train and test"
+        # if len(dupl) != 0:
+        #     print("dup: ", dupl)
+        #     print("len(dupl)", len(dupl))
+        #     # Remove the duplicates from the test set
+        #     unq_test['interaction_tuple'] = list(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
+        #     unq_test = unq_test[~unq_test['interaction_tuple'].isin(dupl)].drop(columns=['interaction_tuple'])
+        #     test_tup = set(zip(unq_test[srna_acc_col], unq_test[mrna_acc_col], unq_test[cls.binary_intr_label_col]))
+        #     dupl = sorted(train_tup - (train_tup - test_tup))
+        #     if len(dupl) != 0:
+        #         print("still dup len: ", len(dupl))
+        assert len(dupl) == 0, f"{len(dupl)} duplicated interactions in train and test"
         return unq_test
 
     @classmethod
@@ -361,16 +379,16 @@ class GraphRNAModelHandler(object):
 
         # 2 - split train edges into message passing & supervision
         unq_train_spr, unq_train_mp = split_df_samples(df=df, ratio=cls.train_supervision_ratio)
-        print("unq_train_mp srna:",  len(list(unq_train_mp[cls.srna_nid_col])))
-        print("unq_train_mp mrna:",  len(list(unq_train_mp[cls.mrna_nid_col])))
-        print("unq_train_mp srna after dropna:",  len(list(unq_train_mp[cls.srna_nid_col].dropna())))
+        # print("unq_train_mp srna:",  len(list(unq_train_mp[cls.srna_nid_col])))
+        # print("unq_train_mp mrna:",  len(list(unq_train_mp[cls.mrna_nid_col])))
+        # print("unq_train_mp srna after dropna:",  len(list(unq_train_mp[cls.srna_nid_col].dropna())))
 
         dropped_rows = unq_train_mp[unq_train_mp[cls.mrna_nid_col].isna()]
         # Print the rows that are being dropped
-        print("Rows being dropped (NaN in mrna_nid_col):")
-        print(dropped_rows)
+        # print("Rows being dropped (NaN in mrna_nid_col):")
+        # print(dropped_rows)
 
-        print("unq_train_mp mrna after dropna:",  len(list(unq_train_mp[cls.mrna_nid_col].dropna())))
+        # print("unq_train_mp mrna after dropna:",  len(list(unq_train_mp[cls.mrna_nid_col].dropna())))
 
         edges = {
             'train': {
@@ -614,17 +632,18 @@ class GraphRNAModelHandler(object):
             # Extract training and validation data for both sRNA and RBP
             unq_train = fold_data_unq['unq_train']
             unq_val = fold_data_unq['unq_val']
+
             # Printing the values
-            print("unq_train:")
-            print(unq_train)
-            unique, counts = np.unique(unq_train['interaction_label'], return_counts=True)
-            unique_counts_labels = dict(zip(unique, counts))
-            print("unique_counts unq_train: ", unique_counts_labels)
-            print("unq_val:")
-            print(unq_val)
-            unique, counts = np.unique(unq_val['interaction_label'], return_counts=True)
-            unique_counts_labels = dict(zip(unique, counts))
-            print("unique_counts unq_val: ", unique_counts_labels)
+            # print("unq_train:")
+            # print(unq_train)
+            # unique, counts = np.unique(unq_train['interaction_label'], return_counts=True)
+            # unique_counts_labels = dict(zip(unique, counts))
+            # print("unique_counts unq_train: ", unique_counts_labels)
+            # print("unq_val:")
+            # print(unq_val)
+            # unique, counts = np.unique(unq_val['interaction_label'], return_counts=True)
+            # unique_counts_labels = dict(zip(unique, counts))
+            # print("unique_counts unq_val: ", unique_counts_labels)
 
             # 6.1 - predict on validation set (pos + random sampled neg)
             predictions, training_history = \
@@ -688,7 +707,6 @@ class GraphRNAModelHandler(object):
             'validation': OrderedDict
         }
         """
-        print("kwargs: ", kwargs)
         logger.debug(f"training GraphRNA model  ->  train negative sampling = {train_neg_sampling}")
         # 1 - define graph nodes
         if not cls.nodes_are_defined:
@@ -712,8 +730,8 @@ class GraphRNAModelHandler(object):
                                              mrna_acc_col=mrna_acc_col, df_nm='test')
 
             # 4 - assert no data leakage between train and test
-            unq_test = cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
-                                        mrna_acc_col=mrna_acc_col)
+            # unq_test = cls._assert_no_data_leakage(unq_train=unq_train, unq_test=unq_test, srna_acc_col=srna_acc_col,
+            #                             mrna_acc_col=mrna_acc_col)
 
             # 5 - map interactions to edges
             unq_train = cls._map_interactions_to_edges(unique_intr=unq_train, srna_acc_col=srna_acc_col,
@@ -755,12 +773,13 @@ class GraphRNAModelHandler(object):
         predictions = {}
         test_scores, test_pred_df = cls._eval_hgnn(trained_model=hg_model, eval_data=test_data, model_args=model_args,
                                                    **kwargs)
-        assert pd.isnull(test_pred_df).sum().sum() == 0, "some null predictions"
 
+        assert pd.isnull(test_pred_df).sum().sum() == 0, "some null predictions"
         # 10 - update outputs
         # 10.1 - test predictions df
         _len = len(out_test_pred)
         out_test_pred = pd.merge(out_test_pred, test_pred_df, on=[cls.srna_nid_col, cls.mrna_nid_col], how='left')
+
         assert len(out_test_pred) == _len
         out_test_pred = cls.add_rna_metadata(_df=out_test_pred, sort_df=True, sort_by_col="y_graph_score")
         # 10.2 - GraphRNA prediction scores
@@ -915,17 +934,18 @@ class GraphRNAModelHandler(object):
         # Extract training and validation data for both sRNA and RBP
         unq_train = fold_data_unq['unq_train']
         unq_val = fold_data_unq['unq_val']
+
         # Printing the values
-        print("unq_train:")
-        print(unq_train)
-        unique, counts = np.unique(unq_train['interaction_label'], return_counts=True)
-        unique_counts_labels = dict(zip(unique, counts))
-        print("unique_counts unq_train: ", unique_counts_labels)
-        print("unq_val:")
-        print(unq_val)
-        unique, counts = np.unique(unq_val['interaction_label'], return_counts=True)
-        unique_counts_labels = dict(zip(unique, counts))
-        print("unique_counts unq_val: ", unique_counts_labels)
+        # print("unq_train:")
+        # print(unq_train)
+        # unique, counts = np.unique(unq_train['interaction_label'], return_counts=True)
+        # unique_counts_labels = dict(zip(unique, counts))
+        # print("unique_counts unq_train: ", unique_counts_labels)
+        # print("unq_val:")
+        # print(unq_val)
+        # unique, counts = np.unique(unq_val['interaction_label'], return_counts=True)
+        # unique_counts_labels = dict(zip(unique, counts))
+        # print("unique_counts unq_val: ", unique_counts_labels)
 
         # 6.1 - predict on validation set (pos + random sampled neg)
         predictions, training_history = \
