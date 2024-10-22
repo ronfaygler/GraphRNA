@@ -10,41 +10,31 @@ from sklearn.model_selection import GridSearchCV
 
 def create_rna_df(data_path, file_name, id_col, seq_col, output_file="", is_train_test=False):
     '''    create srna / mrna files    '''
+    if is_train_test: # the full path is here
+        train_df = pd.read_csv(file_name)
+    else:
+        train_df = pd.read_csv(join(data_path, file_name)) 
+    # Create a new DataFrame with the specified columns and values
+    rna_df = pd.DataFrame({
+        "EcoCyc_accession_id": train_df[id_col],
+        "EcoCyc_locus_tag": train_df[id_col],
+        "EcoCyc_rna_name": train_df[id_col],
+        "EcoCyc_rna_name_synonyms": train_df[id_col],
+        "EcoCyc_start": 0,
+        "EcoCyc_end": 0,
+        "EcoCyc_strand": '+',
+        "EcoCyc_sequence": train_df[seq_col],  # Assigning miRNA sequence to EcoCyc_sequence
+        "EcoCyc_accession-2": train_df[id_col]
+    })
 
-    try:
-        if is_train_test: # the full path is here
-            df = pd.read_csv(file_name)
-        else:
-            df = pd.read_csv(join(data_path, file_name))
-        
-        print(f"Data read successfully from {file_name}")
+    # Display the populated DataFrame
+    rna_df = rna_df.drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+    
+    if id_col.startswith("mRNA") or is_train_test:
+        return rna_df
 
-        # Create a new DataFrame with the specified columns and values
-        rna_df = pd.DataFrame({
-            "EcoCyc_accession_id": df[id_col],
-            "EcoCyc_locus_tag": df[id_col],
-            "EcoCyc_rna_name": df[id_col],
-            "EcoCyc_rna_name_synonyms": df[id_col],
-            "EcoCyc_start": 0,
-            "EcoCyc_end": 0,
-            "EcoCyc_strand": '+',
-            "EcoCyc_sequence": df[seq_col],  # Assigning miRNA sequence to EcoCyc_sequence
-            "EcoCyc_accession-2": df[id_col]
-        })
-
-        rna_df = rna_df.drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-        
-        print(f"Created RNA DataFrame with {len(rna_df)} rows")
-        
-        if id_col.startswith("mRNA") or is_train_test:
-            return rna_df
-
-        rna_df.to_csv(join(data_path, output_file), index=False)
-        print(f"Created RNA data file at {output_file}")
-
-    except Exception as e:
-        print(f"Error creating RNA DataFrame from {file_name}: {e}")
-        raise
+    rna_df.to_csv(join(data_path, output_file), index=False)
+    print(f"created rna data file in {output_file}")
 
 #rbp
 # create_rna_df(data_path="/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp", 
@@ -171,9 +161,9 @@ def create_metric_df(dfs):
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/RF/cv_fold{i}_predictions_RandomForest.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/cv_fold{i}_predictions_XGBoost.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
-# dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
+dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 
-# create_metric_df(dfs)
+create_metric_df(dfs)
 
 
 def get_features_cols(self):
