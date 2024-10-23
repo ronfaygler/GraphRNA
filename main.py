@@ -65,7 +65,7 @@ def main():
     train_test=True
 
     # Number of directories (from 0 to 19)
-    num_folders = 20
+    num_folders = 7
 
     # Function to get the file that starts with 'NPS_CLIP_Random' from a directory
     def get_random_clip_file(dir_path, prefix="NPS_CLIP_Random"):
@@ -88,7 +88,7 @@ def main():
     cv_predictions_dfs = [] # To collect CV predictions
 
     # Loop through 20 folders for both train and test
-    for i in range(num_folders):
+    for i in range(1, num_folders):
         # Construct paths to the current train and test directories
         train_dir = os.path.join(train_root, str(i))
         test_dir = os.path.join(test_root, str(i))
@@ -123,7 +123,7 @@ def main():
         test_predictions_df = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, train_test=train_test, **kwargs)
         cv_predictions_dfs.append(test_predictions_df)
         
-        break
+        # break
 
     all_folds_predictions = pd.concat(cv_predictions_dfs).reset_index(drop=True)
     all_folds_predictions.to_csv(join(data_path, "all_folds_predictions.csv"), index=False)

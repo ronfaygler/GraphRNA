@@ -6,7 +6,7 @@ import xgboost
 from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
-
+import os
 
 def create_rna_df(data_path, file_name, id_col, seq_col, output_file="", is_train_test=False):
     '''    create srna / mrna files    '''
@@ -161,9 +161,9 @@ def create_metric_df(dfs):
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/RF/cv_fold{i}_predictions_RandomForest.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/XGB/cv_fold{i}_predictions_XGBoost.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
-dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
+# dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 
-create_metric_df(dfs)
+# create_metric_df(dfs)
 
 
 def get_features_cols(self):
@@ -555,6 +555,81 @@ def combine_rbp_mirna_interactions_csvs(df1, df2, output_path):
 # combine_rbp_mirna_interactions_csvs(df1, df2, output_path)
 
 
+def remove_first_type_row(df_path):
+    df = pd.read_csv(df_path)
+    if df.iloc[0][0] == "int64":
+        df=df[1:]
+        df.to_csv(df_path, index=False)
+        print(f"removed first row from {df_path}")
+    return df
+
+def remove_duplications(train_df, test_df, test_file, srna_acc_col, mrna_acc_col, binary_intr_label_col):
+    print("len(test_df): ", len(test_df))
+    print("len(train_df): ", len(train_df))
+    _len=len(test_df)
+    # Step 1: Create the tuples from train and test DataFrames
+    train_tup = set(zip(train_df[srna_acc_col], train_df[mrna_acc_col], train_df[binary_intr_label_col]))
+    test_tup = set(zip(test_df[srna_acc_col], test_df[mrna_acc_col], test_df[binary_intr_label_col]))
+
+    # Step 2: Find duplicates
+    dupl = sorted(train_tup - (train_tup - test_tup))
+
+    # Step 3: Remove duplicates from test DataFrame if any are found
+    if len(dupl) > 0:
+        print("len(dupl): ", len(dupl))
+        # Create a tuple column in the test DataFrame
+        test_df['interaction_tuple'] = list(zip(test_df[srna_acc_col], test_df[mrna_acc_col], test_df[binary_intr_label_col]))
+        # Filter out the rows where the tuple matches the duplicates
+        test_df = test_df[~test_df['interaction_tuple'].isin(dupl)].drop(columns=['interaction_tuple'])
+    
+    train_tup = set(zip(train_df[srna_acc_col], train_df[mrna_acc_col], train_df[binary_intr_label_col]))
+    test_tup = set(zip(test_df[srna_acc_col], test_df[mrna_acc_col], test_df[binary_intr_label_col]))
+    # Step 2: Find duplicates
+    dupl = sorted(train_tup - (train_tup - test_tup))
+    # Step 3: Remove duplicates from test DataFrame if any are found
+    if len(dupl) > 0:
+        print("still dups")
+    print("len(test_df): ", len(test_df))
+    num_removed = _len-len(test_df)
+    print(f"removed {num_removed} rows from test df")
+    test_df.to_csv(test_file, index=False)
+    return test_df, num_removed
+
+# Define the root directories for train and test
+train_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TRAIN"
+test_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TEST"
+
+# Number of directories (from 0 to 19)
+num_folders = 7 ####################################
+
+# Function to get the file that starts with 'NPS_CLIP_Random' from a directory
+def get_random_clip_file(dir_path, prefix="NPS_CLIP_Random"):
+    for filename in os.listdir(dir_path):
+        if filename.startswith(prefix):
+            return os.path.join(dir_path, filename)
+    return None  # Return None if no matching file is found
+
+# Loop through 20 folders for both train and test
+for i in range(num_folders):
+    # Construct paths to the current train and test directories
+    train_dir = os.path.join(train_root, str(i))
+    test_dir = os.path.join(test_root, str(i))
+
+    # Get the train and test file starting with 'NPS_CLIP_Random'
+    train_file = get_random_clip_file(train_dir)
+    test_file = get_random_clip_file(test_dir)
+    print( "train_file: ", train_file, "\ntest_file: ", test_file)
+    if train_file and test_file:
+        train_df = remove_first_type_row(train_file)
+        test_df = remove_first_type_row(test_file)
+        num_removed = 1
+        while num_removed > 0:
+            test_df, num_removed = remove_duplications(train_df=train_df, test_df=test_df, test_file=test_file, srna_acc_col="miRNA ID", 
+            mrna_acc_col="Gene_ID", binary_intr_label_col="Label")
+
+
+
+# --- no functions:
 # df1 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/h3.csv")
 # df2 = pd.read_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir_rbp/ENCORI_hg38_RBPTarget.csv")
 

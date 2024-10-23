@@ -1,5 +1,4 @@
 EcoCyc_accession_id,EcoCyc_locus_tag,EcoCyc_rna_name,EcoCyc_rna_name_synonyms,EcoCyc_start,EcoCyc_end,EcoCyc_strand,EcoCyc_sequence,EcoCyc_accession-2
-object,object,object,object,0,0,+,object,object
 hsa-miR-1972,hsa-miR-1972,hsa-miR-1972,hsa-miR-1972,0,0,+,UCAGGCCAGGCACAGUGGCUCA,hsa-miR-1972
 hsa-miR-122b-3p,hsa-miR-122b-3p,hsa-miR-122b-3p,hsa-miR-122b-3p,0,0,+,AAACACCAUUGUCACACUCCAC,hsa-miR-122b-3p
 hsa-miR-455-3p,hsa-miR-455-3p,hsa-miR-455-3p,hsa-miR-455-3p,0,0,+,GCAGUCCAUGGGCAUAUACAC,hsa-miR-455-3p
