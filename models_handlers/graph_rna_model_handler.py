@@ -700,9 +700,47 @@ class GraphRNAModelHandler(object):
             unq_test = cls._map_interactions_to_edges(unique_intr=unq_test, srna_acc_col=srna_acc_col,
                                                       mrna_acc_col=mrna_acc_col)
             # 4.1 - update output df
-            _len = len(out_test_pred)
+            _len_unq = len(unq_test)
+            _len_out = len(out_test_pred)
+
+            # print("out_test_pred before: ", out_test_pred)
+
+            # # Check for duplicated rows based on the specified subset
+            # num_duplicates = out_test_pred.duplicated(subset=[srna_acc_col, mrna_acc_col], keep=False).sum()
+            # print(f"Number of duplicated rows out_test_pred: {num_duplicates}")
+
+            # # Get and print the actual duplicated rows
+            # duplicates = out_test_pred[out_test_pred.duplicated(subset=[srna_acc_col, mrna_acc_col], keep=False)]
+            # print("Duplicated rows out_test_pred:")
+            # print(duplicates)
+
+            # Check for duplicated rows based on the specified subset
+            num_duplicates = unq_test.duplicated(subset=[srna_acc_col, mrna_acc_col], keep=False).sum()
+            print(f"Number of duplicated rows unq_test: {num_duplicates}")
+
+            # Get and print the actual duplicated rows
+            duplicates = unq_test[unq_test.duplicated(subset=[srna_acc_col, mrna_acc_col], keep=False)]
+            # print("Duplicated rows unq_test:")
+            # print(duplicates)
+            # Remove duplicates if the number of duplicates is less than 5
+            if num_duplicates <= 5:
+                unq_test = unq_test.drop_duplicates(subset=[srna_acc_col, mrna_acc_col], keep=False)
+                print(f"{num_duplicates} Duplicates removed from unq_test.")
+            else:
+                print("No duplicates removed, number exceeds or equals 5.")
+
+            # Perform the merge operation
             out_test_pred = pd.merge(out_test_pred, unq_test, on=[srna_acc_col, mrna_acc_col], how='left')
-            assert len(out_test_pred) == _len
+
+            # Print the length of the DataFrame before and after the merge
+            print(f"Length before merge: {_len_unq}")
+            print(f"Length after merge: {len(unq_test)}")
+
+            # Print the length of the DataFrame before and after the merge
+            print(f"Length before merge: {_len_out}")
+            print(f"Length after merge: {len(out_test_pred)}")
+
+            assert len(out_test_pred) == _len_out
         else:
             out_test_pred = pd.DataFrame({
                 cls.srna_nid_col: unq_test[cls.srna_nid_col],

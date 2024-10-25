@@ -7,6 +7,7 @@ from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 import os
+import glob
 
 def create_rna_df(data_path, file_name, id_col, seq_col, output_file="", is_train_test=False):
     '''    create srna / mrna files    '''
@@ -163,7 +164,69 @@ def create_metric_df(dfs):
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir_rbp/GNN/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 # dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/GNN-Random_neg/10 folds/cv_fold{i}_predictions_GraphRNA.csv") for i in range(10)]
 
-# create_metric_df(dfs)
+def create_metric_one_df(df):
+    # Create lists to hold the results
+    auc_list = []
+    pauc_list = []
+    pr_auc_list = []
+    f1_list = []
+    acc_list = []
+    tnr_list = []
+    fpr_list = []
+    tpr_list = []
+    thresholds_list = []
+
+    all_metrics = []
+
+    # Group the DataFrame by the 'part' column
+    parts = df['part'].unique()  # Get unique parts
+
+    for part in parts:
+        # Filter the DataFrame to get the subset for this part
+        df_part = df[df['part'] == part]
+
+        # Drop rows where 'y_true' or 'y_graph_score' is null
+        df_clean = df_part[['y_true', 'y_graph_score']].dropna()
+
+        # Extract the y_true and y_score columns after removing null values
+        y_true = df_clean['y_true'].values
+        y_score = df_clean['y_graph_score'].values
+            
+        # Calculate metrics for the DataFrame of this part
+        auc_value, pauc_value, pr_auc_value, f1_value, acc_value, tnr_value, fpr, tpr, thresholds = calculate_metrics(y_true, y_score)
+        
+        # Create a dictionary with the metrics
+        metrics = {
+            'Part': part,
+            'AUC': auc_value,
+            'pAUC': pauc_value,
+            'PR-AUC': pr_auc_value,
+            'F1': f1_value,
+            'Accuracy': acc_value,
+            'TNR': tnr_value,
+            'FPR': fpr.tolist(),  # Store as a list to keep it in one cell
+            'TPR': tpr.tolist(),  # Store as a list to keep it in one cell
+            'thresholds': thresholds.tolist()  # Store as a list to keep it in one cell
+        }
+
+        # Convert the dictionary to a DataFrame with a single row
+        metrics_df = pd.DataFrame([metrics])
+        
+        # Append the DataFrame to the list
+        all_metrics.append(metrics_df)
+
+    # Concatenate all DataFrames in the list into a single DataFrame
+    final_metrics_df = pd.concat(all_metrics, ignore_index=True)
+
+    # Save the final DataFrame to a CSV file
+    final_metrics_df.to_csv("/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/train_test_predictions/CLIP_non_CLASH/metrics_summary.csv", index=False)
+
+    print("Metrics summary saved successfully.")
+
+
+df = pd.read_csv(f"/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/train_test_predictions/CLIP_non_CLASH/combined_CLIP_non_CLASH.csv")
+
+create_metric_one_df(df)
 
 
 def get_features_cols(self):
@@ -555,13 +618,48 @@ def combine_rbp_mirna_interactions_csvs(df1, df2, output_path):
 # combine_rbp_mirna_interactions_csvs(df1, df2, output_path)
 
 
+def remove_problematic_rows(df_path, expected_columns):
+    # First, identify rows with an incorrect number of columns
+    problematic_rows = []
+    
+    with open(df_path, 'r') as f:
+        for i, line in enumerate(f):
+            fields = line.split(',')
+            if len(fields) != expected_columns:
+                problematic_rows.append(i)  # Adding 1 because pandas uses 1-based indexing for skiprows
+    return problematic_rows
+
 def remove_first_type_row(df_path):
-    df = pd.read_csv(df_path)
+    if "NPS_CLIP_Random" in df_path:
+        expected_columns = 613
+    else:
+        expected_columns = 614
+
+    problematic_rows = remove_problematic_rows(df_path, expected_columns)
+    print("problematic_rows: ", problematic_rows)
+    assert len(problematic_rows) <= 7, f"more than 7 problematic_rows in {df_path}"
+
+    df = pd.read_csv(df_path, skiprows=problematic_rows)  # Skip the specific bad row
+    # df = pd.read_csv(df_path)
     if df.iloc[0][0] == "int64":
         df=df[1:]
         df.to_csv(df_path, index=False)
         print(f"removed first row from {df_path}")
     return df
+
+def remove_small_duplicates(test_df, srna_acc_col, mrna_acc_col):
+    # Step 3: Check duplicates in test_df
+    num_test_duplicates = test_df.duplicated(subset=[srna_acc_col, mrna_acc_col], keep=False).sum()
+
+    # Step 4: Remove duplicates from test_df if less than 5
+    if num_test_duplicates < 5 and num_test_duplicates > 0:
+        # test_df = test_df[~test_df.duplicated(subset=[srna_acc_col, mrna_acc_col], keep=False)]
+        print(f"Removed {num_test_duplicates} duplicate rows from test_df")
+    else:
+        print(f"No duplicates removed from test_df. Number of duplicates found: {num_test_duplicates}")
+
+    return test_df
+
 
 def remove_duplications(train_df, test_df, test_file, srna_acc_col, mrna_acc_col, binary_intr_label_col):
     print("len(test_df): ", len(test_df))
@@ -575,58 +673,118 @@ def remove_duplications(train_df, test_df, test_file, srna_acc_col, mrna_acc_col
     dupl = sorted(train_tup - (train_tup - test_tup))
 
     # Step 3: Remove duplicates from test DataFrame if any are found
-    if len(dupl) > 0:
+    while len(dupl) > 0:
         print("len(dupl): ", len(dupl))
         # Create a tuple column in the test DataFrame
         test_df['interaction_tuple'] = list(zip(test_df[srna_acc_col], test_df[mrna_acc_col], test_df[binary_intr_label_col]))
         # Filter out the rows where the tuple matches the duplicates
         test_df = test_df[~test_df['interaction_tuple'].isin(dupl)].drop(columns=['interaction_tuple'])
     
-    train_tup = set(zip(train_df[srna_acc_col], train_df[mrna_acc_col], train_df[binary_intr_label_col]))
-    test_tup = set(zip(test_df[srna_acc_col], test_df[mrna_acc_col], test_df[binary_intr_label_col]))
-    # Step 2: Find duplicates
-    dupl = sorted(train_tup - (train_tup - test_tup))
-    # Step 3: Remove duplicates from test DataFrame if any are found
-    if len(dupl) > 0:
-        print("still dups")
+        train_tup = set(zip(train_df[srna_acc_col], train_df[mrna_acc_col], train_df[binary_intr_label_col]))
+        test_tup = set(zip(test_df[srna_acc_col], test_df[mrna_acc_col], test_df[binary_intr_label_col]))
+        # Step 2: Find duplicates
+        dupl = sorted(train_tup - (train_tup - test_tup))
+    
     print("len(test_df): ", len(test_df))
-    num_removed = _len-len(test_df)
-    print(f"removed {num_removed} rows from test df")
+    num_removed_test = _len-len(test_df)
+    print(f"removed {num_removed_test} rows from test df{test_file[-5]}")
+    
+    # test_df = remove_small_duplicates(test_df, srna_acc_col, mrna_acc_col)
+
     test_df.to_csv(test_file, index=False)
-    return test_df, num_removed
-
-# Define the root directories for train and test
-train_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TRAIN"
-test_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TEST"
-
-# Number of directories (from 0 to 19)
-num_folders = 7 ####################################
+    return test_df
 
 # Function to get the file that starts with 'NPS_CLIP_Random' from a directory
-def get_random_clip_file(dir_path, prefix="NPS_CLIP_Random"):
+def get_random_clip_file(dir_path, prefix):
     for filename in os.listdir(dir_path):
         if filename.startswith(prefix):
             return os.path.join(dir_path, filename)
     return None  # Return None if no matching file is found
 
-# Loop through 20 folders for both train and test
-for i in range(num_folders):
-    # Construct paths to the current train and test directories
-    train_dir = os.path.join(train_root, str(i))
-    test_dir = os.path.join(test_root, str(i))
+def remove_dups_from_train_test(parts):
+    # Define the root directories for train and test
+    train_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TRAIN"
+    test_root = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/Train_Test_files/DATA TEST"
+    neg_types = ["CLIP_non_CLASH", "TarBase_microarray"] #"NPS_CLIP_Random", "CLIP_non_CLASH", "TarBase_microarray"
 
-    # Get the train and test file starting with 'NPS_CLIP_Random'
-    train_file = get_random_clip_file(train_dir)
-    test_file = get_random_clip_file(test_dir)
-    print( "train_file: ", train_file, "\ntest_file: ", test_file)
-    if train_file and test_file:
-        train_df = remove_first_type_row(train_file)
-        test_df = remove_first_type_row(test_file)
-        num_removed = 1
-        while num_removed > 0:
-            test_df, num_removed = remove_duplications(train_df=train_df, test_df=test_df, test_file=test_file, srna_acc_col="miRNA ID", 
-            mrna_acc_col="Gene_ID", binary_intr_label_col="Label")
 
+    for neg_type in neg_types: # NPS_CLIP_Random TarBase_microarray CLIP_non_CLASH
+        # Loop through 20 folders for both train and test
+        for i in parts:
+            # Construct paths to the current train and test directories
+            train_dir = os.path.join(train_root, str(i))
+            test_dir = os.path.join(test_root, str(i))
+
+            # Get the train and test file starting with 'NPS_CLIP_Random'
+            train_file = get_random_clip_file(train_dir, neg_type)
+            test_file = get_random_clip_file(test_dir, neg_type)
+            print( "train_file: ", train_file, "\ntest_file: ", test_file)
+            if train_file and test_file:
+                train_df = remove_first_type_row(train_file)
+                test_df = remove_first_type_row(test_file)
+                test_df = remove_duplications(train_df=train_df, test_df=test_df, test_file=test_file, 
+                srna_acc_col="miRNA ID", mrna_acc_col="Gene_ID", binary_intr_label_col="Label")
+
+# remove_dups_from_train_test(first_folder=4 , last_folder=5)
+# remove_dups_from_train_test([0,3,6])
+
+#1,2,4,5
+#nps clip random0-6
+
+def combine_parts():
+    neg_types = ["TarBase_microarray", "CLIP_non_CLASH", "NPS_CLIP_Random"] #"NPS_CLIP_Random", "CLIP_non_CLASH", "TarBase_microarray"
+
+    for neg_type in neg_types:
+        # Define the path to the directory containing the CSV files
+        path = f"/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/train_test_predictions/{neg_type}"
+        total_len = 0
+        # Use glob to find all CSV files in the directory
+        file_pattern = os.path.join(path, "*.csv")
+        csv_files = glob.glob(file_pattern)
+
+        # List to hold DataFrames
+        dfs = []
+
+        # Loop through each file, extract the number after "part", and load the data
+        for file in csv_files:
+            df = pd.read_csv(file)
+            total_len += len(df)
+            # Extract the filename without the extension
+            filename = os.path.basename(file).replace('.csv', '')
+            
+            # Extract the number after "part" in the filename
+            if "part" in filename:
+                part_name = filename.split("part")[1].split('-')[0]  # Extract the number after "part"
+
+            # Read the CSV file
+            df = pd.read_csv(file)
+            
+            # Add a new column 'part' and assign the extracted part number
+            df['part'] = part_name
+            
+            # Append the DataFrame to the list
+            dfs.append(df)
+
+        # Concatenate all the DataFrames in the list
+        combined_df = pd.concat(dfs, ignore_index=True)
+
+        # Optionally, save the combined DataFrame to a new CSV file
+        output_path = os.path.join(path, f"combined_{neg_type}.csv")
+
+        # If the file exists, append the new data without headers
+        if os.path.exists(output_path):
+            # Append mode: mode='a', and do not write the header again
+            combined_df.to_csv(output_path, mode='a', header=False, index=False)
+            print(f"Appended data to {output_path}.")
+        else:
+            # If the file does not exist, create it and write the data with headers
+            combined_df.to_csv(output_path, mode='w', header=True, index=False)
+            print(f"Concatenation complete. Output saved to {output_path}.")
+
+        
+        assert len(pd.read_csv(output_path)) == total_len, "the combined length is diffeent from the files lengths"
+        
+# combine_parts()
 
 
 # --- no functions:
@@ -636,3 +794,4 @@ for i in range(num_folders):
 # # print(df.head())
 # print("len mirna: ", len(df1))
 # print("len rbp: ", len(df2))
+

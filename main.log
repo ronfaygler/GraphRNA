@@ -9664,3 +9664,1152 @@ Train: 5554 interactions, P: 2746, N: 2808
 Test: 1379 interactions, P: 676, N: 703
 2024-10-23 11:59:10.261; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
 2024-10-23 11:59:11.029; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 12:12:25.384; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:12:25.384; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:12:25.386; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3156 unique mRNAs of E.coli
+2024-10-23 12:12:25.388; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 12:12:25.396; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 12:12:25.400; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 12:12:25.402; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 674, N: 701)
+2024-10-23 12:12:25.404; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 672, N: 701)
+2024-10-23 12:12:25.404; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:12:25.412; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:12:25.432; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:12:25.453; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 12:12:25.477; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3156 mRNA nodes 
+Train: 5558 interactions, P: 2749, N: 2809 
+Test: 1373 interactions, P: 672, N: 701
+2024-10-23 12:12:25.509; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 12:12:27.745; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 12:12:31.586; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:12:31.587; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:12:31.593; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 12:12:31.597; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5553 interactions (P: 2746, N: 2807)
+2024-10-23 12:12:31.599; models_handlers.graph_rna_model_handler; DEBUG  test: 1381 interactions (P: 679, N: 702)
+2024-10-23 12:12:31.601; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1378 interactions (P: 676, N: 702)
+2024-10-23 12:12:31.602; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:12:31.607; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:12:31.621; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:12:31.635; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 12:12:31.646; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3156 mRNA nodes 
+Train: 5553 interactions, P: 2746, N: 2807 
+Test: 1378 interactions, P: 676, N: 702
+2024-10-23 12:13:48.277; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:13:48.278; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:13:48.279; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:13:48.281; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 12:13:48.289; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 12:13:48.292; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5553 interactions (P: 2746, N: 2807)
+2024-10-23 12:13:48.294; models_handlers.graph_rna_model_handler; DEBUG  test: 1381 interactions (P: 679, N: 702)
+2024-10-23 12:13:48.297; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1378 interactions (P: 676, N: 702)
+2024-10-23 12:13:48.297; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:13:48.302; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:13:48.314; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:13:48.327; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 12:13:48.340; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3161 mRNA nodes 
+Train: 5553 interactions, P: 2746, N: 2807 
+Test: 1378 interactions, P: 676, N: 702
+2024-10-23 12:13:48.366; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 12:13:49.014; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 12:29:04.896; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:29:04.896; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:29:04.897; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:29:04.899; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:29:04.907; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:29:04.910; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:29:04.912; models_handlers.graph_rna_model_handler; DEBUG  test: 1398 interactions (P: 695, N: 703)
+2024-10-23 12:29:04.914; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1396 interactions (P: 693, N: 703)
+2024-10-23 12:29:04.914; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:33:23.237; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:33:23.237; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:33:23.238; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:33:23.241; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:33:23.252; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:33:23.257; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:33:23.259; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:33:23.262; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:33:23.262; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:33:23.269; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:33:23.285; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:34:03.332; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:34:03.332; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:34:03.333; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:34:03.335; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:34:03.342; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:34:03.346; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:34:03.348; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:34:03.350; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:34:03.350; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:34:03.355; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:34:03.367; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:35:00.982; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:35:00.983; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:35:00.984; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:35:00.987; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:35:00.996; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:35:01.001; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:35:01.003; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:35:01.006; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:35:01.006; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:35:01.011; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:35:01.026; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:37:22.336; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:37:22.337; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:37:22.338; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:37:22.341; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:37:22.350; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:37:22.354; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:37:22.357; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:37:22.359; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:37:22.360; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:37:22.365; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:37:22.380; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:38:32.876; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:38:32.877; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:38:32.878; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:38:32.881; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:38:32.888; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:38:32.892; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:38:32.894; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:38:32.896; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:38:32.896; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:38:32.902; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:38:32.915; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:38:57.982; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:38:57.982; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:38:57.983; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:38:57.986; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:38:57.993; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:38:57.997; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:38:57.999; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:38:58.001; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:38:58.001; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:38:58.006; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:38:58.019; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:38:58.040; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 12:38:58.051; models_handlers.graph_rna_model_handler; DEBUG 
+309 sRNA nodes, 3161 mRNA nodes 
+Train: 5561 interactions, P: 2750, N: 2811 
+Test: 1373 interactions, P: 671, N: 702
+2024-10-23 12:38:58.074; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 12:38:58.703; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 12:41:35.991; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:41:35.991; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:41:35.992; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:41:35.994; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:41:36.002; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:41:36.005; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:41:36.007; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:41:36.010; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:41:36.010; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:41:36.014; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:41:36.027; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:41:36.049; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 12:41:36.059; models_handlers.graph_rna_model_handler; DEBUG 
+309 sRNA nodes, 3161 mRNA nodes 
+Train: 5561 interactions, P: 2750, N: 2811 
+Test: 1373 interactions, P: 671, N: 702
+2024-10-23 12:41:36.082; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 12:41:36.695; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 12:55:35.602; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:55:35.603; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:55:35.603; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:55:35.606; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:55:35.613; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:55:35.617; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:55:35.619; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:55:35.621; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:55:35.621; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:55:35.625; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:55:35.643; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:55:35.666; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 12:55:35.677; models_handlers.graph_rna_model_handler; DEBUG 
+309 sRNA nodes, 3161 mRNA nodes 
+Train: 5561 interactions, P: 2750, N: 2811 
+Test: 1373 interactions, P: 671, N: 702
+2024-10-23 12:55:35.699; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 12:55:36.453; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 12:58:58.806; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 12:58:58.806; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 12:58:58.808; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 12:58:58.814; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 12:58:58.827; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 12:58:58.834; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 12:58:58.838; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 12:58:58.841; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 12:58:58.842; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 12:58:58.849; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:58:58.867; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 12:58:58.895; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 12:58:58.908; models_handlers.graph_rna_model_handler; DEBUG 
+309 sRNA nodes, 3161 mRNA nodes 
+Train: 5561 interactions, P: 2750, N: 2811 
+Test: 1373 interactions, P: 671, N: 702
+2024-10-23 12:58:58.933; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 12:59:00.033; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 13:02:03.056; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:02:03.057; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:02:03.059; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 13:02:03.066; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 13:02:03.088; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:02:03.098; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 13:02:03.103; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 13:02:03.109; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 13:02:03.109; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:02:03.124; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:02:03.153; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:02:03.207; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 13:02:03.224; models_handlers.graph_rna_model_handler; DEBUG 
+309 sRNA nodes, 3161 mRNA nodes 
+Train: 5561 interactions, P: 2750, N: 2811 
+Test: 1373 interactions, P: 671, N: 702
+2024-10-23 13:02:03.248; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 13:02:04.028; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 13:03:27.648; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:03:27.648; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:03:27.650; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3155 unique mRNAs of E.coli
+2024-10-23 13:03:27.654; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:03:27.663; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 13:03:27.667; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5554 interactions (P: 2746, N: 2808)
+2024-10-23 13:03:27.669; models_handlers.graph_rna_model_handler; DEBUG  test: 1380 interactions (P: 677, N: 703)
+2024-10-23 13:03:27.672; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1379 interactions (P: 676, N: 703)
+2024-10-23 13:03:27.672; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:03:27.676; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:03:27.689; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:03:27.713; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 13:03:27.725; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3155 mRNA nodes 
+Train: 5554 interactions, P: 2746, N: 2808 
+Test: 1379 interactions, P: 676, N: 703
+2024-10-23 13:03:27.750; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 13:03:28.477; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 13:06:41.881; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:06:41.881; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:06:41.883; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3155 unique mRNAs of E.coli
+2024-10-23 13:06:41.886; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:06:41.894; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 13:06:41.899; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5554 interactions (P: 2746, N: 2808)
+2024-10-23 13:06:41.902; models_handlers.graph_rna_model_handler; DEBUG  test: 1380 interactions (P: 677, N: 703)
+2024-10-23 13:06:41.904; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1379 interactions (P: 676, N: 703)
+2024-10-23 13:06:41.904; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:06:41.910; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:06:41.925; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:06:41.941; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 13:06:41.956; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3155 mRNA nodes 
+Train: 5554 interactions, P: 2746, N: 2808 
+Test: 1379 interactions, P: 676, N: 703
+2024-10-23 13:06:41.981; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 13:06:42.801; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 13:08:36.345; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:08:36.345; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:08:36.347; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 13:08:36.349; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 13:08:36.357; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:08:36.363; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 13:08:36.365; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 13:08:36.368; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 13:08:36.368; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:08:36.372; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:08:36.384; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:09:02.732; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:09:02.733; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:09:02.733; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 13:09:02.736; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 13:09:02.743; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:09:02.747; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 13:09:02.749; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 13:09:02.751; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 13:09:02.751; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:09:02.757; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:09:02.770; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:09:26.694; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:09:26.695; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:09:26.698; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 13:09:26.706; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 13:09:26.731; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:09:26.741; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 13:09:26.748; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 13:09:26.755; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 13:09:26.756; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:09:26.768; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:09:26.789; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:10:49.891; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:10:49.891; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:10:49.892; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 13:10:49.894; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 13:10:49.903; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:10:49.907; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 13:10:49.910; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 13:10:49.912; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 13:10:49.912; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:10:49.917; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:10:49.931; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:11:55.310; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:11:55.311; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:11:55.312; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3154 unique mRNAs of E.coli
+2024-10-23 13:11:55.316; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:11:55.331; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 13:11:55.337; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5556 interactions (P: 2748, N: 2808)
+2024-10-23 13:11:55.341; models_handlers.graph_rna_model_handler; DEBUG  test: 1377 interactions (P: 675, N: 702)
+2024-10-23 13:11:55.345; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1376 interactions (P: 674, N: 702)
+2024-10-23 13:11:55.345; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:11:55.354; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:11:55.375; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:11:55.425; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-23 13:11:55.443; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3154 mRNA nodes 
+Train: 5556 interactions, P: 2748, N: 2808 
+Test: 1376 interactions, P: 674, N: 702
+2024-10-23 13:11:55.471; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-23 13:11:57.119; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-23 13:12:13.637; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:12:13.637; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:12:13.638; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 13:12:13.641; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 13:12:13.652; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:12:13.657; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 13:12:13.660; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 13:12:13.663; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 13:12:13.663; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:12:13.668; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:12:13.685; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:13:40.616; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:13:40.616; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:13:40.618; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-23 13:13:40.620; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-23 13:13:40.636; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:13:40.640; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-23 13:13:40.642; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-23 13:13:40.644; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-23 13:13:40.644; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:13:40.649; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:13:40.662; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:23:30.708; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:23:30.709; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:23:30.711; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-23 13:23:30.714; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:23:30.722; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:23:30.725; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 13:23:30.727; models_handlers.graph_rna_model_handler; DEBUG  test: 1394 interactions (P: 690, N: 704)
+2024-10-23 13:23:30.729; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1390 interactions (P: 686, N: 704)
+2024-10-23 13:23:30.729; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:25:23.963; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:25:23.964; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:25:23.964; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-23 13:25:23.967; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:25:23.974; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 13:25:23.978; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 13:25:23.980; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-23 13:25:23.982; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-23 13:25:23.982; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:25:23.986; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:25:23.998; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:25:55.216; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:25:55.216; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:25:55.217; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-23 13:25:55.219; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:25:55.227; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 13:25:55.230; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-23 13:25:55.232; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:25:55.234; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:25:55.235; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:25:55.239; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:25:55.251; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:29:29.401; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:29:29.401; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:29:29.403; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-23 13:29:29.407; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:29:29.419; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 13:29:29.425; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-23 13:29:29.428; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:29:29.431; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:29:29.431; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:29:29.441; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:29:29.459; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:32:23.069; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:32:23.070; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:32:23.070; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-23 13:32:23.073; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:32:23.080; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 13:32:23.084; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-23 13:32:23.086; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:32:23.088; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:32:23.088; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:32:23.092; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:32:23.105; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:33:57.601; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 13:33:57.602; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 13:33:57.602; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-23 13:33:57.605; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 13:33:57.612; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 13:33:57.616; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-23 13:33:57.618; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:33:57.620; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-23 13:33:57.620; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 13:33:57.624; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 13:33:57.637; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:12:24.705; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:12:24.705; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:12:24.706; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3126 unique mRNAs of E.coli
+2024-10-23 16:12:24.708; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:12:24.716; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:12:24.719; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:12:24.721; models_handlers.graph_rna_model_handler; DEBUG  test: 1288 interactions (P: 627, N: 661)
+2024-10-23 16:12:24.723; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1284 interactions (P: 623, N: 661)
+2024-10-23 16:12:24.723; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:12:24.727; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:12:24.740; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:20:25.539; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:20:25.539; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:20:25.540; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3136 unique mRNAs of E.coli
+2024-10-23 16:20:25.543; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:20:25.550; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:20:25.553; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:20:25.555; models_handlers.graph_rna_model_handler; DEBUG  test: 1271 interactions (P: 626, N: 645)
+2024-10-23 16:20:25.557; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1267 interactions (P: 622, N: 645)
+2024-10-23 16:20:25.557; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:22:21.509; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:22:21.509; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:22:21.510; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3136 unique mRNAs of E.coli
+2024-10-23 16:22:21.512; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:22:21.519; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:22:21.523; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:22:21.524; models_handlers.graph_rna_model_handler; DEBUG  test: 1250 interactions (P: 605, N: 645)
+2024-10-23 16:22:21.526; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1246 interactions (P: 601, N: 645)
+2024-10-23 16:22:21.527; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:22:21.530; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:22:21.542; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:26:29.109; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:26:29.109; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:26:29.110; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-23 16:26:29.112; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:26:29.119; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:26:29.123; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:26:29.125; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-23 16:26:29.127; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-23 16:26:29.127; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:26:29.131; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:26:29.143; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:27:43.940; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:27:43.941; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:27:43.943; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-23 16:27:43.947; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:27:43.962; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:27:43.968; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:27:43.972; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-23 16:27:43.975; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-23 16:27:43.975; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:27:43.985; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:27:44.001; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:30:32.299; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:30:32.299; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:30:32.300; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-23 16:30:32.302; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:30:32.309; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:30:32.313; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:30:32.315; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-23 16:30:32.317; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-23 16:30:32.317; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:30:32.321; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:30:32.334; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:32:05.106; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:32:05.106; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:32:05.107; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-23 16:32:05.110; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:32:05.117; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:32:05.121; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:32:05.123; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-23 16:32:05.125; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-23 16:32:05.125; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:32:05.129; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:32:05.142; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:34:04.882; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:34:04.883; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:34:04.883; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-23 16:34:04.886; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:34:04.893; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-23 16:34:04.897; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-23 16:34:04.899; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-23 16:34:04.901; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-23 16:34:04.901; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:34:04.906; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:34:04.919; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:36:35.945; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-23 16:36:35.945; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-23 16:36:35.945; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-23 16:36:35.948; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-23 16:36:35.955; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-23 16:36:35.959; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-23 16:36:35.961; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-23 16:36:35.964; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-23 16:36:35.964; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-23 16:36:35.969; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-23 16:36:35.982; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 16:47:20.299; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 16:47:20.299; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 16:47:20.300; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-24 16:47:20.303; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 16:47:20.312; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 16:47:20.317; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-24 16:47:20.319; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 16:47:20.321; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 16:47:20.321; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 16:47:20.327; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 16:47:20.341; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 16:48:10.611; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 16:48:10.611; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 16:48:10.612; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-24 16:48:10.615; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 16:48:10.624; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 16:48:10.628; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-24 16:48:10.630; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-24 16:48:10.633; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-24 16:48:10.633; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 16:48:10.639; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 16:48:10.654; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 16:52:47.968; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 16:52:47.969; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 16:52:47.970; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-24 16:52:47.972; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 16:52:47.982; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 16:52:47.986; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-24 16:52:47.988; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-24 16:52:47.991; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-24 16:52:47.991; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 16:52:47.996; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 16:52:48.009; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:05:01.003; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:05:01.004; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:05:01.006; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-24 17:05:01.011; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:05:01.025; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 17:05:01.031; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-24 17:05:01.035; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-24 17:05:01.038; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-24 17:05:01.039; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:05:01.047; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:05:01.074; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:05:01.159; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:05:01.183; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3157 mRNA nodes 
+Train: 5558 interactions, P: 2749, N: 2809 
+Test: 1375 interactions, P: 671, N: 704
+2024-10-24 17:05:01.214; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:05:06.303; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:06:10.513; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:06:10.514; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:06:10.516; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-24 17:06:10.523; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:06:10.538; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 17:06:10.543; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-24 17:06:10.546; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-24 17:06:10.549; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-24 17:06:10.549; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:06:10.554; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:06:10.572; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:06:10.641; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:06:10.661; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3157 mRNA nodes 
+Train: 5558 interactions, P: 2749, N: 2809 
+Test: 1373 interactions, P: 670, N: 703
+2024-10-24 17:06:10.685; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:06:11.750; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:15:15.689; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:15:15.689; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:15:15.690; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3157 unique mRNAs of E.coli
+2024-10-24 17:15:15.693; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:15:15.702; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 17:15:15.707; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2749, N: 2809)
+2024-10-24 17:15:15.709; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-24 17:15:15.711; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-24 17:15:15.712; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:15:15.717; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:15:15.733; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:15:15.781; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:15:15.796; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3157 mRNA nodes 
+Train: 5558 interactions, P: 2749, N: 2809 
+Test: 1373 interactions, P: 670, N: 703
+2024-10-24 17:15:15.820; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:15:16.679; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:16:26.839; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:16:26.839; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:16:26.840; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-24 17:16:26.842; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:16:26.850; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:16:26.853; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-24 17:16:26.855; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:16:26.858; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:16:26.858; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:16:26.862; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:16:26.874; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:16:26.913; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:16:26.926; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3130 mRNA nodes 
+Train: 5558 interactions, P: 2751, N: 2807 
+Test: 1372 interactions, P: 669, N: 703
+2024-10-24 17:16:26.949; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:16:27.641; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:16:32.591; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:16:32.592; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:16:32.598; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:16:32.601; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2751, N: 2804)
+2024-10-24 17:16:32.604; models_handlers.graph_rna_model_handler; DEBUG  test: 1397 interactions (P: 695, N: 702)
+2024-10-24 17:16:32.606; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1396 interactions (P: 695, N: 701)
+2024-10-24 17:16:32.606; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:23:46.061; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:23:46.061; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:23:46.062; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-24 17:23:46.064; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:23:46.072; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:23:46.075; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-24 17:23:46.077; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:23:46.080; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:23:46.080; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:23:46.084; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:23:46.097; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:23:46.126; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:23:46.138; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3130 mRNA nodes 
+Train: 5558 interactions, P: 2751, N: 2807 
+Test: 1372 interactions, P: 669, N: 703
+2024-10-24 17:23:46.160; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:23:46.770; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:23:50.683; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:23:50.683; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:23:50.691; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:23:50.694; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2751, N: 2804)
+2024-10-24 17:23:50.697; models_handlers.graph_rna_model_handler; DEBUG  test: 1372 interactions (P: 670, N: 702)
+2024-10-24 17:23:50.699; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1371 interactions (P: 670, N: 701)
+2024-10-24 17:23:50.699; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:23:50.704; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:23:50.718; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:24:39.066; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:24:39.067; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:24:39.067; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-24 17:24:39.070; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:24:39.078; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:24:39.082; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-24 17:24:39.084; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:24:39.086; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:24:39.086; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:24:39.091; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:24:39.104; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:24:39.121; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:24:39.133; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3130 mRNA nodes 
+Train: 5558 interactions, P: 2751, N: 2807 
+Test: 1372 interactions, P: 669, N: 703
+2024-10-24 17:24:39.156; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:24:39.797; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:24:43.249; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:24:43.249; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:24:43.255; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:24:43.259; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2751, N: 2804)
+2024-10-24 17:24:43.262; models_handlers.graph_rna_model_handler; DEBUG  test: 1372 interactions (P: 670, N: 702)
+2024-10-24 17:24:43.264; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1371 interactions (P: 670, N: 701)
+2024-10-24 17:24:43.264; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:24:43.269; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:24:43.284; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:25:17.751; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:25:17.752; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:25:17.753; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-24 17:25:17.756; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:25:17.764; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:25:17.767; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-24 17:25:17.770; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:25:17.772; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:25:17.772; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:25:17.777; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:25:17.790; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:25:17.808; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:25:17.821; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3130 mRNA nodes 
+Train: 5558 interactions, P: 2751, N: 2807 
+Test: 1372 interactions, P: 669, N: 703
+2024-10-24 17:25:17.844; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:25:18.463; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:25:21.897; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:25:21.898; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:25:21.905; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:25:21.910; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2751, N: 2804)
+2024-10-24 17:25:21.912; models_handlers.graph_rna_model_handler; DEBUG  test: 1372 interactions (P: 670, N: 702)
+2024-10-24 17:25:21.915; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1371 interactions (P: 670, N: 701)
+2024-10-24 17:25:21.915; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:25:21.920; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:25:21.937; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:26:59.691; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:26:59.692; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:26:59.693; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-24 17:26:59.696; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:26:59.708; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:26:59.713; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-24 17:26:59.715; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:26:59.718; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:26:59.718; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:26:59.725; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:26:59.742; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:20.277; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:27:20.277; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:27:20.278; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3130 unique mRNAs of E.coli
+2024-10-24 17:27:20.281; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 310 unique sRNAs of E.coli
+2024-10-24 17:27:20.290; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:27:20.294; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2751, N: 2807)
+2024-10-24 17:27:20.296; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:27:20.299; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:27:20.299; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:27:20.304; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:20.319; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:20.339; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:27:20.354; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3130 mRNA nodes 
+Train: 5558 interactions, P: 2751, N: 2807 
+Test: 1372 interactions, P: 669, N: 703
+2024-10-24 17:27:20.379; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:27:21.485; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:27:25.918; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:27:25.918; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:27:25.931; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:27:25.937; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2751, N: 2804)
+2024-10-24 17:27:25.941; models_handlers.graph_rna_model_handler; DEBUG  test: 1372 interactions (P: 670, N: 702)
+2024-10-24 17:27:25.945; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1371 interactions (P: 670, N: 701)
+2024-10-24 17:27:25.945; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:27:25.954; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:25.978; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:26.006; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:27:26.020; models_handlers.graph_rna_model_handler; DEBUG 
+310 sRNA nodes, 3130 mRNA nodes 
+Train: 5555 interactions, P: 2751, N: 2804 
+Test: 1371 interactions, P: 670, N: 701
+2024-10-24 17:27:52.201; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:27:52.202; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:27:52.203; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3250 unique mRNAs of E.coli
+2024-10-24 17:27:52.206; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-24 17:27:52.219; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:27:52.224; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2751, N: 2804)
+2024-10-24 17:27:52.227; models_handlers.graph_rna_model_handler; DEBUG  test: 1372 interactions (P: 670, N: 702)
+2024-10-24 17:27:52.229; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1371 interactions (P: 670, N: 701)
+2024-10-24 17:27:52.229; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:27:52.235; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:52.250; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:52.271; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:27:52.287; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3250 mRNA nodes 
+Train: 5555 interactions, P: 2751, N: 2804 
+Test: 1371 interactions, P: 670, N: 701
+2024-10-24 17:27:52.313; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:27:53.499; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:27:58.505; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:27:58.506; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:27:58.518; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:27:58.523; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5563 interactions (P: 2751, N: 2812)
+2024-10-24 17:27:58.527; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:27:58.530; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:27:58.530; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:27:58.538; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:58.556; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:27:58.581; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:27:58.599; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3250 mRNA nodes 
+Train: 5563 interactions, P: 2751, N: 2812 
+Test: 1374 interactions, P: 670, N: 704
+2024-10-24 17:28:20.531; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:28:20.531; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:28:20.532; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4949 unique mRNAs of E.coli
+2024-10-24 17:28:20.534; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 246 unique sRNAs of E.coli
+2024-10-24 17:28:20.542; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:28:20.546; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5563 interactions (P: 2751, N: 2812)
+2024-10-24 17:28:20.548; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:28:20.550; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-24 17:28:20.550; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:28:20.554; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:28:20.568; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:28:20.585; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:28:20.597; models_handlers.graph_rna_model_handler; DEBUG 
+246 sRNA nodes, 4949 mRNA nodes 
+Train: 5563 interactions, P: 2751, N: 2812 
+Test: 1374 interactions, P: 670, N: 704
+2024-10-24 17:28:20.620; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:28:21.334; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:29:55.233; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:29:55.233; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:29:55.234; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3161 unique mRNAs of E.coli
+2024-10-24 17:29:55.237; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 309 unique sRNAs of E.coli
+2024-10-24 17:29:55.245; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 17:29:55.248; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2750, N: 2811)
+2024-10-24 17:29:55.250; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 673, N: 702)
+2024-10-24 17:29:55.252; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1373 interactions (P: 671, N: 702)
+2024-10-24 17:29:55.252; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:29:55.256; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:29:55.269; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:29:55.286; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:29:55.298; models_handlers.graph_rna_model_handler; DEBUG 
+309 sRNA nodes, 3161 mRNA nodes 
+Train: 5561 interactions, P: 2750, N: 2811 
+Test: 1371 interactions, P: 670, N: 701
+2024-10-24 17:29:55.320; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:29:55.918; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:30:13.212; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:30:13.213; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:30:13.229; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3237 unique mRNAs of E.coli
+2024-10-24 17:30:13.232; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-24 17:30:13.243; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 17:30:13.247; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2750, N: 2805)
+2024-10-24 17:30:13.249; models_handlers.graph_rna_model_handler; DEBUG  test: 1373 interactions (P: 673, N: 700)
+2024-10-24 17:30:13.252; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1369 interactions (P: 671, N: 698)
+2024-10-24 17:30:13.252; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:30:13.260; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:30:13.277; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:30:13.295; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:30:13.308; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3237 mRNA nodes 
+Train: 5555 interactions, P: 2750, N: 2805 
+Test: 1369 interactions, P: 671, N: 698
+2024-10-24 17:30:13.330; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:30:14.041; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:30:23.250; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:30:23.250; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:30:23.251; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4952 unique mRNAs of E.coli
+2024-10-24 17:30:23.254; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 245 unique sRNAs of E.coli
+2024-10-24 17:30:23.262; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 17:30:23.265; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5563 interactions (P: 2750, N: 2813)
+2024-10-24 17:30:23.267; models_handlers.graph_rna_model_handler; DEBUG  test: 1376 interactions (P: 673, N: 703)
+2024-10-24 17:30:23.269; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 671, N: 703)
+2024-10-24 17:30:23.269; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:30:23.273; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:30:23.286; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:30:23.303; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:30:23.316; models_handlers.graph_rna_model_handler; DEBUG 
+245 sRNA nodes, 4952 mRNA nodes 
+Train: 5563 interactions, P: 2750, N: 2813 
+Test: 1374 interactions, P: 671, N: 703
+2024-10-24 17:30:23.346; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:30:24.133; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:37:46.127; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:37:46.127; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:37:46.128; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3246 unique mRNAs of E.coli
+2024-10-24 17:37:46.131; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-24 17:37:46.138; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:37:46.142; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5551 interactions (P: 2746, N: 2805)
+2024-10-24 17:37:46.144; models_handlers.graph_rna_model_handler; DEBUG  test: 1377 interactions (P: 677, N: 700)
+2024-10-24 17:37:46.146; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 676, N: 699)
+2024-10-24 17:37:46.146; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:37:46.151; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:37:46.164; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:37:46.181; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:37:46.193; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3246 mRNA nodes 
+Train: 5551 interactions, P: 2746, N: 2805 
+Test: 1375 interactions, P: 676, N: 699
+2024-10-24 17:37:46.217; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:37:46.899; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:38:09.390; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:38:09.391; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:38:09.392; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4965 unique mRNAs of E.coli
+2024-10-24 17:38:09.395; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 245 unique sRNAs of E.coli
+2024-10-24 17:38:09.409; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-24 17:38:09.415; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2746, N: 2812)
+2024-10-24 17:38:09.419; models_handlers.graph_rna_model_handler; DEBUG  test: 1381 interactions (P: 677, N: 704)
+2024-10-24 17:38:09.423; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1380 interactions (P: 676, N: 704)
+2024-10-24 17:38:09.423; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-24 17:38:09.436; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:38:09.459; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-24 17:38:09.486; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-24 17:38:09.509; models_handlers.graph_rna_model_handler; DEBUG 
+245 sRNA nodes, 4965 mRNA nodes 
+Train: 5558 interactions, P: 2746, N: 2812 
+Test: 1380 interactions, P: 676, N: 704
+2024-10-24 17:38:09.539; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-24 17:38:10.557; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-24 17:40:29.644; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-24 17:40:29.644; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-24 17:40:29.645; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4678 unique mRNAs of E.coli
+2024-10-24 17:40:29.648; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 241 unique sRNAs of E.coli
+2024-10-24 17:40:29.659; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-24 17:40:29.662; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5562 interactions (P: 2749, N: 2813)
+2024-10-24 17:40:29.664; models_handlers.graph_rna_model_handler; DEBUG  test: 888 interactions (P: 441, N: 447)
+2024-10-24 17:40:29.666; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 885 interactions (P: 438, N: 447)
+2024-10-24 17:40:29.666; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:11:08.466; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:11:08.466; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:11:08.467; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3253 unique mRNAs of E.coli
+2024-10-25 11:11:08.470; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-25 11:11:08.479; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:11:08.483; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5553 interactions (P: 2749, N: 2804)
+2024-10-25 11:11:08.485; models_handlers.graph_rna_model_handler; DEBUG  test: 1371 interactions (P: 674, N: 697)
+2024-10-25 11:11:08.487; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1369 interactions (P: 672, N: 697)
+2024-10-25 11:11:08.488; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:11:08.493; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:11:08.507; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:11:08.528; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:11:08.545; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3253 mRNA nodes 
+Train: 5553 interactions, P: 2749, N: 2804 
+Test: 1369 interactions, P: 672, N: 697
+2024-10-25 11:11:08.570; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:11:09.217; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:13:27.040; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:13:27.040; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:13:27.041; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4953 unique mRNAs of E.coli
+2024-10-25 11:13:27.044; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 245 unique sRNAs of E.coli
+2024-10-25 11:13:27.053; models_handlers.graph_rna_model_handler; DEBUG  train: 5626 interactions (P: 2813, N: 2813)
+2024-10-25 11:13:27.057; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5562 interactions (P: 2749, N: 2813)
+2024-10-25 11:13:27.059; models_handlers.graph_rna_model_handler; DEBUG  test: 1408 interactions (P: 704, N: 704)
+2024-10-25 11:13:27.062; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1404 interactions (P: 700, N: 704)
+2024-10-25 11:13:27.062; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:14:52.533; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:14:52.533; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:14:52.535; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4952 unique mRNAs of E.coli
+2024-10-25 11:14:52.537; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 244 unique sRNAs of E.coli
+2024-10-25 11:14:52.546; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:14:52.550; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5561 interactions (P: 2749, N: 2812)
+2024-10-25 11:14:52.553; models_handlers.graph_rna_model_handler; DEBUG  test: 1378 interactions (P: 674, N: 704)
+2024-10-25 11:14:52.555; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1376 interactions (P: 672, N: 704)
+2024-10-25 11:14:52.555; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:14:52.560; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:14:52.575; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:14:52.595; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:14:52.609; models_handlers.graph_rna_model_handler; DEBUG 
+244 sRNA nodes, 4952 mRNA nodes 
+Train: 5561 interactions, P: 2749, N: 2812 
+Test: 1376 interactions, P: 672, N: 704
+2024-10-25 11:14:52.635; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:14:53.445; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:15:14.392; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:15:14.392; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:15:14.394; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4932 unique mRNAs of E.coli
+2024-10-25 11:15:14.397; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 242 unique sRNAs of E.coli
+2024-10-25 11:15:14.406; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:15:14.413; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2746, N: 2812)
+2024-10-25 11:15:14.417; models_handlers.graph_rna_model_handler; DEBUG  test: 1382 interactions (P: 679, N: 703)
+2024-10-25 11:15:14.423; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1379 interactions (P: 676, N: 703)
+2024-10-25 11:15:14.423; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:15:14.433; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:15:14.456; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:15:14.487; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:15:14.503; models_handlers.graph_rna_model_handler; DEBUG 
+242 sRNA nodes, 4932 mRNA nodes 
+Train: 5558 interactions, P: 2746, N: 2812 
+Test: 1379 interactions, P: 676, N: 703
+2024-10-25 11:15:14.529; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:15:15.337; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:15:26.138; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:15:26.138; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:15:26.139; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3267 unique mRNAs of E.coli
+2024-10-25 11:15:26.142; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-25 11:15:26.151; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:15:26.155; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5552 interactions (P: 2746, N: 2806)
+2024-10-25 11:15:26.157; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 679, N: 696)
+2024-10-25 11:15:26.159; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1371 interactions (P: 676, N: 695)
+2024-10-25 11:15:26.160; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:15:26.165; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:15:26.182; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:15:26.202; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:15:26.216; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3267 mRNA nodes 
+Train: 5552 interactions, P: 2746, N: 2806 
+Test: 1371 interactions, P: 676, N: 695
+2024-10-25 11:15:26.240; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:15:26.917; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:21:11.041; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:21:11.042; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:21:11.042; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3240 unique mRNAs of E.coli
+2024-10-25 11:21:11.045; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-25 11:21:11.055; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:21:11.058; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5553 interactions (P: 2748, N: 2805)
+2024-10-25 11:21:11.061; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 675, N: 699)
+2024-10-25 11:21:11.063; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1372 interactions (P: 674, N: 698)
+2024-10-25 11:21:11.063; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:21:11.068; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:21:11.082; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:21:11.102; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:21:11.115; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3240 mRNA nodes 
+Train: 5553 interactions, P: 2748, N: 2805 
+Test: 1372 interactions, P: 674, N: 698
+2024-10-25 11:21:11.139; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:21:11.792; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:21:33.993; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:21:33.993; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:21:33.994; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3256 unique mRNAs of E.coli
+2024-10-25 11:21:33.997; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-25 11:21:34.005; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-25 11:21:34.009; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5557 interactions (P: 2749, N: 2808)
+2024-10-25 11:21:34.011; models_handlers.graph_rna_model_handler; DEBUG  test: 1375 interactions (P: 675, N: 700)
+2024-10-25 11:21:34.014; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1370 interactions (P: 671, N: 699)
+2024-10-25 11:21:34.014; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:21:34.019; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:21:34.033; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:21:34.052; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:21:34.066; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3256 mRNA nodes 
+Train: 5557 interactions, P: 2749, N: 2808 
+Test: 1370 interactions, P: 671, N: 699
+2024-10-25 11:21:34.091; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:21:34.741; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:22:06.169; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:22:06.170; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:22:06.176; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4954 unique mRNAs of E.coli
+2024-10-25 11:22:06.179; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 245 unique sRNAs of E.coli
+2024-10-25 11:22:06.187; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-25 11:22:06.191; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5562 interactions (P: 2749, N: 2813)
+2024-10-25 11:22:06.194; models_handlers.graph_rna_model_handler; DEBUG  test: 1379 interactions (P: 675, N: 704)
+2024-10-25 11:22:06.198; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 671, N: 704)
+2024-10-25 11:22:06.198; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:22:06.204; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:22:06.218; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:22:06.238; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:22:06.251; models_handlers.graph_rna_model_handler; DEBUG 
+245 sRNA nodes, 4954 mRNA nodes 
+Train: 5562 interactions, P: 2749, N: 2813 
+Test: 1375 interactions, P: 671, N: 704
+2024-10-25 11:22:06.277; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:22:07.061; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:22:27.475; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:22:27.476; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:22:27.478; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4972 unique mRNAs of E.coli
+2024-10-25 11:22:27.481; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 246 unique sRNAs of E.coli
+2024-10-25 11:22:27.490; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:22:27.494; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5560 interactions (P: 2748, N: 2812)
+2024-10-25 11:22:27.496; models_handlers.graph_rna_model_handler; DEBUG  test: 1378 interactions (P: 675, N: 703)
+2024-10-25 11:22:27.498; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1377 interactions (P: 674, N: 703)
+2024-10-25 11:22:27.498; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:22:27.503; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:22:27.518; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:22:27.537; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:22:27.551; models_handlers.graph_rna_model_handler; DEBUG 
+246 sRNA nodes, 4972 mRNA nodes 
+Train: 5560 interactions, P: 2748, N: 2812 
+Test: 1377 interactions, P: 674, N: 703
+2024-10-25 11:22:27.576; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:22:28.345; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:27:48.092; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:27:48.092; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:27:48.093; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4972 unique mRNAs of E.coli
+2024-10-25 11:27:48.096; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 246 unique sRNAs of E.coli
+2024-10-25 11:27:48.105; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:27:48.111; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5560 interactions (P: 2748, N: 2812)
+2024-10-25 11:27:48.114; models_handlers.graph_rna_model_handler; DEBUG  test: 1378 interactions (P: 675, N: 703)
+2024-10-25 11:27:48.116; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1377 interactions (P: 674, N: 703)
+2024-10-25 11:27:48.116; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:27:48.121; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:27:48.136; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:27:48.155; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:27:48.169; models_handlers.graph_rna_model_handler; DEBUG 
+246 sRNA nodes, 4972 mRNA nodes 
+Train: 5560 interactions, P: 2748, N: 2812 
+Test: 1377 interactions, P: 674, N: 703
+2024-10-25 11:27:48.194; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:27:48.993; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:42:28.613; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:42:28.614; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:42:28.615; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4965 unique mRNAs of E.coli
+2024-10-25 11:42:28.618; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 245 unique sRNAs of E.coli
+2024-10-25 11:42:28.626; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:42:28.630; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5558 interactions (P: 2746, N: 2812)
+2024-10-25 11:42:28.633; models_handlers.graph_rna_model_handler; DEBUG  test: 1381 interactions (P: 677, N: 704)
+2024-10-25 11:42:28.635; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1380 interactions (P: 676, N: 704)
+2024-10-25 11:42:28.635; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:42:28.640; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:42:28.654; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:42:28.673; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:42:28.687; models_handlers.graph_rna_model_handler; DEBUG 
+245 sRNA nodes, 4965 mRNA nodes 
+Train: 5558 interactions, P: 2746, N: 2812 
+Test: 1380 interactions, P: 676, N: 704
+2024-10-25 11:42:28.713; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:42:29.524; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:42:42.508; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:42:42.509; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:42:42.510; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4952 unique mRNAs of E.coli
+2024-10-25 11:42:42.513; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 245 unique sRNAs of E.coli
+2024-10-25 11:42:42.522; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-25 11:42:42.526; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5563 interactions (P: 2750, N: 2813)
+2024-10-25 11:42:42.528; models_handlers.graph_rna_model_handler; DEBUG  test: 1376 interactions (P: 673, N: 703)
+2024-10-25 11:42:42.530; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 671, N: 703)
+2024-10-25 11:42:42.531; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:42:42.535; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:42:42.550; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:42:42.573; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:42:42.587; models_handlers.graph_rna_model_handler; DEBUG 
+245 sRNA nodes, 4952 mRNA nodes 
+Train: 5563 interactions, P: 2750, N: 2813 
+Test: 1374 interactions, P: 671, N: 703
+2024-10-25 11:42:42.612; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:42:43.502; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:42:57.150; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:42:57.150; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:42:57.151; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 4949 unique mRNAs of E.coli
+2024-10-25 11:42:57.154; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 246 unique sRNAs of E.coli
+2024-10-25 11:42:57.163; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:42:57.167; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5563 interactions (P: 2751, N: 2812)
+2024-10-25 11:42:57.169; models_handlers.graph_rna_model_handler; DEBUG  test: 1374 interactions (P: 670, N: 704)
+2024-10-25 11:42:57.171; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1374 interactions (P: 670, N: 704)
+2024-10-25 11:42:57.172; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:42:57.177; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:42:57.191; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:42:57.210; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:42:57.224; models_handlers.graph_rna_model_handler; DEBUG 
+246 sRNA nodes, 4949 mRNA nodes 
+Train: 5563 interactions, P: 2751, N: 2812 
+Test: 1374 interactions, P: 670, N: 704
+2024-10-25 11:42:57.248; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:42:58.033; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:43:11.507; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:43:11.507; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:43:11.509; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3250 unique mRNAs of E.coli
+2024-10-25 11:43:11.511; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-25 11:43:11.520; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:43:11.524; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2751, N: 2804)
+2024-10-25 11:43:11.527; models_handlers.graph_rna_model_handler; DEBUG  test: 1372 interactions (P: 670, N: 702)
+2024-10-25 11:43:11.529; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1371 interactions (P: 670, N: 701)
+2024-10-25 11:43:11.529; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:43:11.535; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:43:11.549; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:43:11.571; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:43:11.584; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3250 mRNA nodes 
+Train: 5555 interactions, P: 2751, N: 2804 
+Test: 1371 interactions, P: 670, N: 701
+2024-10-25 11:43:11.610; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:43:12.272; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:43:28.372; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:43:28.372; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:43:28.373; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3237 unique mRNAs of E.coli
+2024-10-25 11:43:28.376; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-25 11:43:28.384; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2812, N: 2813)
+2024-10-25 11:43:28.388; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5555 interactions (P: 2750, N: 2805)
+2024-10-25 11:43:28.391; models_handlers.graph_rna_model_handler; DEBUG  test: 1373 interactions (P: 673, N: 700)
+2024-10-25 11:43:28.393; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1369 interactions (P: 671, N: 698)
+2024-10-25 11:43:28.393; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:43:28.398; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:43:28.412; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:43:28.431; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:43:28.454; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3237 mRNA nodes 
+Train: 5555 interactions, P: 2750, N: 2805 
+Test: 1369 interactions, P: 671, N: 698
+2024-10-25 11:43:28.480; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:43:29.914; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
+2024-10-25 11:43:46.184; models_handlers.graph_rna_model_handler; DEBUG getting GraphRNA model_args
+2024-10-25 11:43:46.185; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model  ->  train negative sampling = False
+2024-10-25 11:43:46.186; models_handlers.graph_rna_model_handler; DEBUG  mRNA data from EcoCyc: 3246 unique mRNAs of E.coli
+2024-10-25 11:43:46.188; models_handlers.graph_rna_model_handler; DEBUG  sRNA data from EcoCyc: 313 unique sRNAs of E.coli
+2024-10-25 11:43:46.197; models_handlers.graph_rna_model_handler; DEBUG  train: 5625 interactions (P: 2813, N: 2812)
+2024-10-25 11:43:46.201; models_handlers.graph_rna_model_handler; DEBUG  unique_train: 5551 interactions (P: 2746, N: 2805)
+2024-10-25 11:43:46.203; models_handlers.graph_rna_model_handler; DEBUG  test: 1377 interactions (P: 677, N: 700)
+2024-10-25 11:43:46.205; models_handlers.graph_rna_model_handler; DEBUG  unique_test: 1375 interactions (P: 676, N: 699)
+2024-10-25 11:43:46.206; models_handlers.graph_rna_model_handler; DEBUG assert no data leakage
+2024-10-25 11:43:46.211; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:43:46.228; models_handlers.graph_rna_model_handler; DEBUG mapping interactions to edges
+2024-10-25 11:43:46.247; models_handlers.graph_rna_model_handler; DEBUG initializing train and test hetero data
+2024-10-25 11:43:46.260; models_handlers.graph_rna_model_handler; DEBUG 
+313 sRNA nodes, 3246 mRNA nodes 
+Train: 5551 interactions, P: 2746, N: 2805 
+Test: 1375 interactions, P: 676, N: 699
+2024-10-25 11:43:46.286; models_handlers.graph_rna_model_handler; DEBUG training GraphRNA model -> epochs = 25
+2024-10-25 11:43:46.944; models_handlers.graph_rna_model_handler; DEBUG evaluating test set
