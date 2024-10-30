@@ -188,13 +188,20 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
     is_length_compatible = len(labels) == len(unq_intr_data)
     assert is_length_compatible, "labels and unq_intr_data are compatible in length"
 
+########## ????????????????
+    # lbl = LabelEncoder()
+    # lbl.fit(unq_y)
+    # y_enc = lbl.transform(unq_y)
+########## ????????????????
+
     # print("unq_intr_data:", unq_intr_data)
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
     cv_folds = {}
     for i, (train_index, val_index) in enumerate(skf.split(X=np.array(unq_intr_data), y=labels)):
         # Train fold
         unq_train = pd.DataFrame(unq_intr_data.iloc[list(train_index), :]).reset_index(drop=True)
-        
+        unq_train[label_col] = list(labels[train_index])
+
         # # Count the occurrences of each unique label (non-null)
         # label_counts = unq_train[label_col].dropna().value_counts()
         # # Print the count of each unique label
@@ -211,9 +218,6 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
         # missing_indices = [index for index in train_index if index not in labels.index]
         # print("Missing indices in labels: ", missing_indices)
 
-        unq_train[label_col] = list(labels[train_index])
-
-        # Validation
         unq_val = pd.DataFrame(unq_intr_data.iloc[list(val_index), :]).reset_index(drop=True)
         unq_val[label_col] = list(labels[val_index])
         
@@ -229,8 +233,6 @@ def three_stratified_cv_for_interaction(unq_intr_data: pd.DataFrame, labels: np.
             "unq_val": unq_val
         }
         cv_folds[i] = fold_data
-
-
 
     return cv_folds
 

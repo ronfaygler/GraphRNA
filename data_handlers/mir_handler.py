@@ -20,7 +20,7 @@ class DataHandler_Mirna_Mrna(DataHandler):
     def __init__(self, data_path: str, train_fragments_file: str, added_neg: bool = False, is_rbp: bool = False, test_file: str = ""):
         DataHandler.__init__(self, data_path).__init__()
         del self.test_filtered_file
-        if test_file:
+        if test_file!="":
             self.test_complete_file = test_file
             self.is_test = True
         else:
@@ -42,7 +42,6 @@ class DataHandler_Mirna_Mrna(DataHandler):
         if not self.is_rbp:
             self.label_col = "interaction_label"
 
-        # TODO ? when data real, change ebp and srna files
         else:
             self.mrna_data_with_rbp_file = "DATA_mrna_eco.csv"
             self.mrna_data_with_srna_file = "DATA_mrna_eco.csv"
@@ -50,7 +49,6 @@ class DataHandler_Mirna_Mrna(DataHandler):
             self.mrna_accession_id_col_with_srna = "EcoCyc_accession_id"
             self.rbp_data_file = "DATA_rbp_eco.csv"
             self.rbp_accession_id_col = "EcoCyc_accession_id"
-            # self.features_cols=["Seed_match_A"]
             self.label_mirna_col = "interaction_label_mirna"
             self.label_rbp_col = "interaction_label_rbp"
 
@@ -60,7 +58,7 @@ class DataHandler_Mirna_Mrna(DataHandler):
     def load_interactions_datasets(self, added_neg):
         if self.is_test:
             train_fragments = read_df(self.train_fragments_file)
-            train_fragments=train_fragments[1:]
+            # train_fragments=train_fragments[1:]
         else:
             train_fragments = read_df(join(self.data_path, self.train_fragments_file))
 
@@ -83,7 +81,7 @@ class DataHandler_Mirna_Mrna(DataHandler):
 
             if self.is_test:
                 test_complete = read_df(self.test_complete_file)
-                test_complete = test_complete[1:]
+                # test_complete = test_complete[1:]
                 test_complete = DataHandler.split_dataset(self, dataset=test_complete)
         
             

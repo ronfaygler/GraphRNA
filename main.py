@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # --- for rbp:
 # from models_handlers.three_graph_rna_model_handler import GraphRNAModelHandler
 
-from utils.utils_ron import create_rna_df 
+from utils.utils_ron import create_rna_df, create_metric_df
 
 def main():
 
@@ -46,133 +46,115 @@ def main():
     # cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
     # # write cv results to folds dfs
     # for fold, fold_df in cv_predictions_dfs.items():
-    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
-
+    #     write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN-Random_neg/5 folds'), f"miRNA-mRNA-RBP_fold{fold}_GNN-Random_neg_five-rbp.csv"))
+    
+    # return
 
 # # ------ mirna mrna:
 #     # ----- configuration
-    # Number of directories (from 0 to 19)
-    first_folder = 0
-    last_folder = 1
-    # --- didnt work: 3
-    # folder=3
-    neg_types = ["CLIP_non_CLASH"]# ["NPS_CLIP_Random", "CLIP_non_CLASH", "TarBase_microarray"]
+        # -- train-test split 
 
-    for neg_type in neg_types: # NPS_CLIP_Random TarBase_microarray CLIP_non_CLASH
+    # # Number of directory (from 0 to 19)
+    # i=19 # folder number
+    # neg_types = ["TarBase_microarray"]# ["NPS_CLIP_Random", "CLIP_non_CLASH", "TarBase_microarray"]
 
-        for i in range(first_folder, last_folder):
+    # for neg_type in neg_types: # NPS_CLIP_Random TarBase_microarray CLIP_non_CLASH
+    #     data="mirna"
+    #     data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
+    #     outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+    #     neg_dir = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/neg_data"
+    #     # neg_type = "NPS_CLIP_Random" # TarBase_microarray CLIP_non_CLASH
+    #     print("paths")
 
-            data="mirna"
-            data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
-            outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
-            neg_dir = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/neg_data"
-            # neg_type = "NPS_CLIP_Random" # TarBase_microarray CLIP_non_CLASH
-            print("paths")
+    #     # Define the root directories for train and test
+    #     train_root = "Train_Test_files/DATA TRAIN"
+    #     test_root = "Train_Test_files/DATA TEST"
 
-            # -- train-test split 
-            # Define the root directories for train and test
-            train_root = "Train_Test_files/DATA TRAIN"
-            test_root = "Train_Test_files/DATA TEST"
-
-            train_test=True
+    #     train_test=True
 
 
-            # Function to get the file that starts with 'NPS_CLIP_Random' from a directory
-            def get_random_clip_file(dir_path, prefix=neg_type):
-                for filename in os.listdir(dir_path):
-                    if filename.startswith(prefix):
-                        return os.path.join(dir_path, filename)
-                return None  # Return None if no matching file is found
+    #     # Function to get the file that starts with 'NPS_CLIP_Random' from a directory
+    #     def get_random_clip_file(dir_path, prefix=neg_type):
+    #         for filename in os.listdir(dir_path):
+    #             if filename.startswith(prefix):
+    #                 return os.path.join(dir_path, filename)
+    #         return None  # Return None if no matching file is found
 
-            model_name = "GNN"
-            graph_rna = GraphRNAModelHandler()
+    #     model_name = "GNN"
+    #     graph_rna = GraphRNAModelHandler()
 
-            # dummy_x_train, dummy_x_val = pd.DataFrame(), pd.DataFrame()
-            # dummy_y_train, dummy_y_val = list(), list()
-            # dummy_meta_train, dummy_meta_val = pd.DataFrame(), pd.DataFrame()
+    #     train_neg_sampling = False  # negatives were already added to cv_data_unq
+    #     cv_predictions_dfs = [] # To collect CV predictions
 
-            # 6 - predict on folds
-            # cv_training_history = {}
-            # cv_prediction_dfs = {}
-            train_neg_sampling = False  # negatives were already added to cv_data_unq
-            cv_predictions_dfs = [] # To collect CV predictions
+    #     # Construct paths to the current train and test directories
+    #     train_dir = os.path.join(train_root, str(i))
+    #     test_dir = os.path.join(test_root, str(i))
 
-        # Loop through 20 folders for both train and test
-            # Construct paths to the current train and test directories
-            train_dir = os.path.join(train_root, str(i))
-            test_dir = os.path.join(test_root, str(i))
+    #     # Get the train and test file starting with 'NPS_CLIP_Random'
+    #     train_file = get_random_clip_file(train_dir)
+    #     test_file = get_random_clip_file(test_dir)
+    #     print( "train_file: ", train_file, "test_file: ", test_file)
+    #     if train_file and test_file:
+    #         # --- TODO: extract function
+    #         mirna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
+    #         mirna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
+    #         combined_df = pd.concat([mirna_train, mirna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+    #         combined_df.to_csv(join(data_path, "DATA_mirna_eco.csv"), index=False)
+    #         print("Created combined miRNA data file at DATA_mirna_eco.csv")
 
-            # Get the train and test file starting with 'NPS_CLIP_Random'
-            train_file = get_random_clip_file(train_dir)
-            test_file = get_random_clip_file(test_dir)
-            print( "train_file: ", train_file, "test_file: ", test_file)
-            if train_file and test_file:
-                # --- TODO: extract function
-                mirna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
-                mirna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='miRNA ID', seq_col='miRNA sequence', is_train_test=True)
-                combined_df = pd.concat([mirna_train, mirna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-                combined_df.to_csv(join(data_path, "DATA_mirna_eco.csv"), index=False)
-                print("Created combined miRNA data file at DATA_mirna_eco.csv")
+    #         mrna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
+    #         mrna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
+    #         combined_df = pd.concat([mrna_train, mrna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
+    #         combined_df.to_csv(join(data_path, "DATA_mrna_eco.csv"), index=False)
+    #         print("Created combined mRNA data file at DATA_mrna_eco.csv")
 
-                mrna_train = create_rna_df(data_path=data_path, file_name=train_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
-                mrna_test = create_rna_df(data_path=data_path, file_name=test_file, id_col='Gene_ID', seq_col='sequence', is_train_test=True)
-                combined_df = pd.concat([mrna_train, mrna_test], ignore_index=True).drop_duplicates(subset='EcoCyc_accession_id', keep='first')
-                combined_df.to_csv(join(data_path, "DATA_mrna_eco.csv"), index=False)
-                print("Created combined mRNA data file at DATA_mrna_eco.csv")
+    #         train_fragments, test, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False, train_file=train_file, 
+    #                                                     test_file=test_file)
+    #         print(f"Loop {i}:")
 
-                train_fragments, test, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False, train_file=train_file, 
-                                                            test_file=test_file)
-                print(f"Loop {i}:")
+    #     else:
+    #         print(f"Loop {i}: Train or Test file not found.")
 
-            else:
-                print(f"Loop {i}: Train or Test file not found.")
+    #     test_predictions_df = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, train_test=train_test, **kwargs)
+    #     test_predictions_df.to_csv(join(outputs_path, f"train_test_predictions/{neg_type}/part{i}-{neg_type}.csv"), index=False)
+    #     print(f"finish writing {neg_type}/part{i}")
 
-            test_predictions_df = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, train_test=train_test, **kwargs)
-            # cv_predictions_dfs.append(test_predictions_df)
-            test_predictions_df.to_csv(join(outputs_path, f"train_test_predictions/{neg_type}/part{i}-{neg_type}.csv"), index=False)
-            print(f"finish writing {neg_type}/part{i}")
-        # all_folds_predictions = pd.concat(cv_predictions_dfs).reset_index(drop=True)
-        # all_folds_predictions.to_csv(join(data_path, "all_folds_predictions.csv"), index=False)
-
-    return
-
-        # cv_predictions_dfs, cv_training_history = \
-        #     model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'], 
-        #     metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
-        #     srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID',neg_df=neg_df, **kwargs)
-                
-        # dummy_x_train, dummy_x_val, dummy_y_train, dummy_y_val, dummy_meta_train, dummy_meta_val, 
-        # cv_training_history, cv_prediction_dfs = \
-        #             train_and_evaluate(dummy_x_train, dummy_x_val, dummy_y_train, dummy_y_val,
-        #             dummy_meta_train, dummy_meta_val, cv_training_history, cv_prediction_dfs, train_neg_sampling, 
-        #             model_h=graph_rna, train_fragments=train_fragments, test=test, 
-        #             model_name=model_name , data=data, iteration=i+1, train_test=train_test, **kwargs)
-
-        # for fold, fold_data_unq in cv_data_unq.items():
-            
-        #     # 6.1 - predict on validation set (pos + random sampled neg)
-        #     predictions, training_history = \
-        #         cls.train_and_test(X_train=dummy_x_train, y_train=dummy_y_train, X_test=dummy_x_val, y_test=dummy_y_val,
-        #                            model_args=model_args, metadata_train=dummy_meta_train, metadata_test=dummy_meta_val,
-        #                            unq_train=fold_data_unq['unq_train'], unq_test=fold_data_unq['unq_val'],
-        #                            train_neg_sampling=train_neg_sampling, srna_acc_col=srna_acc_col, mrna_acc_col=mrna_acc_col, **kwargs)
-        #     # 6.2 - fold's training history
-        #     cv_training_history[fold] = training_history
-        #     # 6.3 - fold's predictions df
-        #     y_val_graph_score = predictions['test_y_graph_score']
-        #     unq_val = fold_data_unq['unq_val'][[cls.srna_nid_col, cls.mrna_nid_col]]
-        #     y_val = fold_data_unq['unq_val'][cls.binary_intr_label_col]
-        #     cv_pred_df = cls.get_predictions_df(unq_intr=unq_val, y_true=y_val, y_score=y_val_graph_score)
-        #     cv_prediction_dfs[fold] = cv_pred_df
-
-        # return cv_prediction_dfs, cv_training_history
+    # return
 
 
     # add neg for the first time . data for XGBoost / RandomForest:
     # combine_pos_neg_samples(data_path=data_path , pos_path="h3.csv",neg_dir=neg_dir,  neg_path="Mock_miRNA.csv", ratio=1, _shuffle=True)
     
+
+    # --- random neg
+    
+    data="mirna"
+    original_h3_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data/h3.csv"
+    data_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/data_mir"
+    outputs_path = "/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir"
+    nodes_type = "miRNA-mRNA"
+    neg_type = "Random_neg"
+
+    original_h3 = pd.read_csv(original_h3_path)
+    original_h3 = original_h3[1:] # remove first type row
+    original_h3.to_csv(data_path + "/h3.csv", index=False)
+
+    # create mRNA + miRNA files
+    # Create miRNA DataFrame
+    create_rna_df(data_path=data_path, 
+            file_name="h3.csv", 
+            id_col='miRNA ID', seq_col='miRNA sequence',
+            output_file=data_path + "/DATA_mirna_eco.csv")
+
+    # Create mRNA DataFrame
+    create_rna_df(data_path=data_path, 
+                file_name="h3.csv", 
+                id_col='Gene_ID', 
+                seq_col='sequence',
+                output_file= data_path + "/DATA_mrna_eco.csv")
+
     # ----- load data without neg:
-    train_fragments, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False)
+    train_fragments, test, kwargs = load_data_mir(data_path=data_path, neg_path='', added_neg=False)
 
     # ----- load data for XGBoost / RandomForest (with neg)
     # train_fragments, kwargs = load_data_mir(data_path=data_path, added_neg=True)
@@ -183,9 +165,17 @@ def main():
     test = None
     cv_predictions_dfs = train_and_evaluate(model_h=graph_rna, train_fragments=train_fragments, test=test, model_name=model_name , data=data, **kwargs)
 
+    folds_num=5
     # write cv results to folds dfs
     for fold, fold_df in cv_predictions_dfs.items():
-        write_df(df=fold_df, file_path=join(join(outputs_path, 'GNN-Random_neg'), f"cv_fold{fold}_predictions_GraphRNA.csv"))
+        write_df(df=fold_df, file_path=join(join(outputs_path, f'{model_name}-{neg_type}/{folds_num} folds'), f"{nodes_type}_fold{fold}_{model_name}-{neg_type}.csv"))
+    
+    # create metric df for all the folds
+    dfs = [pd.read_csv(f"/sise/home/ronfay/Data_bacteria/graphNN/GraphRNA/outputs_mir/{model_name}-{neg_type}/{folds_num} folds/{nodes_type}_fold{i}_{model_name}-{neg_type}.csv") for i in range(folds_num)]
+    create_metric_df(dfs, nodes_type, folds_num, model_name, neg_type)
+
+    return
+
 
     # # # ----- run XGBoost
     # model_name = "XGB"
@@ -300,10 +290,10 @@ def load_data_triple(data_path: str, added_neg: bool = False, is_rbp:bool = True
     #     train_fragments_file = "combined_train.csv"
     # else:
     #     train_fragments_file = "h3.csv"
-    train_fragments_file = "combined_rbp_mirna_interactions.csv"
+    train_fragments_file = "combined_five_rbp_mirna_interactions.csv"
 
     dhm = DataHandler_Mirna_Mrna(data_path=data_path, train_fragments_file=train_fragments_file, added_neg=added_neg, is_rbp=is_rbp)
-    train_fragments = dhm.load_interactions_datasets(added_neg=added_neg)
+    train_fragments, test = dhm.load_interactions_datasets(added_neg=added_neg)
     mirna_eco, mirna_eco_accession_id_col, mrna_eco_with_rbp, mrna_eco_with_rbp_accession_id_col, mrna_eco_with_mirna, mrna_eco_with_mirna_accession_id_col, rbp_eco, rbp_eco_accession_id_col = dhm.load_rna_triple_data()
 
     # 2.1 - update kwargs
@@ -391,7 +381,7 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object],
     # 1 - define model args
     model_args = model_h.get_model_args()
     # 2 - run cross validation
-    cv_n_splits = 1
+    cv_n_splits = 5
 
     # ------------mrna mirna:
     if model_name == "XGB" or model_name == "RF":
@@ -423,24 +413,49 @@ def train_and_evaluate(model_h, train_fragments: Dict[str, object],
             test_predictions_df = predictions['out_test_pred']
             
             return test_predictions_df
-
-            # dummy_x_train, dummy_x_val, dummy_y_train, dummy_y_val, dummy_meta_train, dummy_meta_val, 
-            # cv_training_history, cv_prediction_dfs = \
-            #     model_h.use_train_test(X=train_fragments['X'], y=train_fragments['y'], 
-            #     metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
-            #     srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID',neg_df=neg_df, iteration=iteration, **kwargs)
-                    
-            # return dummy_x_train, dummy_x_val, dummy_y_train, dummy_y_val, dummy_meta_train, dummy_meta_val, cv_training_history, cv_prediction_dfs
         else:
             cv_predictions_dfs, cv_training_history = \
-                model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'], 
-                metadata=train_fragments['metadata'], n_splits=cv_n_splits, model_args=model_args, 
-                train_neg_sampling = False, srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID',neg_df=neg_df, **kwargs)
+                model_h.run_cross_validation(X=train_fragments['X'], y=train_fragments['y'],  
+                n_splits=cv_n_splits, model_args=model_args, 
+                metadata=train_fragments['metadata'], srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID',
+                neg_df=neg_df, **kwargs) #train_neg_sampling = False,
                     
             return cv_predictions_dfs
 
 # ------------triple:
     if data == "triple":
+        
+        # if train_test:
+        #     # 3 - train and test
+        #     predictions, training_history = \
+        #         model_h.train_and_test(
+        #             X_train=train_fragments['X'], 
+        #             y_srna_train=train_fragments['y_srna'],
+        #             y_rbp_train=train_fragments['y_rbp'],
+        #             X_test=test['X'], 
+        #             y_test=test['y'],
+        #             model_args=model_args, 
+        #             metadata_train=train_fragments['metadata'], 
+        #             metadata_test=test['metadata'],
+        #             train_neg_sampling=False, 
+        #             srna_acc_col='miRNA ID', 
+        #             mrna_acc_with_srna_col='mRNA_ID_with_sRNA',
+        #             mrna_acc_with_rbp_col='mRNA_ID_with_RBP',
+        #             rbp_acc_col='RBP',
+        #             **kwargs
+        #         )
+                
+        #         # X_train=train_fragments['X'], y_train=train_fragments['y'], X_test=test['X'],
+        #         #                     y_test=test['y'], model_args=model_args, train_neg_sampling = False,
+        #         #                     metadata_train=train_fragments['metadata'], metadata_test=test['metadata'],
+        #         #                     srna_acc_col='miRNA ID', mrna_acc_col='Gene_ID', **kwargs)
+        #     test_predictions_df = predictions['out_test_pred']
+            
+        #     return test_predictions_df
+
+        print(type(train_fragments))
+        print(train_fragments)
+
         cv_predictions_dfs, cv_training_history = \
             model_h.run_cross_validation(X=train_fragments['X'], y_srna=train_fragments['y_srna'], 
                 y_rbp=train_fragments['y_rbp'],
